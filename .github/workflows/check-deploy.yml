@@ -10,11 +10,11 @@ on:
 
 jobs:
   check-build:
-    name: Check dsh-website build
+    name: Check Website build
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: dsh-website
+        working-directory: website
     steps:
       - name: Checkout
         uses: actions/checkout@v4
