@@ -129,14 +129,6 @@ const EnAccessToolMap = () => {
   }, [searchTerm, selectedCategories])
 
   // Flatten all menu items for easier selection
-  const menuItems = Object.entries(categories).flatMap(
-    ([parentCategory, items]) =>
-      items.map((item) => ({
-        key: item,
-        parentKey: parentCategory,
-        label: item,
-      }))
-  )
 
   return (
     <div className="bg-white text-gray-800">
