@@ -41,12 +41,12 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Build Next.js Project
-        run: npm run build
+        run: npm run export
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: .next
+          path: out
 
   # Deployment job
   deploy:
