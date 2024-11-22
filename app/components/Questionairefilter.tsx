@@ -257,17 +257,17 @@ const tools = [
 
 // Define an interface for the filters
 interface Filters {
-  numberOfClients: string[];
-  transactionsPerDay: string[];
-  companyStage: string[];
-  companyFocus: string[];
-  toolsCost: string[];
-  toolSource: string[];
-  internalExpertise: string[];
-  businessArea: string[];
-  functionalArea: string[];
-  interoperability: string[];
-  offlineFunctionality: string[];
+  numberOfClients: string[]
+  transactionsPerDay: string[]
+  companyStage: string[]
+  companyFocus: string[]
+  toolsCost: string[]
+  toolSource: string[]
+  internalExpertise: string[]
+  businessArea: string[]
+  functionalArea: string[]
+  interoperability: string[]
+  offlineFunctionality: string[]
 }
 
 const EnAccessToolMap: React.FC = () => {
@@ -300,7 +300,8 @@ const EnAccessToolMap: React.FC = () => {
         Object.entries(filters).every(([filterKey, selectedValues]) => {
           if (selectedValues.length === 0) return true
 
-          const metadataValue = tool.metadata[filterKey as keyof typeof tool.metadata]
+          const metadataValue =
+            tool.metadata[filterKey as keyof typeof tool.metadata]
 
           if (Array.isArray(metadataValue)) {
             return selectedValues.some((value: string) =>
@@ -339,50 +340,54 @@ const EnAccessToolMap: React.FC = () => {
 
   return (
     <div className="bg-white text-gray-800">
-    <div className="flex justify-center my-5">
-      <Input
-        placeholder="Search tools"
-        className="w-72"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-    </div>
+      <div className="flex justify-center my-5">
+        <Input
+          placeholder="Search tools"
+          className="w-72"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
 
-    <div className="flex">
-      <div className="w-1/4 p-4">
-        <Collapse>
-          {Object.keys(FILTER_OPTIONS).map((filterKey) =>
-            renderFilterSection(filterKey as keyof Filters)
+      <div className="flex">
+        <div className="w-1/4 p-4">
+          <Collapse>
+            {Object.keys(FILTER_OPTIONS).map((filterKey) =>
+              renderFilterSection(filterKey as keyof Filters)
+            )}
+          </Collapse>
+        </div>
+
+        <div className="w-3/4 p-5">
+          {!hasActiveFilters ? (
+            <WelcomeMessage hasFilters={false} />
+          ) : filteredTools.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filteredTools.map((tool) => (
+                <Card key={tool.name} className="bg-[#2D6A4F] text-white">
+                  <Title level={3} className="text-white">
+                    {tool.name}
+                  </Title>
+                  <Paragraph className="text-gray-100">
+                    {tool.summary}
+                  </Paragraph>
+                  <a
+                    href={tool.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-200 hover:text-blue-100"
+                  >
+                    Visit Website
+                  </a>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <WelcomeMessage hasFilters={true} />
           )}
-        </Collapse>
-      </div>
-
-      <div className="w-3/4 p-5">
-        {!hasActiveFilters ? (
-          <WelcomeMessage hasFilters={false} />
-        ) : filteredTools.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredTools.map((tool) => (
-              <Card key={tool.name} className="bg-[#2D6A4F] text-white">
-                <Title level={3} className="text-white">{tool.name}</Title>
-                <Paragraph className="text-gray-100">{tool.summary}</Paragraph>
-                <a
-                  href={tool.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-200 hover:text-blue-100"
-                >
-                  Visit Website
-                </a>
-              </Card>
-            ))}
-          </div>
-        ) : (
-          <WelcomeMessage hasFilters={true} />
-        )}
+        </div>
       </div>
     </div>
-  </div>
   )
 }
 
