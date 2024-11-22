@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useMemo } from "react"
-import { Input, Card, Typography, Collapse, Select, Checkbox } from "antd"
+import { Input, Card, Typography, Collapse, Checkbox } from "antd"
 import WelcomeMessage from "./WelcomeMessage"
 
 const { Title, Paragraph } = Typography
@@ -261,7 +261,6 @@ interface Filters {
 }
 
 const EnAccessToolMap: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
   const [filters, setFilters] = useState<Filters>({
     numberOfClients: [],
     transactionsPerDay: [],
