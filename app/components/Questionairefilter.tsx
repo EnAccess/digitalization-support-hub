@@ -1,20 +1,10 @@
 "use client"
 import React, { useState, useMemo } from "react"
-import {
-  Input,
-  Card,
-  Typography,
-  Menu,
-  Collapse,
-  Empty,
-  Select,
-  Checkbox,
-} from "antd"
+import { Input, Card, Typography, Collapse, Select, Checkbox } from "antd"
 import WelcomeMessage from "./WelcomeMessage"
 
 const { Title, Paragraph } = Typography
 const { Panel } = Collapse
-const { Option } = Select
 
 const filterKeyToQuestion: Record<string, string> = {
   numberOfClients: " What Size is your company?",

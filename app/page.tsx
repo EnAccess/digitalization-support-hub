@@ -4,7 +4,7 @@ import QuestionaireFilter from "./components/Questionairefilter"
 import ToolMapButton from "./components/Button"
 import { Modal } from "antd"
 import EnAccessToolMap from "./components/Home"
-export default function page() {
+export default function Page() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   return (
     <div>
