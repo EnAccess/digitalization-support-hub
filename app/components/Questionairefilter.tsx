@@ -245,7 +245,6 @@ const tools = [
   },
 ]
 
-// Define an interface for the filters
 interface Filters {
   numberOfClients: string[]
   transactionsPerDay: string[]

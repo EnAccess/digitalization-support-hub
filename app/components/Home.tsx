@@ -1,6 +1,7 @@
 "use client"
 import React, { useState, useMemo } from "react"
 import { Input, Card, Typography, Menu, Collapse, Empty } from "antd"
+import ToolMapButton from "./Button"
 
 const { Title, Paragraph } = Typography
 const { Panel } = Collapse
@@ -88,8 +89,11 @@ const tools = [
     categories: ["Product Procurement", "Impact Measurements & Performance"],
   },
 ]
+interface EnAccessToolMapProps {
+  setIsModalOpen: (value: boolean) => void
+}
 
-const EnAccessToolMap = () => {
+const EnAccessToolMap = ({ setIsModalOpen }: EnAccessToolMapProps) => {
   const [activeTool, setActiveTool] = useState<string | null>(null)
   const [searchTerm, setSearchTerm] = useState<string>("")
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
@@ -136,13 +140,14 @@ const EnAccessToolMap = () => {
         <Title level={1}>EnAccess Tool Map</Title>
       </header> */}
 
-      <div className="flex justify-center my-5">
+      <div className="flex justify-center my-5 gap-4">
         <Input
           placeholder="Search bar"
           style={{ width: 300 }}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+        <ToolMapButton onClick={() => setIsModalOpen(true)} />
       </div>
 
       <div className="flex justify-center space-x-4 my-5">

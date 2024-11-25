@@ -6,10 +6,12 @@ import { Modal } from "antd"
 import EnAccessToolMap from "./components/Home"
 export default function Page() {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const handleModalOpen = (value: boolean) => {
+    setIsModalOpen(value)
+  }
   return (
     <div>
-      <ToolMapButton onClick={() => setIsModalOpen(true)} />
-      <EnAccessToolMap />
+      <EnAccessToolMap setIsModalOpen={handleModalOpen} />
 
       <Modal
         title="Tool Finder"
