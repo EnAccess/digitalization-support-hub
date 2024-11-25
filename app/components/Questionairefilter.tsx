@@ -94,8 +94,8 @@ const tools = [
   {
     name: "3CX",
     metadata: {
-      numberOfClients: ["<100", "101-500", "501-1000", ">1000", ">5000"],
-      transactionsPerDay: ["<5", "5-100", "101-500", ">501"],
+      numberOfClients: ["<100"],
+      transactionsPerDay: ["<5"],
       companyStage: "Pre-launch startup",
       companyFocus: ["SHS"],
       toolsCost: "Free-to-use or freemium versions only",
@@ -170,7 +170,7 @@ const tools = [
   {
     name: "Sendy",
     metadata: {
-      numberOfClients: ["<100", "101-500", "501-1000", ">1000", ">5000"],
+      numberOfClients: ["<100", "101-500"],
       transactionsPerDay: ["<5", "5-100", "101-500", ">501"],
       companyStage: "Early-stage startup",
       companyFocus: ["SHS", "Clean Cooking"],
@@ -208,8 +208,8 @@ const tools = [
   {
     name: "carbon clear",
     metadata: {
-      numberOfClients: ["<100", "101-500", "501-1000", ">1000", ">5000"],
-      transactionsPerDay: ["<5", "5-100", "101-500", ">501"],
+      numberOfClients: ["<100"],
+      transactionsPerDay: ["<5"],
       companyStage: "Pre-launch startup",
       companyFocus: ["SHS"],
       toolsCost: "Free-to-use or freemium versions only",
@@ -227,8 +227,8 @@ const tools = [
   {
     name: "cavex",
     metadata: {
-      numberOfClients: ["<100", "101-500", "501-1000", ">1000", ">5000"],
-      transactionsPerDay: ["<5", "5-100", "101-500", ">501"],
+      numberOfClients: ["<100"],
+      transactionsPerDay: ["<5"],
       companyStage: "Pre-launch startup",
       companyFocus: ["SHS"],
       toolsCost: "Free-to-use or freemium versions only",
