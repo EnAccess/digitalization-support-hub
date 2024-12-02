@@ -153,35 +153,28 @@ const EnAccessToolMap = ({ setIsModalOpen }: EnAccessToolMapProps) => {
           selectedKeys={selectedCategories}
           onClick={handleMenuClick}
         >
-          {Object.entries(categories).map(([category, items], index) => (
-            <React.Fragment key={category}>
-              {index > 0 && <div className="w-full border-t my-4"></div>}
-              <Menu.SubMenu
-                key={category}
-                title={
-                  <span className="text-xl font-bold text-[#2D6A4F]">
-                    {category}
-                  </span>
-                }
-                className={`bg-gray-100 hover:bg-[#95D5B2]`}
-              >
-                {items.map((item) => (
-                  <Menu.Item
-                    key={item}
-                    className={`
-                      ${
-                        selectedCategories.includes(item)
-                          ? "bg-[#2D6A4F] text-white"
-                          : ""
-                      }
-                      hover:bg-[#2D6A4F] hover:text-white
-                    `}
-                  >
-                    {item}
-                  </Menu.Item>
-                ))}
-              </Menu.SubMenu>
-            </React.Fragment>
+          {Object.entries(categories).map(([category, items]) => (
+            <Menu.SubMenu
+              key={category}
+              title={<span style={{ fontSize: '1.2em', margin: '0 0 10px 0' }}>{category}</span>}
+              className={`bg-[#95D5B2] hover:bg-[#2D6A4F] hover:text-white`}
+            >
+              {items.map((item) => (
+                <Menu.Item
+                  key={item}
+                  className={`
+                    ${
+                      selectedCategories.includes(item)
+                        ? "bg-[#2D6A4F] text-white"
+                        : ""
+                    }
+                    hover:bg-[#2D6A4F] hover:text-white
+                  `}
+                >
+                  {item}
+                </Menu.Item>
+              ))}
+            </Menu.SubMenu>
           ))}
         </Menu>
       </div>
