@@ -1,11 +1,24 @@
 "use client"
 import React, { useState, useMemo } from "react"
-import { Input, Card, Typography, Collapse, Checkbox } from "antd"
+import { Input, Card, Typography, Collapse, Button, Radio, Space } from "antd"
 import WelcomeMessage from "./WelcomeMessage"
 
 const { Title, Paragraph } = Typography
 const { Panel } = Collapse
 
+const QUESTIONNAIRE_ORDER = [
+  'numberOfClients',
+  'transactionsPerDay',
+  'companyStage',
+  'companyFocus',
+  'toolsCost',
+  'toolSource',
+  'internalExpertise',
+  'businessArea',
+  'functionalArea',
+  'interoperability',
+  'offlineFunctionality'
+]
 const filterKeyToQuestion: Record<string, string> = {
   numberOfClients: " What Size is your company?",
   companyStage: "At what phase/stage is your company?",
@@ -260,120 +273,152 @@ interface Filters {
 }
 
 const EnAccessToolMap: React.FC = () => {
-  const [filters, setFilters] = useState<Filters>({
-    numberOfClients: [],
-    transactionsPerDay: [],
-    companyStage: [],
-    companyFocus: [],
-    toolsCost: [],
-    toolSource: [],
-    internalExpertise: [],
-    businessArea: [],
-    functionalArea: [],
-    interoperability: [],
-    offlineFunctionality: [],
-  })
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+  const [answers, setAnswers] = useState<Record<string, string[]>>({})
+  const [isQuestionnaireComplete, setIsQuestionnaireComplete] = useState(false)
 
-  const [searchTerm, setSearchTerm] = useState<string>("")
+  const currentQuestion = QUESTIONNAIRE_ORDER[currentQuestionIndex]
 
-  const hasActiveFilters = Object.values(filters).some(
-    (filter) => filter.length > 0
-  )
+  const handleAnswer = (values: string[]) => {
+    setAnswers(prev => ({
+      ...prev,
+      [currentQuestion]: values
+    }))
+  }
+
+  const handleNext = () => {
+    // If current question is not answered and not skipped, don't proceed
+    if (!answers[currentQuestion] || (Array.isArray(answers[currentQuestion]) && !answers[currentQuestion].length)) {
+      return
+    }
+
+    if (currentQuestionIndex < QUESTIONNAIRE_ORDER.length - 1) {
+      setCurrentQuestionIndex(prev => prev + 1)
+    } else {
+      setIsQuestionnaireComplete(true)
+    }
+  }
+
+  const handleSkip = () => {
+    // Set an empty answer to allow skipping
+    setAnswers(prev => ({
+      ...prev,
+      [currentQuestion]: []
+    }))
+    
+    if (currentQuestionIndex < QUESTIONNAIRE_ORDER.length - 1) {
+      setCurrentQuestionIndex(prev => prev + 1)
+    } else {
+      setIsQuestionnaireComplete(true)
+    }
+  }
 
   const filteredTools = useMemo(() => {
-    if (!hasActiveFilters) return []
+    if (!isQuestionnaireComplete) return []
 
     return tools.filter((tool) => {
-      return (
-        Object.entries(filters).every(([filterKey, selectedValues]) => {
-          if (selectedValues.length === 0) return true
+      return Object.entries(answers).every(([filterKey, selectedValues]) => {
+        // Skip filtering if no values were selected (skipped)
+        if (selectedValues.length === 0) return true
 
-          const metadataValue =
-            tool.metadata[filterKey as keyof typeof tool.metadata]
+        const metadataValue =
+          tool.metadata[filterKey as keyof typeof tool.metadata]
 
-          if (Array.isArray(metadataValue)) {
-            return selectedValues.some((value: string) =>
-              metadataValue.includes(value)
-            )
-          }
-
-          return selectedValues.includes(metadataValue)
-        }) && tool.name.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    })
-  }, [filters, searchTerm, hasActiveFilters])
-
-  const renderFilterSection = (filterKey: keyof Filters) => {
-    return (
-      <Panel
-        header={
-          filterKeyToQuestion[filterKey] ||
-          filterKey.replace(/([A-Z])/g, " $1").toUpperCase()
+        if (Array.isArray(metadataValue)) {
+          return selectedValues.some((value: string) =>
+            metadataValue.includes(value)
+          )
         }
-        key={filterKey}
-      >
-        <Checkbox.Group
-          options={FILTER_OPTIONS[filterKey]}
-          value={filters[filterKey]}
-          onChange={(checkedValues: string[]) => {
-            setFilters((prev) => ({
-              ...prev,
-              [filterKey]: checkedValues,
-            }))
-          }}
-        />
-      </Panel>
+
+        return selectedValues.includes(metadataValue)
+      })
+    })
+  }, [answers, isQuestionnaireComplete])
+
+  if (isQuestionnaireComplete) {
+    return (
+      <div className="p-8">
+        <Title level={2}>Recommended Tools</Title>
+        {filteredTools.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredTools.map((tool) => (
+              <Card key={tool.name} className="bg-[#2D6A4F] text-white">
+                <Title level={3} className="text-white">{tool.name}</Title>
+                <Paragraph className="text-gray-100">{tool.summary}</Paragraph>
+                
+                <a
+                  href={tool.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-200 hover:text-blue-100"
+                >
+                  Visit Website
+                </a>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <Paragraph>No tools match your criteria.</Paragraph>
+        )}
+        <Button 
+          onClick={() => {
+            setIsQuestionnaireComplete(false)
+            setCurrentQuestionIndex(0)
+            setAnswers({})
+          }} 
+          className="mt-4"
+        >
+          Start Over
+        </Button>
+      </div>
     )
   }
 
   return (
-    <div className="bg-white text-gray-800">
-      <div className="flex justify-center my-5">
-        <Input
-          placeholder="Search tools"
-          className="w-72"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
+    <div className="max-w-2xl mx-auto p-8">
+      <Title level={2}>Tool Finder </Title>
+      <Paragraph className="mb-6">
+        Question {currentQuestionIndex + 1} of {QUESTIONNAIRE_ORDER.length}
+      </Paragraph>
 
-      <div className="flex">
-        <div className="w-1/4 p-4">
-          <Collapse>
-            {Object.keys(FILTER_OPTIONS).map((filterKey) =>
-              renderFilterSection(filterKey as keyof Filters)
-            )}
-          </Collapse>
-        </div>
+      <Title level={3} className="mb-4">
+        {filterKeyToQuestion[currentQuestion]}
+      </Title>
 
-        <div className="w-3/4 p-5">
-          {!hasActiveFilters ? (
-            <WelcomeMessage hasFilters={false} />
-          ) : filteredTools.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredTools.map((tool) => (
-                <Card key={tool.name} className="bg-[#2D6A4F] text-white">
-                  <Title level={3} className="text-white">
-                    {tool.name}
-                  </Title>
-                  <Paragraph className="text-gray-100">
-                    {tool.summary}
-                  </Paragraph>
-                  <a
-                    href={tool.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-200 hover:text-blue-100"
-                  >
-                    Visit Website
-                  </a>
-                </Card>
-              ))}
-            </div>
-          ) : (
-            <WelcomeMessage hasFilters={true} />
-          )}
-        </div>
+      <Radio.Group 
+        onChange={(e) => handleAnswer([e.target.value])}
+        value={answers[currentQuestion]?.[0] || null}
+        className="w-full"
+      >
+        <Space direction="vertical" className="w-full">
+          {FILTER_OPTIONS[currentQuestion].map((option) => (
+            <Radio 
+              key={option} 
+              value={option} 
+              className="w-full p-2 border rounded hover:bg-gray-100"
+            >
+              {option}
+            </Radio>
+          ))}
+        </Space>
+      </Radio.Group>
+
+      <div className="flex justify-between mt-6">
+        <Button 
+          onClick={handleSkip} 
+          className="mr-4"
+        >
+          Skip
+        </Button>
+        <Button 
+          type="primary" 
+          onClick={handleNext}
+          disabled={!answers[currentQuestion]?.[0]}
+        >
+          {currentQuestionIndex === QUESTIONNAIRE_ORDER.length - 1 
+            ? 'See Recommendations' 
+            : 'Next'}
+        </Button>
       </div>
     </div>
   )
