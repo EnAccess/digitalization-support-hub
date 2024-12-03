@@ -156,7 +156,11 @@ const EnAccessToolMap = ({ setIsModalOpen }: EnAccessToolMapProps) => {
           {Object.entries(categories).map(([category, items]) => (
             <Menu.SubMenu
               key={category}
-              title={<span style={{ fontSize: '1.2em', margin: '0 0 10px 0' }}>{category}</span>}
+              title={
+                <span style={{ fontSize: "1.2em", margin: "0 0 10px 0" }}>
+                  {category}
+                </span>
+              }
               className={`bg-[#95D5B2] hover:bg-[#2D6A4F] hover:text-white`}
             >
               {items.map((item) => (

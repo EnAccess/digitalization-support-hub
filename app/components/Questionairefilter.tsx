@@ -7,17 +7,17 @@ const { Title, Paragraph } = Typography
 const { Panel } = Collapse
 
 const QUESTIONNAIRE_ORDER = [
-  'numberOfClients',
-  'transactionsPerDay',
-  'companyStage',
-  'companyFocus',
-  'toolsCost',
-  'toolSource',
-  'internalExpertise',
-  'businessArea',
-  'functionalArea',
-  'interoperability',
-  'offlineFunctionality'
+  "numberOfClients",
+  "transactionsPerDay",
+  "companyStage",
+  "companyFocus",
+  "toolsCost",
+  "toolSource",
+  "internalExpertise",
+  "businessArea",
+  "functionalArea",
+  "interoperability",
+  "offlineFunctionality",
 ]
 const filterKeyToQuestion: Record<string, string> = {
   numberOfClients: " What Size is your company?",
@@ -280,20 +280,24 @@ const EnAccessToolMap: React.FC = () => {
   const currentQuestion = QUESTIONNAIRE_ORDER[currentQuestionIndex]
 
   const handleAnswer = (values: string[]) => {
-    setAnswers(prev => ({
+    setAnswers((prev) => ({
       ...prev,
-      [currentQuestion]: values
+      [currentQuestion]: values,
     }))
   }
 
   const handleNext = () => {
     // If current question is not answered and not skipped, don't proceed
-    if (!answers[currentQuestion] || (Array.isArray(answers[currentQuestion]) && !answers[currentQuestion].length)) {
+    if (
+      !answers[currentQuestion] ||
+      (Array.isArray(answers[currentQuestion]) &&
+        !answers[currentQuestion].length)
+    ) {
       return
     }
 
     if (currentQuestionIndex < QUESTIONNAIRE_ORDER.length - 1) {
-      setCurrentQuestionIndex(prev => prev + 1)
+      setCurrentQuestionIndex((prev) => prev + 1)
     } else {
       setIsQuestionnaireComplete(true)
     }
@@ -301,13 +305,13 @@ const EnAccessToolMap: React.FC = () => {
 
   const handleSkip = () => {
     // Set an empty answer to allow skipping
-    setAnswers(prev => ({
+    setAnswers((prev) => ({
       ...prev,
-      [currentQuestion]: []
+      [currentQuestion]: [],
     }))
-    
+
     if (currentQuestionIndex < QUESTIONNAIRE_ORDER.length - 1) {
-      setCurrentQuestionIndex(prev => prev + 1)
+      setCurrentQuestionIndex((prev) => prev + 1)
     } else {
       setIsQuestionnaireComplete(true)
     }
@@ -343,9 +347,11 @@ const EnAccessToolMap: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredTools.map((tool) => (
               <Card key={tool.name} className="bg-[#2D6A4F] text-white">
-                <Title level={3} className="text-white">{tool.name}</Title>
+                <Title level={3} className="text-white">
+                  {tool.name}
+                </Title>
                 <Paragraph className="text-gray-100">{tool.summary}</Paragraph>
-                
+
                 <a
                   href={tool.link}
                   target="_blank"
@@ -360,12 +366,12 @@ const EnAccessToolMap: React.FC = () => {
         ) : (
           <Paragraph>No tools match your criteria.</Paragraph>
         )}
-        <Button 
+        <Button
           onClick={() => {
             setIsQuestionnaireComplete(false)
             setCurrentQuestionIndex(0)
             setAnswers({})
-          }} 
+          }}
           className="mt-4"
         >
           Start Over
@@ -385,16 +391,16 @@ const EnAccessToolMap: React.FC = () => {
         {filterKeyToQuestion[currentQuestion]}
       </Title>
 
-      <Radio.Group 
+      <Radio.Group
         onChange={(e) => handleAnswer([e.target.value])}
         value={answers[currentQuestion]?.[0] || null}
         className="w-full"
       >
         <Space direction="vertical" className="w-full">
           {FILTER_OPTIONS[currentQuestion].map((option) => (
-            <Radio 
-              key={option} 
-              value={option} 
+            <Radio
+              key={option}
+              value={option}
               className="w-full p-2 border rounded hover:bg-gray-100"
             >
               {option}
@@ -404,20 +410,17 @@ const EnAccessToolMap: React.FC = () => {
       </Radio.Group>
 
       <div className="flex justify-between mt-6">
-        <Button 
-          onClick={handleSkip} 
-          className="mr-4"
-        >
+        <Button onClick={handleSkip} className="mr-4">
           Skip
         </Button>
-        <Button 
-          type="primary" 
+        <Button
+          type="primary"
           onClick={handleNext}
           disabled={!answers[currentQuestion]?.[0]}
         >
-          {currentQuestionIndex === QUESTIONNAIRE_ORDER.length - 1 
-            ? 'See Recommendations' 
-            : 'Next'}
+          {currentQuestionIndex === QUESTIONNAIRE_ORDER.length - 1
+            ? "See Recommendations"
+            : "Next"}
         </Button>
       </div>
     </div>
