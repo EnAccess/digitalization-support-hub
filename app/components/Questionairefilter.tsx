@@ -1,10 +1,8 @@
 "use client"
 import React, { useState, useMemo } from "react"
-import { Input, Card, Typography, Collapse, Button, Radio, Space } from "antd"
-import WelcomeMessage from "./WelcomeMessage"
+import { Card, Typography, Button, Radio, Space } from "antd"
 
 const { Title, Paragraph } = Typography
-const { Panel } = Collapse
 
 const QUESTIONNAIRE_ORDER = [
   "numberOfClients",
@@ -257,20 +255,6 @@ const tools = [
     link: "https://cavex.com",
   },
 ]
-
-interface Filters {
-  numberOfClients: string[]
-  transactionsPerDay: string[]
-  companyStage: string[]
-  companyFocus: string[]
-  toolsCost: string[]
-  toolSource: string[]
-  internalExpertise: string[]
-  businessArea: string[]
-  functionalArea: string[]
-  interoperability: string[]
-  offlineFunctionality: string[]
-}
 
 const EnAccessToolMap: React.FC = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
