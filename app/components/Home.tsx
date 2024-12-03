@@ -89,6 +89,7 @@ const tools = [
     categories: ["Product Procurement", "Impact Measurements & Performance"],
   },
 ]
+
 interface EnAccessToolMapProps {
   setIsModalOpen: (value: boolean) => void
 }
@@ -114,8 +115,9 @@ const EnAccessToolMap = ({ setIsModalOpen }: EnAccessToolMapProps) => {
 
   // Filter tools based on search term and selected categories
   const filteredTools = useMemo(() => {
-    if (selectedCategories.length === 0 && !searchTerm) {
-      return tools
+    // Only show tools when categories are selected
+    if (selectedCategories.length === 0) {
+      return []
     }
 
     return tools.filter((tool) => {
@@ -132,14 +134,8 @@ const EnAccessToolMap = ({ setIsModalOpen }: EnAccessToolMapProps) => {
     })
   }, [searchTerm, selectedCategories])
 
-  // Flatten all menu items for easier selection
-
   return (
     <div className="bg-white text-gray-800">
-      {/* <header className="bg-[#2D6A4F] p-5 text-center text-white">
-        <Title level={1}>EnAccess Tool Map</Title>
-      </header> */}
-
       <div className="flex justify-center my-5 gap-4">
         <Input
           placeholder="Search bar"
@@ -160,7 +156,11 @@ const EnAccessToolMap = ({ setIsModalOpen }: EnAccessToolMapProps) => {
           {Object.entries(categories).map(([category, items]) => (
             <Menu.SubMenu
               key={category}
-              title={category}
+              title={
+                <span style={{ fontSize: "1.2em", margin: "0 0 10px 0" }}>
+                  {category}
+                </span>
+              }
               className={`bg-[#95D5B2] hover:bg-[#2D6A4F] hover:text-white`}
             >
               {items.map((item) => (
@@ -203,15 +203,6 @@ const EnAccessToolMap = ({ setIsModalOpen }: EnAccessToolMapProps) => {
           </div>
         )}
       </div>
-
-      {/* <div className="text-center my-5">
-        <Title level={2}>Headliner & Digital Tool Map Graphic</Title>
-        <Paragraph>
-          Short description: Lorem ipsum dolor sit amet, consectetur adipiscing
-          elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-          aliqua.
-        </Paragraph>
-      </div> */}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-5">
         {filteredTools.length > 0 ? (
@@ -265,7 +256,9 @@ const EnAccessToolMap = ({ setIsModalOpen }: EnAccessToolMapProps) => {
             <Empty
               description={
                 <span className="text-gray-600">
-                  No tools found for the selected categories
+                  {selectedCategories.length === 0
+                    ? "Select a category to view tools"
+                    : "No tools found for the selected categories"}
                 </span>
               }
             />
