@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useMemo } from "react"
-import { Input, Card, Typography, Menu, Collapse, Empty,Button } from "antd"
+import { Input, Card, Typography, Menu, Collapse, Empty, Button } from "antd"
 import ToolMapButton from "./Button"
 
 const { Title, Paragraph } = Typography
@@ -157,7 +157,7 @@ const EnAccessToolMap = ({ setIsModalOpen }: EnAccessToolMapProps) => {
             <Menu.SubMenu
               key={category}
               title={
-                <Button className="bg-[#95D5B2] hover:bg-[#2D6A4F]"  >
+                <Button className="bg-[#95D5B2] hover:bg-[#2D6A4F]">
                   {category}
                 </Button>
               }
