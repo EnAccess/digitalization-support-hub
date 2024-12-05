@@ -19,3 +19,6 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+.custom-popup {
+  border: none; /* Remove border from submenu */
+}

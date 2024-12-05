@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useMemo } from "react"
-import { Input, Card, Typography, Menu, Collapse, Empty } from "antd"
+import { Input, Card, Typography, Menu, Collapse, Empty, Button } from "antd"
 import ToolMapButton from "./Button"
 
 const { Title, Paragraph } = Typography
@@ -149,7 +149,7 @@ const EnAccessToolMap = ({ setIsModalOpen }: EnAccessToolMapProps) => {
       <div className="flex justify-center space-x-4 my-5">
         <Menu
           mode="horizontal"
-          className="bg-transparent"
+          className="bg-transparent border-0"
           selectedKeys={selectedCategories}
           onClick={handleMenuClick}
         >
@@ -157,11 +157,11 @@ const EnAccessToolMap = ({ setIsModalOpen }: EnAccessToolMapProps) => {
             <Menu.SubMenu
               key={category}
               title={
-                <span style={{ fontSize: "1.2em", margin: "0 0 10px 0" }}>
+                <Button className="bg-[#95D5B2] hover:bg-[#2D6A4F]">
                   {category}
-                </span>
+                </Button>
               }
-              className={`bg-[#95D5B2] hover:bg-[#2D6A4F] hover:text-white`}
+              className={` hover:bg-[#2D6A4F] hover:text-white custom-popup`}
             >
               {items.map((item) => (
                 <Menu.Item
