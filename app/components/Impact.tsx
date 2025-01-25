@@ -2,9 +2,17 @@ import { PieChart, BarChart, LineChart } from "lucide-react"
 
 export default function Impact() {
   const stats = [
-    { icon: PieChart, value: "60%", text: "of SMEs are dissatisfied with current digitalization" },
+    {
+      icon: PieChart,
+      value: "60%",
+      text: "of SMEs are dissatisfied with current digitalization",
+    },
     { icon: BarChart, value: "75%", text: "see value in an interactive guide" },
-    { icon: LineChart, value: "40%", text: "are not using digital tools beyond spreadsheets" },
+    {
+      icon: LineChart,
+      value: "40%",
+      text: "are not using digital tools beyond spreadsheets",
+    },
   ]
 
   return (
@@ -15,7 +23,9 @@ export default function Impact() {
           {stats.map((stat, index) => (
             <div key={index} className="flex flex-col items-center text-center">
               <stat.icon className="w-16 h-16 text-yellow-500 mb-4" />
-              <p className="text-4xl font-bold text-blue-600 mb-2">{stat.value}</p>
+              <p className="text-4xl font-bold text-blue-600 mb-2">
+                {stat.value}
+              </p>
               <p className="text-lg">{stat.text}</p>
             </div>
           ))}
@@ -24,4 +34,3 @@ export default function Impact() {
     </section>
   )
 }
-

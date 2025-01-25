@@ -10,7 +10,8 @@ export default function Solutions() {
     {
       icon: Users,
       title: "Pilot Hands-On Support",
-      description: "Tailored assistance for selected companies to overcome barriers.",
+      description:
+        "Tailored assistance for selected companies to overcome barriers.",
     },
   ]
 
@@ -20,7 +21,10 @@ export default function Solutions() {
         <h2 className="text-3xl font-bold text-center mb-12">How We Help</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {solutions.map((solution, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300">
+            <div
+              key={index}
+              className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300"
+            >
               <solution.icon className="w-12 h-12 text-green-500 mb-4" />
               <h3 className="text-xl font-semibold mb-2">{solution.title}</h3>
               <p>{solution.description}</p>
@@ -31,4 +35,3 @@ export default function Solutions() {
     </section>
   )
 }
-

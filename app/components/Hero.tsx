@@ -7,9 +7,13 @@ export default function Hero() {
         <div className="flex flex-col md:flex-row items-center">
           <div className="md:w-1/2 mb-8 md:mb-0">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Empowering Domestic SMEs in the Renewable Energy Sector Through Digitalization
+              Empowering Domestic SMEs in the Renewable Energy Sector Through
+              Digitalization
             </h1>
-            <p className="text-xl mb-6">Join the Digitalization Support Hub – Innovating Operations, Driving Growth</p>
+            <p className="text-xl mb-6">
+              Join the Digitalization Support Hub – Innovating Operations,
+              Driving Growth
+            </p>
             <button className="bg-yellow-400 text-gray-800 font-bold py-2 px-4 rounded-full inline-flex items-center hover:bg-yellow-300 transition duration-300">
               Learn More
               <ArrowRight className="ml-2" />
@@ -27,4 +31,3 @@ export default function Hero() {
     </section>
   )
 }
-

@@ -18,8 +18,8 @@ export default function Participation() {
       <div className="container mx-auto px-6">
         <h2 className="text-3xl font-bold text-center mb-8">Get Involved</h2>
         <p className="text-xl text-center mb-8 max-w-2xl mx-auto">
-          Do you have ideas, feedback, or want to actively contribute? Join us in shaping the future of digitalization
-          for SMEs.
+          Do you have ideas, feedback, or want to actively contribute? Join us
+          in shaping the future of digitalization for SMEs.
         </p>
         <form onSubmit={handleSubmit} className="max-w-md mx-auto">
           <div className="flex">
@@ -43,4 +43,3 @@ export default function Participation() {
     </section>
   )
 }
-
