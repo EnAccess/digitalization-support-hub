@@ -1,27 +1,25 @@
-"use client"
-import React, { useState } from "react"
-import QuestionaireFilter from "./components/Questionairefilter"
-import { Modal } from "antd"
-import EnAccessToolMap from "./components/Home"
-export default function Page() {
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const handleModalOpen = (value: boolean) => {
-    setIsModalOpen(value)
-  }
-  return (
-    <div>
-      <EnAccessToolMap setIsModalOpen={handleModalOpen} />
+import Header from "./components/Header"
+import Hero from "./components/Hero"
+import Context from "./components/Context"
+import Challenges from "./components/Challenges"
+import Solutions from "./components/Solutions"
+import Impact from "./components/Impact"
+import Participation from "./components/Participation"
+import Timeline from "./components/Timeline"
+import Footer from "./components/Footer"
 
-      <Modal
-        title="Tool Finder"
-        open={isModalOpen}
-        onCancel={() => setIsModalOpen(false)}
-        width="90vw"
-        footer={null}
-        className="max-w-7xl"
-      >
-        <QuestionaireFilter />
-      </Modal>
-    </div>
+export default function Page() {
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-between">
+      <Header />
+      <Hero />
+      <Context />
+      <Challenges />
+      <Solutions />
+      <Impact />
+      <Participation />
+      <Timeline />
+      <Footer />
+    </main>
   )
 }
