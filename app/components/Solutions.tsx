@@ -12,7 +12,7 @@ export default function Solutions() {
       icon: Users,
       title: "Pilot Hands-On Support",
       description:
-        "Pilot hands-on tailored digitalization support to 6-10 SHS,Mini-grid, and Clean Cooking companies,to help them overcome jey internal and external and barriers in digitalization..",
+        "Pilot hands-on tailored digitalization support to 6–10 SHS, Mini-grid, and Clean Cooking companies to help them overcome key internal and external barriers in digitalization.",
     },
   ]
 

@@ -2,25 +2,26 @@ import Link from "next/link"
 
 export default function Header() {
   return (
-    <header className="w-full bg-white shadow-md">
-      <nav className="container mx-auto px-6 py-3">
-        <div className="flex items-center justify-between">
-          <div className="text-xl font-bold text-gray-800">
-            Digitalization Support Hub
-          </div>
-          <div className="hidden md:flex space-x-4">
-            <Link href="#" className="text-gray-800 hover:text-blue-600">
-              Home
-            </Link>
-            <Link href="#" className="text-gray-800 hover:text-blue-600">
-              About
-            </Link>
-            <Link href="#" className="text-gray-800 hover:text-blue-600">
-              Contact
-            </Link>
-          </div>
-        </div>
-      </nav>
+    <header className="bg-white shadow-sm py-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center">
+        <Link
+          href="/"
+          className="text-4xl font-bold text-[#1B75BA] text-center mb-4"
+        >
+          Digitalization Support Hub
+        </Link>
+        <nav className="flex items-center space-x-4">
+          <Link href="#" className="text-gray-700 hover:text-[#1B75BA]">
+            About
+          </Link>
+          <Link href="#" className="text-gray-700 hover:text-[#1B75BA]">
+            Services
+          </Link>
+          <Link href="#" className="text-gray-700 hover:text-[#1B75BA]">
+            Contact
+          </Link>
+        </nav>
+      </div>
     </header>
   )
 }
