@@ -17,7 +17,9 @@ export default function Challenges() {
           {challenges.map((challenge, index) => (
             <div key={index} className="flex flex-col items-center text-center">
               <challenge.icon className="w-16 h-16 text-[#fcac04] mb-4" />
-              <p className="text-lg font-semibold text-gray-800">{challenge.text}</p>
+              <p className="text-lg font-semibold text-gray-800">
+                {challenge.text}
+              </p>
             </div>
           ))}
         </div>
