@@ -56,8 +56,8 @@ export default function Footer() {
           <div className="flex justify-center gap-8">
             <Image
               src="/supporter1.jpg"
-              width={100}
-              height={30}
+              width={180}
+              height={50}
               alt="Supporter 1 logo"
             />
             <Image
