@@ -1,17 +1,15 @@
 export default function Context() {
   return (
-    <section className="w-full bg-gray-100 py-16">
-      <div className="container mx-auto px-6">
-        <h2 className="text-3xl font-bold text-center mb-8 text-[#174569]">
-          Why Digitalization Matters
-        </h2>
-        <p className="text-xl text-center max-w-3xl mx-auto">
-          Digital tools are key to operational efficiency, scalability, and
-          access to financing for SMEs in the Distributed Renewable Energy (DRE)
-          sector. However, adoption remains low due to awareness and
-          accessibility barriers.
+    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+      <div className="max-w-3xl mx-auto text-center">
+        <h2 className="text-3xl font-bold mb-4 text-[#009563]">Why Digitalization Matters</h2>
+        <p className="text-lg text-[#1D1D1D]">
+          Digital tools are key to operational efficiency, scalability, and access to financing for SMEs in the
+          Distributed Renewable Energy (DRE) sector. However, adoption remains low due to awareness and accessibility
+          barriers.
         </p>
       </div>
     </section>
   )
 }
+

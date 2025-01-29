@@ -1,6 +1,6 @@
 export default function Hero() {
   return (
-    <section className="w-full bg-gradient-to-r from-[#1B75BA] to-[#1B75BA] text-white py-20">
+    <section className="w-full bg-gradient-to-r from-[#009563] to-[#27AE60] text-white py-20">
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center  ">
           <div className="md:w-1/2 mb-8 md:mb-0">

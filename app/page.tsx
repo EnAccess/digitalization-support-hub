@@ -13,7 +13,6 @@ export default function Page() {
       <Challenges />
       <Solutions />
       <Impact />
-      <Participation />
     </main>
   )
 }

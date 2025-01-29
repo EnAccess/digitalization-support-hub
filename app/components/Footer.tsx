@@ -3,10 +3,10 @@ import Image from "next/image"
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-50 py-8">
+    <footer className="bg-[#E6E6E6] py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-wrap justify-between items-center mb-12">
-          <Link href="/" className="text-xl font-bold text-[#1B75BA]">
+          <Link href="/" className="text-xl font-bold text-[#009563]">
             Digitalization Support Hub
           </Link>
           <nav className="flex space-x-6">
@@ -55,7 +55,7 @@ export default function Footer() {
           <p className="text-gray-600 mb-4">Other supporters:</p>
           <div className="flex justify-center gap-8">
             <Image
-              src="/supporter1.png"
+              src="/supporter1.jpg"
               width={100}
               height={30}
               alt="Supporter 1 logo"
