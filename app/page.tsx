@@ -3,7 +3,6 @@ import Context from "./components/Context"
 import Challenges from "./components/Challenges"
 import Solutions from "./components/Solutions"
 import Impact from "./components/Impact"
-import Participation from "./components/Participation"
 
 export default function Page() {
   return (
