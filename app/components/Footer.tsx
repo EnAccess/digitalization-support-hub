@@ -5,23 +5,6 @@ export default function Footer() {
   return (
     <footer className="bg-[#E6E6E6] py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap justify-between items-center mb-12 ">
-          <Link href="/" className="text-xl font-bold text-[#009563]">
-            Digitalization Support Hub
-          </Link>
-          <nav className="flex space-x-6">
-            <Link href="#" className="text-gray-600 hover:text-gray-900">
-              Privacy Policy
-            </Link>
-            <Link href="#" className="text-gray-600 hover:text-gray-900">
-              Terms of Service
-            </Link>
-            <Link href="#" className="text-gray-600 hover:text-gray-900">
-              Contact Us
-            </Link>
-          </nav>
-        </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
           <div>
             <p className="text-gray-600 mb-4">Made by:</p>
@@ -31,12 +14,6 @@ export default function Footer() {
                 width={120}
                 height={40}
                 alt="EnAccess logo"
-              />
-              <Image
-                src="/supporter1.png"
-                width={120}
-                height={40}
-                alt="GET.invest logo"
               />
             </div>
           </div>
@@ -51,7 +28,8 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mb-12">
+        {/* Centered "Other supporters" section below Funded by */}
+        <div className="flex flex-col items-center mb-12">
           <p className="text-gray-600 mb-4">Other supporters:</p>
           <div className="flex justify-center gap-8">
             <Image
@@ -74,8 +52,19 @@ export default function Footer() {
             />
           </div>
         </div>
+        <div className="flex justify-center space-x-6 py-4 bg-[#4A4A4A]  text-white rounded-md">
+          <Link href="#" className="hover:underline">
+            Privacy Policy
+          </Link>
+          <Link href="#" className="hover:underline">
+            Terms of Use
+          </Link>
+          <Link href="#" className="hover:underline">
+            Contact Us
+          </Link>
+        </div>
 
-        <div className="text-center text-gray-600 text-sm">
+        <div className="text-center text-gray-600 text-sm mt-4">
           © {new Date().getFullYear()} Digitalization Support Hub. All rights
           reserved.
         </div>
