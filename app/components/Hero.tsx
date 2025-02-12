@@ -1,18 +1,16 @@
 export default function Hero() {
   return (
-    <section className="w-full bg-gradient-to-r from-[#009563] to-[#27AE60] text-white py-20">
-      <div className="container mx-auto px-6">
-        <div className="flex flex-col md:flex-row items-center  ">
-          <div className="md:w-1/2 mb-8 md:mb-0">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Empowering Domestic SMEs in the Renewable Energy Sector Through
-              Digitalization
-            </h1>
-            <p className="text-xl mb-6">
-              Join the Digitalization Support Hub – Innovating Operations,
-              Driving Growth
-            </p>
-          </div>
+    <section className="bg-gradient-to-r from-[#009563] to-[#27AE60] text-white py-20 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-12">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight ">
+            Empowering Domestic SMEs in the Renewable Energy Sector Through
+            Digitalization
+          </h1>
+          <p className="text-lg sm:text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+            Join the Digitalization Support Hub – Innovating Operations, Driving
+            Growth
+          </p>
         </div>
       </div>
     </section>

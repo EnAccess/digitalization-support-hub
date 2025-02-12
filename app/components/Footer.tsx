@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <footer className="bg-[#E6E6E6] py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap justify-between items-center mb-12">
+        <div className="flex flex-wrap justify-between items-center mb-12 ">
           <Link href="/" className="text-xl font-bold text-[#009563]">
             Digitalization Support Hub
           </Link>
@@ -43,7 +43,7 @@ export default function Footer() {
           <div className="flex flex-col items-start md:items-end">
             <p className="text-gray-600 mb-4">Funded by:</p>
             <Image
-              src="/supporter1.png"
+              src="/GoodEnergiesFoundation.png"
               width={180}
               height={50}
               alt="Good Energies Foundation logo"

@@ -1,18 +1,20 @@
 import type { Metadata } from "next"
-import localFont from "next/font/local"
+import { Raleway, Merriweather } from "next/font/google"
 import "./globals.css"
 import Footer from "./components/Footer"
 import Header from "./components/Header"
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+const raleway = Raleway({
+  subsets: ["latin"],
+  variable: "--font-raleway",
+  display: "swap",
 })
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+
+const merriweather = Merriweather({
+  weight: ["300", "400", "700", "900"],
+  subsets: ["latin"],
+  variable: "--font-merriweather",
+  display: "swap",
 })
 
 export const metadata: Metadata = {
@@ -26,10 +28,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="en" className={`${raleway.variable} ${merriweather.variable}`}>
+      <body className={merriweather.className}>
         <Header />
         {children}
         <Footer />
