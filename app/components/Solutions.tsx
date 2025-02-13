@@ -9,7 +9,7 @@ const solutions = [
   },
   {
     icon: Users,
-    title: "Pilot Hands-On Support",
+    title: "Hands-On Support",
     description:
       "Hands-on tailored digitalization support to 6–10 SHS, Mini-grid, and Clean Cooking companies to help them overcome key internal and external barriers with their digitization process",
   },
