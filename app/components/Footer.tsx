@@ -38,35 +38,21 @@ export default function Footer() {
               height={50}
               alt="Supporter 1 logo"
             />
-            <Image
-              src="/supporter1.png"
-              width={100}
-              height={30}
-              alt="Supporter 2 logo"
-            />
-            <Image
-              src="/supporter1.png"
-              width={100}
-              height={30}
-              alt="Supporter 3 logo"
-            />
           </div>
         </div>
 
         <div className="flex justify-center mb-8">
-          <div className="bg-[#5E5E5E] px-6 py-2 rounded">
-            <nav className="flex space-x-6">
-              <Link href="#" className="text-white hover:text-gray-200">
-                Contact Us
-              </Link>
-              <Link href="#" className="text-white hover:text-gray-200">
-                Terms of Use
-              </Link>
-              <Link href="#" className="text-white hover:text-gray-200">
-                Privacy Policy
-              </Link>
-            </nav>
-          </div>
+          <nav className="flex space-x-6">
+            <Link href="#" className="text-[#01371C] hover:text-[#0FD460]">
+              Contact Us
+            </Link>
+            <Link href="#" className="text-[#01371C] hover:text-[#0FD460]">
+              Terms of Use
+            </Link>
+            <Link href="#" className="text-[#01371C] hover:text-[#0FD460]">
+              Privacy Policy
+            </Link>
+          </nav>
         </div>
 
         <div className="text-center text-gray-600 text-sm mt-4">
