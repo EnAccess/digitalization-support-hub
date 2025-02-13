@@ -28,18 +28,8 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Centered "Other supporters" section below Funded by */}
-        <div className="flex flex-col items-center mb-12">
-          <p className="text-gray-600 mb-4">Other supporters:</p>
-          <div className="flex justify-center gap-8">
-            <Image
-              src="/supporter1.jpg"
-              width={180}
-              height={50}
-              alt="Supporter 1 logo"
-            />
-          </div>
-        </div>
+        
+       
 
         <div className="flex justify-center mb-8">
           <nav className="flex space-x-6">
