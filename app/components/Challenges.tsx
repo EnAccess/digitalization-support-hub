@@ -1,9 +1,11 @@
-import { Users, HelpCircle, Wifi } from "lucide-react"
+import { Users, HelpCircle, Wifi, DollarSign, EyeOff } from "lucide-react"
 
 export default function Challenges() {
   const challenges = [
+    { icon: DollarSign, text: "Cost barriers" },
     { icon: HelpCircle, text: "Uncertainty which tool to use" },
     { icon: Users, text: "Lack of staff adoption" },
+    { icon: EyeOff, text: "Lack of awareness" },
     { icon: Wifi, text: "Connectivity issues" },
   ]
 
