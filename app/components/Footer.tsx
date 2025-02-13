@@ -52,16 +52,21 @@ export default function Footer() {
             />
           </div>
         </div>
-        <div className="flex justify-center space-x-6 py-4 bg-[#4A4A4A]  text-white rounded-md">
-          <Link href="#" className="hover:underline">
-            Privacy Policy
-          </Link>
-          <Link href="#" className="hover:underline">
-            Terms of Use
-          </Link>
-          <Link href="#" className="hover:underline">
-            Contact Us
-          </Link>
+
+        <div className="flex justify-center mb-8">
+          <div className="bg-[#5E5E5E] px-6 py-2 rounded">
+            <nav className="flex space-x-6">
+              <Link href="#" className="text-white hover:text-gray-200">
+                Contact Us
+              </Link>
+              <Link href="#" className="text-white hover:text-gray-200">
+                Terms of Use
+              </Link>
+              <Link href="#" className="text-white hover:text-gray-200">
+                Privacy Policy
+              </Link>
+            </nav>
+          </div>
         </div>
 
         <div className="text-center text-gray-600 text-sm mt-4">
