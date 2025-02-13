@@ -28,9 +28,6 @@ export default function Footer() {
           </div>
         </div>
 
-        
-       
-
         <div className="flex justify-center mb-8">
           <nav className="flex space-x-6">
             <Link href="#" className="text-[#01371C] hover:text-[#0FD460]">
