@@ -1,3 +1,4 @@
+"use client"
 import React, { useState, useMemo, useEffect } from "react"
 import yaml from "js-yaml"
 import { Input, Card, Typography, Menu, Collapse, Empty, Button } from "antd"
