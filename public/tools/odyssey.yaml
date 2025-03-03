@@ -1,7 +1,7 @@
-name: "Odyssey"
-summary: "A project management tool."
-logo: "/path/to/odyssey-logo.png"
-link: "https://odyssey.com"
+name: Odyssey
+summary: A project management tool.
+logo: /path/to/odyssey-logo.png
+link: https://odyssey.com
 categories:
-  - "Product Procurement"
-  - "Impact Measurements & Performance"
+  - Product Procurement
+  - Impact Measurements & Performance

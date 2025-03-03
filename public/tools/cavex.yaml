@@ -1,21 +1,21 @@
-name: "cavex"
-summary: "Communication and management tool."
-logo: "/path/to/cavex-logo.png"
-link: "https://cavex.com"
+name: cavex
+summary: Communication and management tool.
+logo: /path/to/cavex-logo.png
+link: https://cavex.com
 metadata:
   numberOfClients:
-    - "<100"
+    - <100
   transactionsPerDay:
-    - "<5"
-  companyStage: "Pre-launch startup"
+    - <5
+  companyStage: Pre-launch startup
   companyFocus:
-    - "SHS"
-  toolsCost: "Free-to-use or freemium versions only"
-  toolSource: "Open-source only"
-  internalExpertise: "No expertise at all"
+    - SHS
+  toolsCost: Free-to-use or freemium versions only
+  toolSource: Open-source only
+  internalExpertise: No expertise at all
   businessArea:
-    - "Preparation and Setup"
+    - Preparation and Setup
   functionalArea:
-    - "Market Analysis"
-  interoperability: "No Interoperability"
-  offlineFunctionality: "Full Offline Functionality"
+    - Market Analysis
+  interoperability: No Interoperability
+  offlineFunctionality: Full Offline Functionality

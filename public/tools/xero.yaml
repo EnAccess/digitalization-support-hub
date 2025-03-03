@@ -1,6 +1,6 @@
-name: "Xero"
-summary: "Online accounting software."
-logo: "/path/to/xero-logo.png"
-link: "https://xero.com"
+name: Xero
+summary: Online accounting software.
+logo: /path/to/xero-logo.png
+link: https://xero.com
 categories:
-  - "Bookkeeping & Accounting"
+  - Bookkeeping & Accounting

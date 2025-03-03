@@ -1,6 +1,6 @@
-name: "Quickbooks"
-summary: "Accounting software for small businesses."
-logo: "/path/to/quickbooks-logo.png"
-link: "https://quickbooks.intuit.com"
+name: Quickbooks
+summary: Accounting software for small businesses.
+logo: /path/to/quickbooks-logo.png
+link: https://quickbooks.intuit.com
 categories:
-  - "Bookkeeping & Accounting"
+  - Bookkeeping & Accounting
