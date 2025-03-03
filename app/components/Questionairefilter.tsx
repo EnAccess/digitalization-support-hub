@@ -1,6 +1,7 @@
 "use client"
-import React, { useState, useMemo } from "react"
+import React, { useState, useMemo, useEffect } from "react"
 import { Card, Typography, Button, Radio, Space } from "antd"
+import yaml from "js-yaml"
 
 const { Title, Paragraph } = Typography
 
@@ -17,20 +18,22 @@ const QUESTIONNAIRE_ORDER = [
   "interoperability",
   "offlineFunctionality",
 ]
+
 const filterKeyToQuestion: Record<string, string> = {
-  numberOfClients: " What Size is your company?",
+  numberOfClients: "What Size is your company?",
   companyStage: "At what phase/stage is your company?",
-  companyFocus: " What is the focus area for your company?",
+  companyFocus: "What is the focus area for your company?",
   toolsCost: "Are you only looking for free-to-use tools?",
-  toolSource: "are you only interested in open-source tools?",
+  toolSource: "Are you only interested in open-source tools?",
   internalExpertise:
-    "Do you have any in-house IT/software R&D expertise and ressources?",
-  interoperability: "are you interested in Inter-operability of the tools?",
+    "Do you have any in-house IT/software R&D expertise and resources?",
+  interoperability: "Are you interested in Inter-operability of the tools?",
   businessArea: "What is your main business area?",
   functionalArea: "What is your main functional area?",
   transactionsPerDay: "How many transactions per day?",
   offlineFunctionality: "Do you need offline functionality?",
 }
+
 const FILTER_OPTIONS: Record<string, string[]> = {
   numberOfClients: ["<100", "101-500", "501-1000", ">1000", ">5000"],
   transactionsPerDay: ["<5", "5-100", "101-500", ">501"],
@@ -101,165 +104,39 @@ const FILTER_OPTIONS: Record<string, string[]> = {
   ],
 }
 
-const tools = [
-  {
-    name: "3CX",
-    metadata: {
-      numberOfClients: ["<100"],
-      transactionsPerDay: ["<5"],
-      companyStage: "Pre-launch startup",
-      companyFocus: ["SHS"],
-      toolsCost: "Free-to-use or freemium versions only",
-      toolSource: "Open-source only",
-      internalExpertise: "No expertise at all",
-      businessArea: ["Preparation and Setup"],
-      functionalArea: ["Market Analysis"],
-      interoperability: "No Interoperability",
-      offlineFunctionality: "Full Offline Functionality",
-    },
-    summary: "Communication and management tool",
-    logo: "/path/to/3cx-logo.png",
-    link: "https://3cx.com",
-  },
-  {
-    name: "D-REC",
-    metadata: {
-      numberOfClients: ["<100", "101-500", "501-1000", ">1000", ">5000"],
-      transactionsPerDay: ["<5", "5-100", "101-500", ">501"],
-      companyStage: "Pre-launch startup",
-      companyFocus: ["SHS"],
-      toolsCost: "Free-to-use or freemium versions only",
-      toolSource: "Open-source only",
-      internalExpertise: "No expertise at all",
-      businessArea: ["Preparation and Setup"],
-      functionalArea: ["Market Analysis"],
-      interoperability: "No Interoperability",
-      offlineFunctionality: "Full Offline Functionality",
-    },
-    summary: "Communication and management tool",
-    logo: "/path/to/d-rec-logo.png",
-    link: "https://d-rec.com",
-  },
-  {
-    name: "IXO",
-    metadata: {
-      numberOfClients: ["<100", "101-500", "501-1000", ">1000", ">5000"],
-      transactionsPerDay: ["<5", "5-100", "101-500", ">501"],
-      companyStage: "Pre-launch startup",
-      companyFocus: ["SHS"],
-      toolsCost: "Free-to-use or freemium versions only",
-      toolSource: "Open-source only",
-      internalExpertise: "No expertise at all",
-      businessArea: ["Preparation and Setup"],
-      functionalArea: ["Market Analysis"],
-      interoperability: "No Interoperability",
-      offlineFunctionality: "Full Offline Functionality",
-    },
-    summary: "Communication and management tool",
-    logo: "/path/to/ixo-logo.png",
-    link: "https://ixo.com",
-  },
-  {
-    name: "P-REC",
-    metadata: {
-      numberOfClients: ["<100", "101-500", "501-1000", ">1000", ">5000"],
-      transactionsPerDay: ["<5", "5-100", "101-500", ">501"],
-      companyStage: "Pre-launch startup",
-      companyFocus: ["SHS", "Clean Cooking"],
-      toolsCost: "Free-to-use or freemium versions only",
-      toolSource: "Open-source only",
-      internalExpertise: "No expertise at all",
-      businessArea: ["Preparation and Setup"],
-      functionalArea: ["Market Analysis"],
-      interoperability: "No Interoperability",
-      offlineFunctionality: "Full Offline Functionality",
-    },
-    summary: "Communication and management tool",
-    logo: "/path/to/prec-logo.png",
-    link: "https://p-rec.com",
-  },
-  {
-    name: "Sendy",
-    metadata: {
-      numberOfClients: ["<100", "101-500"],
-      transactionsPerDay: ["<5", "5-100", "101-500", ">501"],
-      companyStage: "Early-stage startup",
-      companyFocus: ["SHS", "Clean Cooking"],
-      toolsCost: "Free-to-use or freemium versions only",
-      toolSource: "Open-source only",
-      internalExpertise: "No expertise at all",
-      businessArea: ["Preparation and Setup"],
-      functionalArea: ["Market Analysis"],
-      interoperability: "No Interoperability",
-      offlineFunctionality: "Full Offline Functionality",
-    },
-    summary: "Communication and management tool",
-    logo: "/path/to/sendy-logo.png",
-    link: "https://sendy.com",
-  },
-  {
-    name: "Challenges",
-    metadata: {
-      numberOfClients: ["<100", "101-500", "501-1000", ">1000", ">5000"],
-      transactionsPerDay: ["<5", "5-100", "101-500", ">501"],
-      companyStage: "Pre-launch startup",
-      companyFocus: ["SHS"],
-      toolsCost: "Free-to-use or freemium versions only",
-      toolSource: "Open-source only",
-      internalExpertise: "No expertise at all",
-      businessArea: ["Preparation and Setup"],
-      functionalArea: ["Market Analysis"],
-      interoperability: "No Interoperability",
-      offlineFunctionality: "Full Offline Functionality",
-    },
-    summary: "Communication and management tool",
-    logo: "/path/to/challenges-logo.png",
-    link: "https://challenges.com",
-  },
-  {
-    name: "carbon clear",
-    metadata: {
-      numberOfClients: ["<100"],
-      transactionsPerDay: ["<5"],
-      companyStage: "Pre-launch startup",
-      companyFocus: ["SHS"],
-      toolsCost: "Free-to-use or freemium versions only",
-      toolSource: "Open-source only",
-      internalExpertise: "No expertise at all",
-      businessArea: ["Preparation and Setup"],
-      functionalArea: ["Company Set-up"],
-      interoperability: "No Interoperability",
-      offlineFunctionality: "Full Offline Functionality",
-    },
-    summary: "Communication and management tool",
-    logo: "/path/to/carboclear-logo.png",
-    link: "https://carbon-clear.com",
-  },
-  {
-    name: "cavex",
-    metadata: {
-      numberOfClients: ["<100"],
-      transactionsPerDay: ["<5"],
-      companyStage: "Pre-launch startup",
-      companyFocus: ["SHS"],
-      toolsCost: "Free-to-use or freemium versions only",
-      toolSource: "Open-source only",
-      internalExpertise: "No expertise at all",
-      businessArea: ["Preparation and Setup"],
-      functionalArea: ["Market Analysis"],
-      interoperability: "No Interoperability",
-      offlineFunctionality: "Full Offline Functionality",
-    },
-    summary: "Communication and management tool",
-    logo: "/path/to/cavex-logo.png",
-    link: "https://cavex.com",
-  },
-]
-
 const EnAccessToolMap: React.FC = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [answers, setAnswers] = useState<Record<string, string[]>>({})
   const [isQuestionnaireComplete, setIsQuestionnaireComplete] = useState(false)
+  const [tools, setTools] = useState<any[]>([])
+
+  // Load tools from YAML files
+  useEffect(() => {
+    const loadTools = async () => {
+      const toolFiles = [
+        "/tools/3cx.yaml",
+        "/tools/d-rec.yaml",
+        "/tools/ixo.yaml",
+        "/tools/p-rec.yaml",
+        "/tools/sendy.yaml",
+        "/tools/challenges.yaml",
+        "/tools/carbon-clear.yaml",
+        "/tools/cavex.yaml",
+      ]
+
+      const loadedTools = await Promise.all(
+        toolFiles.map(async (file) => {
+          const response = await fetch(file)
+          const text = await response.text()
+          return yaml.load(text)
+        })
+      )
+
+      setTools(loadedTools)
+    }
+
+    loadTools()
+  }, [])
 
   const currentQuestion = QUESTIONNAIRE_ORDER[currentQuestionIndex]
 
@@ -271,7 +148,6 @@ const EnAccessToolMap: React.FC = () => {
   }
 
   const handleNext = () => {
-    // If current question is not answered and not skipped, don't proceed
     if (
       !answers[currentQuestion] ||
       (Array.isArray(answers[currentQuestion]) &&
@@ -288,7 +164,6 @@ const EnAccessToolMap: React.FC = () => {
   }
 
   const handleSkip = () => {
-    // Set an empty answer to allow skipping
     setAnswers((prev) => ({
       ...prev,
       [currentQuestion]: [],
@@ -306,22 +181,18 @@ const EnAccessToolMap: React.FC = () => {
 
     return tools.filter((tool) => {
       return Object.entries(answers).every(([filterKey, selectedValues]) => {
-        // Skip filtering if no values were selected (skipped)
         if (selectedValues.length === 0) return true
 
-        const metadataValue =
-          tool.metadata[filterKey as keyof typeof tool.metadata]
+        const metadataValue = tool.metadata[filterKey]
 
         if (Array.isArray(metadataValue)) {
-          return selectedValues.some((value: string) =>
-            metadataValue.includes(value)
-          )
+          return selectedValues.some((value) => metadataValue.includes(value))
         }
 
         return selectedValues.includes(metadataValue)
       })
     })
-  }, [answers, isQuestionnaireComplete])
+  }, [answers, isQuestionnaireComplete, tools])
 
   if (isQuestionnaireComplete) {
     return (
@@ -335,7 +206,6 @@ const EnAccessToolMap: React.FC = () => {
                   {tool.name}
                 </Title>
                 <Paragraph className="text-gray-100">{tool.summary}</Paragraph>
-
                 <a
                   href={tool.link}
                   target="_blank"
@@ -366,7 +236,7 @@ const EnAccessToolMap: React.FC = () => {
 
   return (
     <div className="max-w-2xl mx-auto p-8">
-      <Title level={2}>Tool Finder </Title>
+      <Title level={2}>Tool Finder</Title>
       <Paragraph className="mb-6">
         Question {currentQuestionIndex + 1} of {QUESTIONNAIRE_ORDER.length}
       </Paragraph>

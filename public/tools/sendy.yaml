@@ -1,0 +1,26 @@
+name: "Sendy"
+summary: "Communication and management tool."
+logo: "/path/to/sendy-logo.png"
+link: "https://sendy.com"
+metadata:
+  numberOfClients:
+    - "<100"
+    - "101-500"
+  transactionsPerDay:
+    - "<5"
+    - "5-100"
+    - "101-500"
+    - ">501"
+  companyStage: "Early-stage startup"
+  companyFocus:
+    - "SHS"
+    - "Clean Cooking"
+  toolsCost: "Free-to-use or freemium versions only"
+  toolSource: "Open-source only"
+  internalExpertise: "No expertise at all"
+  businessArea:
+    - "Preparation and Setup"
+  functionalArea:
+    - "Market Analysis"
+  interoperability: "No Interoperability"
+  offlineFunctionality: "Full Offline Functionality"
