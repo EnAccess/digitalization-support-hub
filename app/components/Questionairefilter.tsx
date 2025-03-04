@@ -119,7 +119,7 @@ interface Tool {
     functionalArea?: string | string[]
     interoperability?: string | string[]
     offlineFunctionality?: string | string[]
-    [key: string]: any
+    [key: string]: string | string[] | undefined
   }
 }
 
@@ -194,7 +194,6 @@ const EnAccessToolMap: React.FC = () => {
       setIsQuestionnaireComplete(true)
     }
   }
-
   const filteredTools = useMemo(() => {
     if (!isQuestionnaireComplete) return []
 
@@ -204,11 +203,16 @@ const EnAccessToolMap: React.FC = () => {
 
         const metadataValue = tool.metadata[filterKey]
 
+        if (metadataValue === undefined) return false
+
         if (Array.isArray(metadataValue)) {
           return selectedValues.some((value) => metadataValue.includes(value))
         }
 
-        return selectedValues.includes(metadataValue)
+        return (
+          typeof metadataValue === "string" &&
+          selectedValues.includes(metadataValue)
+        )
       })
     })
   }, [answers, isQuestionnaireComplete, tools])
