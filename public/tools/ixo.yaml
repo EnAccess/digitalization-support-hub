@@ -4,15 +4,15 @@ logo: /path/to/ixo-logo.png
 link: https://ixo.com
 metadata:
   numberOfClients:
-    - "<100"
-    - "101-500"
-    - "501-1000"
+    - <100
+    - 101-500
+    - 501-1000
     - ">1000"
     - ">5000"
   transactionsPerDay:
-    - "<5"
-    - "5-100"
-    - "101-500"
+    - <5
+    - 5-100
+    - 101-500
     - ">501"
   companyStage: Pre-launch startup
   companyFocus:

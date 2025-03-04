@@ -103,12 +103,31 @@ const FILTER_OPTIONS: Record<string, string[]> = {
     "No Offline Functionality",
   ],
 }
+interface Tool {
+  name: string
+  summary: string
+  link: string
+  metadata: {
+    numberOfClients?: string | string[]
+    transactionsPerDay?: string | string[]
+    companyStage?: string | string[]
+    companyFocus?: string | string[]
+    toolsCost?: string | string[]
+    toolSource?: string | string[]
+    internalExpertise?: string | string[]
+    businessArea?: string | string[]
+    functionalArea?: string | string[]
+    interoperability?: string | string[]
+    offlineFunctionality?: string | string[]
+    [key: string]: any
+  }
+}
 
 const EnAccessToolMap: React.FC = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [answers, setAnswers] = useState<Record<string, string[]>>({})
   const [isQuestionnaireComplete, setIsQuestionnaireComplete] = useState(false)
-  const [tools, setTools] = useState<any[]>([])
+  const [tools, setTools] = useState<Tool[]>([])
 
   // Load tools from YAML files
   useEffect(() => {
@@ -128,7 +147,7 @@ const EnAccessToolMap: React.FC = () => {
         toolFiles.map(async (file) => {
           const response = await fetch(file)
           const text = await response.text()
-          return yaml.load(text)
+          return yaml.load(text) as Tool
         })
       )
 

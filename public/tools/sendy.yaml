@@ -4,12 +4,12 @@ logo: /path/to/sendy-logo.png
 link: https://sendy.com
 metadata:
   numberOfClients:
-    - "<100"
-    - "101-500"
+    - <100
+    - 101-500
   transactionsPerDay:
-    - "<5"
-    - "5-100"
-    - "101-500"
+    - <5
+    - 5-100
+    - 101-500
     - ">501"
   companyStage: Early-stage startup
   companyFocus:
