@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "fix-lint": " npx prettier . --write",
-    "validate-tools": "node validate-tools.js"
+    "validate-tools": "node ./public/validate-tools.js"
   },
   "dependencies": {
     "ajv": "^8.17.1",
