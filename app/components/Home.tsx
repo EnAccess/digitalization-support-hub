@@ -107,26 +107,25 @@ const EnAccessToolMap = ({ setIsModalOpen }: EnAccessToolMapProps) => {
   }
 
   const filteredTools = useMemo(() => {
-  if (selectedCategories.length === 0 && !searchTerm) {
-    return tools 
-  }
+    if (selectedCategories.length === 0 && !searchTerm) {
+      return tools
+    }
 
-  return tools.filter((tool) => {
-    const matchesSearch = tool.name
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
-    
-    const matchesCategories =
-      selectedCategories.length === 0 ||
-      (tool.categories && 
-        selectedCategories.some((category) =>
-          tool.categories!.includes(category)
-        )
-      )
+    return tools.filter((tool) => {
+      const matchesSearch = tool.name
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
 
-    return matchesSearch && matchesCategories
-  })
-}, [searchTerm, selectedCategories, tools])
+      const matchesCategories =
+        selectedCategories.length === 0 ||
+        (tool.categories &&
+          selectedCategories.some((category) =>
+            tool.categories!.includes(category)
+          ))
+
+      return matchesSearch && matchesCategories
+    })
+  }, [searchTerm, selectedCategories, tools])
 
   return (
     <div className="bg-white text-gray-800">
