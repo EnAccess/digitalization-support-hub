@@ -107,9 +107,9 @@ const EnAccessToolMap = ({ setIsModalOpen }: EnAccessToolMapProps) => {
   }
 
   const filteredTools = useMemo(() => {
-    if (selectedCategories.length === 0) {
-      return []
-    }
+  if (selectedCategories.length === 0 && !searchTerm) {
+    return tools 
+  }
 
     return tools.filter((tool) => {
       const matchesSearch = tool.name
@@ -123,9 +123,9 @@ const EnAccessToolMap = ({ setIsModalOpen }: EnAccessToolMapProps) => {
             tool.categories!.includes(category)
           ))
 
-      return matchesSearch && matchesCategories
-    })
-  }, [searchTerm, selectedCategories, tools])
+    return matchesSearch && matchesCategories
+  })
+}, [searchTerm, selectedCategories, tools])
 
   return (
     <div className="bg-white text-gray-800">
