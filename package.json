@@ -2,14 +2,17 @@
   "name": "website",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "fix-lint": " npx prettier . --write"
+    "fix-lint": " npx prettier . --write",
+    "validate-tools": "node validate-tools.js"
   },
   "dependencies": {
+    "ajv": "^8.17.1",
     "antd": "^5.22.0",
     "lucide-react": "^0.460.0",
     "next": "15.0.3",
@@ -17,6 +20,7 @@
     "react-dom": "19.0.0-rc-66855b96-20241106"
   },
   "devDependencies": {
+    "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^20",
     "@types/react": "^18",
