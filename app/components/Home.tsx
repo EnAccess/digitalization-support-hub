@@ -1,5 +1,6 @@
 "use client"
-import React, { useState, useMemo } from "react"
+import React, { useState, useMemo, useEffect } from "react"
+import yaml from "js-yaml"
 import { Input, Card, Typography, Menu, Collapse, Empty, Button } from "antd"
 import ToolMapButton from "./Button"
 
@@ -35,75 +36,67 @@ const categories = {
   "End Of Life": ["Repossession & Reverse logistics", "E-Waste Management"],
 }
 
-const tools = [
-  {
-    name: "PayGee",
-    summary: "A payment processing tool.",
-    logo: "/path/to/paygee-logo.png",
-    link: "https://paygee.com",
-    categories: ["Bookkeeping & Accounting"],
-  },
-  {
-    name: "Odoo",
-    summary: "An all-in-one management software.",
-    logo: "/path/to/odoo-logo.png",
-    link: "https://odoo.com",
-    categories: ["Bookkeeping & Accounting"],
-  },
-  {
-    name: "Quickbooks",
-    summary: "Accounting software for small businesses.",
-    logo: "/path/to/quickbooks-logo.png",
-    link: "https://quickbooks.intuit.com",
-    categories: ["Bookkeeping & Accounting"],
-  },
-  {
-    name: "Upya",
-    summary: "A financial management tool.",
-    logo: "/path/to/upya-logo.png",
-    link: "https://upya.com",
-    categories: [
-      "Bookkeeping & Accounting",
-      "Impact Measurements & Performance",
-    ],
-  },
-  {
-    name: "Xero",
-    summary: "Online accounting software.",
-    logo: "/path/to/xero-logo.png",
-    link: "https://xero.com",
-    categories: ["Bookkeeping & Accounting"],
-  },
-  {
-    name: "Odyssey",
-    summary: "A project management tool.",
-    logo: "/path/to/odyssey-logo.png",
-    link: "https://odyssey.com",
-    categories: ["Product Procurement", "Impact Measurements & Performance"],
-  },
-  {
-    name: "Unleashed",
-    summary: "Inventory management software.",
-    logo: "/path/to/unleashed-logo.png",
-    link: "https://unleashedsoftware.com",
-    categories: ["Product Procurement", "Impact Measurements & Performance"],
-  },
-]
-
 interface EnAccessToolMapProps {
   setIsModalOpen: (value: boolean) => void
+}
+
+interface Tool {
+  name: string
+  summary: string
+  logo: string
+  link: string
+  categories?: string[] // Make categories optional
 }
 
 const EnAccessToolMap = ({ setIsModalOpen }: EnAccessToolMapProps) => {
   const [activeTool, setActiveTool] = useState<string | null>(null)
   const [searchTerm, setSearchTerm] = useState<string>("")
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const [tools, setTools] = useState<Tool[]>([])
+
+  useEffect(() => {
+    // Load all YAML files
+    const loadTools = async () => {
+      try {
+        const toolFiles = [
+          "/tools/paygee.yaml",
+          "/tools/odoo.yaml",
+          "/tools/quickbooks.yaml",
+          "/tools/upya.yaml",
+          "/tools/xero.yaml",
+          "/tools/odyssey.yaml",
+          "/tools/unleashed.yaml",
+          "/tools/3cx.yaml",
+          "/tools/d-rec.yaml",
+          "/tools/ixo.yaml",
+          "/tools/p-rec.yaml",
+          "/tools/sendy.yaml",
+          "/tools/challenges.yaml",
+          "/tools/carbon-clear.yaml",
+          "/tools/cavex.yaml",
+        ]
+
+        const loadedTools = await Promise.all(
+          toolFiles.map(async (file) => {
+            const response = await fetch(file)
+            const text = await response.text()
+            return yaml.load(text) as Tool
+          })
+        )
+
+        setTools(loadedTools)
+      } catch (error) {
+        console.error("Error loading YAML files:", error)
+      }
+    }
+
+    loadTools()
+  }, [])
 
   const handleToolClick = (toolName: string) => {
     setActiveTool(activeTool === toolName ? null : toolName)
   }
 
-  // Handle menu item selection
   const handleMenuClick = ({ key }: { key: string }) => {
     // Check if the category is already selected
     if (selectedCategories.includes(key)) {
@@ -113,10 +106,8 @@ const EnAccessToolMap = ({ setIsModalOpen }: EnAccessToolMapProps) => {
     }
   }
 
-  // Filter tools based on search term and selected categories
   const filteredTools = useMemo(() => {
-    // Only show tools when categories are selected
-    if (selectedCategories.length === 0) {
+    if (selectedCategories.length === 0 && !searchTerm) {
       return []
     }
 
@@ -124,15 +115,17 @@ const EnAccessToolMap = ({ setIsModalOpen }: EnAccessToolMapProps) => {
       const matchesSearch = tool.name
         .toLowerCase()
         .includes(searchTerm.toLowerCase())
+
       const matchesCategories =
         selectedCategories.length === 0 ||
-        selectedCategories.some((category) =>
-          tool.categories.includes(category)
-        )
+        (tool.categories &&
+          selectedCategories.some((category) =>
+            tool.categories!.includes(category)
+          ))
 
       return matchesSearch && matchesCategories
     })
-  }, [searchTerm, selectedCategories])
+  }, [searchTerm, selectedCategories, tools])
 
   return (
     <div className="bg-white text-gray-800">
@@ -234,19 +227,21 @@ const EnAccessToolMap = ({ setIsModalOpen }: EnAccessToolMapProps) => {
                     </a>
                   </Paragraph>
                   <Paragraph>{tool.summary}</Paragraph>
-                  <div className="mt-2">
-                    <strong>Categories:</strong>
-                    <div className="flex flex-wrap gap-2 mt-1">
-                      {tool.categories.map((category) => (
-                        <span
-                          key={category}
-                          className="bg-[#95D5B2] text-black px-2 py-1 rounded-full text-sm"
-                        >
-                          {category}
-                        </span>
-                      ))}
+                  {tool.categories && (
+                    <div className="mt-2">
+                      <strong>Categories:</strong>
+                      <div className="flex flex-wrap gap-2 mt-1">
+                        {tool.categories.map((category) => (
+                          <span
+                            key={category}
+                            className="bg-[#95D5B2] text-black px-2 py-1 rounded-full text-sm"
+                          >
+                            {category}
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </Panel>
               </Collapse>
             </Card>
@@ -256,9 +251,9 @@ const EnAccessToolMap = ({ setIsModalOpen }: EnAccessToolMapProps) => {
             <Empty
               description={
                 <span className="text-gray-600">
-                  {selectedCategories.length === 0
-                    ? "Select a category to view tools"
-                    : "No tools found for the selected categories"}
+                  {selectedCategories.length === 0 && !searchTerm
+                    ? "Select a category or search to view tools"
+                    : "No tools found for the selected filters"}
                 </span>
               }
             />

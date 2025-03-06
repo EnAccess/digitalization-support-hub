@@ -1,0 +1,6 @@
+name: Odoo
+summary: An all-in-one management software.
+logo: /path/to/odoo-logo.png
+link: https://odoo.com
+categories:
+  - Bookkeeping & Accounting
