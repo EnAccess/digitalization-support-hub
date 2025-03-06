@@ -108,7 +108,7 @@ const EnAccessToolMap = ({ setIsModalOpen }: EnAccessToolMapProps) => {
 
   const filteredTools = useMemo(() => {
     if (selectedCategories.length === 0 && !searchTerm) {
-      return tools
+      return []
     }
 
     return tools.filter((tool) => {
