@@ -1,5 +1,6 @@
 name: PayGee
-summary: A payment processing tool.
+summary: Paygee provides a fully integrated Pay-As-You-Go (PAYG) platform. The hardware-agnostics software suite enables remote access and management of PAYG products. Solutions exist for distributors and manufacturers
+company: Engie
 logo: /path/to/paygee-logo.png
 link: https://paygee.com
 categories:

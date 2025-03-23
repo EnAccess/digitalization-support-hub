@@ -1,7 +1,7 @@
 name: 3CX
-summary: Communication and management tool.
+summary: Easy to manage Call Center solution with unified communications platform designed to support businesses in managing customer communications. It offers a variety of features, including call handling, live chat, and video conferencing. The platform is scalable and suitable for both small and large organizations looking to streamline their call center operations and enhance customer service efficiency..
 logo: /path/to/3cx-logo.png
-link: https://3cx.com
+link: https://www.3cx.com/call-center/
 metadata:
   numberOfClients:
     - <100

@@ -1,8 +1,6 @@
 import type { Metadata } from "next"
 import { Raleway, Merriweather } from "next/font/google"
 import "./globals.css"
-import Footer from "./components/Footer"
-import Header from "./components/Header"
 import "@ant-design/v5-patch-for-react-19"
 
 const raleway = Raleway({
@@ -30,11 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${raleway.variable} ${merriweather.variable}`}>
-      <body className={merriweather.className}>
-        <Header />
-        {children}
-        <Footer />
-      </body>
+      <body className={merriweather.className}>{children}</body>
     </html>
   )
 }
