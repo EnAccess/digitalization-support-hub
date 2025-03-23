@@ -141,9 +141,7 @@ function ToolCategories({
   )
 }
 
-const EnAccessToolMap = ({ setIsModalOpen }: EnAccessToolMapProps) => {
-  const [activeTool, setActiveTool] = useState<string | null>(null)
-  const [searchTerm, setSearchTerm] = useState<string>("")
+const EnAccessToolMap = ({}: EnAccessToolMapProps) => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [tools, setTools] = useState<Tool[]>([])
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
@@ -214,15 +212,11 @@ const EnAccessToolMap = ({ setIsModalOpen }: EnAccessToolMapProps) => {
   }
 
   const filteredTools = useMemo(() => {
-    if (selectedCategories.length === 0 && !searchTerm) {
+    if (selectedCategories.length === 0) {
       return []
     }
 
     return tools.filter((tool) => {
-      const matchesSearch = tool.name
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-
       const matchesCategories =
         selectedCategories.length === 0 ||
         (tool.categories &&
@@ -230,9 +224,9 @@ const EnAccessToolMap = ({ setIsModalOpen }: EnAccessToolMapProps) => {
             tool.categories!.includes(category)
           ))
 
-      return matchesSearch && matchesCategories
+      return matchesCategories
     })
-  }, [searchTerm, selectedCategories, tools])
+  }, [selectedCategories, tools])
 
   return (
     <div className="bg-[#F9FBFA] text-gray-800">
@@ -337,7 +331,7 @@ const EnAccessToolMap = ({ setIsModalOpen }: EnAccessToolMapProps) => {
             {/* <Empty
               description={
                 <span className="text-gray-600">
-                  {selectedCategories.length === 0 && !searchTerm
+                  {selectedCategories.length === 0 
                     ? "Select a category to view tools"
                     : "No tools found for the selected filters"}
                 </span>
@@ -348,6 +342,7 @@ const EnAccessToolMap = ({ setIsModalOpen }: EnAccessToolMapProps) => {
       </div>
       {selectedTool && (
         <ToolDetailModal
+          // @ts-ignore
           tool={selectedTool as any}
           isOpen={isToolModalOpen}
           onClose={() => setIsToolModalOpen(false)}
