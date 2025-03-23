@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import EnAccessToolMap from "../components/Home"
 import { StatisticCard } from "../components/StatisticCard"
 import { BarrierCard } from "../components/BarrierCard"
-import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react"
+import { FaFacebookF, FaYoutube, FaLinkedinIn, FaGithub } from "react-icons/fa"
 import { Modal } from "antd"
 import QuestionaireFilter from "../components/Questionairefilter"
 export default function Landing() {
@@ -70,7 +70,7 @@ export default function Landing() {
       </Modal>
 
       {/* Empowering SMEs Section */}
-      <section className="py-12 px-4 bg-[#F9FBFA]">
+      <section className="pb-4 px-4 bg-[#F9FBFA]">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold mb-4">
             <span className="text-[#43BC80]">Empowering</span>{" "}
@@ -132,7 +132,9 @@ export default function Landing() {
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-8 mb-8">
             <div>
-              <p className="text-sm text-gray-600 mb-2">Made by</p>
+              <p className="text-base text-[#0D261A] font-bold pb-8 ">
+                Made by
+              </p>
               <div className="h-12 relative">
                 <Image
                   src="/supporter1.png"
@@ -144,7 +146,9 @@ export default function Landing() {
               </div>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-2">Funded by</p>
+              <p className="text-base text-[#0D261A] font-bold pb-8">
+                Funded by
+              </p>
               <div className="h-12 relative">
                 <Image
                   src="/GoodEnergiesFoundation.png"
@@ -157,25 +161,27 @@ export default function Landing() {
             </div>
           </div>
 
-          <div className="mb-8">
-            <p className="text-sm text-gray-600 mb-2">Connect with us</p>
+          <div className="mb-8 pt-8">
+            <p className="text-base text-[#0D261A] font-bold mb-8">
+              Connect with us
+            </p>
             <div className="flex gap-4">
-              <Link href="#" className="text-[#1B4332]">
-                <Facebook size={24} />
+              <Link href="#" className="text-white bg-[#17412C] p-2 rounded-lg">
+                <FaFacebookF size={24} />
               </Link>
-              <Link href="#" className="text-[#1B4332]">
-                <Twitter size={24} />
+              <Link href="#" className="text-white bg-[#17412C] p-2 rounded-lg">
+                <FaYoutube size={24} />
               </Link>
-              <Link href="#" className="text-[#1B4332]">
-                <Linkedin size={24} />
+              <Link href="#" className="text-white bg-[#17412C] p-2 rounded-lg">
+                <FaLinkedinIn size={24} />
               </Link>
-              <Link href="#" className="text-[#1B4332]">
-                <Instagram size={24} />
+              <Link href="#" className="text-white bg-[#17412C] p-2 rounded-lg">
+                <FaGithub size={24} />
               </Link>
             </div>
           </div>
 
-          <div className="flex justify-center gap-4 text-xs text-gray-600">
+          <div className="flex justify-center gap-4 text-sm text-[#091A12]  underline font-bold">
             <Link href="#">Imprint</Link>
             <Link href="#">Privacy Policy</Link>
             <Link href="#">Cookies</Link>
