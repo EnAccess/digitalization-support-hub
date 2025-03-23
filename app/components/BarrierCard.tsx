@@ -6,7 +6,6 @@ import {
   Wifi,
 } from "lucide-react"
 
-
 interface BarrierCardProps {
   icon: "connectivity" | "awareness" | "cost" | "staff" | "tool"
   title: string
