@@ -3,6 +3,7 @@ const schema = {
   required: ["name", "summary", "logo", "link"],
   properties: {
     name: { type: "string" },
+    company: { type: "string" },
     summary: { type: "string" },
     logo: { type: "string" },
     link: { type: "string" },
