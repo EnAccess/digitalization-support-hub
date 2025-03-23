@@ -14,16 +14,19 @@ interface BarrierCardProps {
 export function BarrierCard({ icon, title }: BarrierCardProps) {
   const getIcon = () => {
     switch (icon) {
-      case "connectivity":
-        return <Wifi className="h-8 w-8 text-[#2D6A4F]" />
       case "awareness":
-        return <HelpCircle className="h-8 w-8 text-[#2D6A4F]" />
-      case "cost":
-        return <DollarSign className="h-8 w-8 text-[#2D6A4F]" />
-      case "staff":
-        return <Users className="h-8 w-8 text-[#2D6A4F]" />
+        return <HelpCircle className="h-8 w-8 text-[#17412C]" />
+
       case "tool":
-        return <HelpCircleIcon className="h-8 w-8 text-[#2D6A4F]" />
+        return <HelpCircleIcon className="h-8 w-8 text-[#17412C]" />
+
+      case "connectivity":
+        return <Wifi className="h-8 w-8 text-[#17412C]" />
+
+      case "cost":
+        return <DollarSign className="h-8 w-8 text-[#17412C]" />
+      case "staff":
+        return <Users className="h-8 w-8 text-[#17412C]" />
     }
   }
 

@@ -310,7 +310,7 @@ const EnAccessToolMap = ({}: EnAccessToolMapProps) => {
 
               {/* Tool categories as badges */}
               {tool.categories && tool.categories.length > 0 && (
-                <CardFooter className="flex gap-2">
+                <CardFooter className="flex gap-2 mt-4">
                   {tool.categories.map((category, index) => {
                     // Rotate through different colors for category badges
                     const colors = ["bg-[#43BC80] ", "bg-[#8BDC7F] "]
@@ -330,7 +330,7 @@ const EnAccessToolMap = ({}: EnAccessToolMapProps) => {
             </Card>
           ))
         ) : (
-          <div className="col-span-full flex justify-center items-center py-10">
+          <div className="col-span-full flex justify-center items-center py-4">
             {/* <Empty
               description={
                 <span className="text-gray-600">
