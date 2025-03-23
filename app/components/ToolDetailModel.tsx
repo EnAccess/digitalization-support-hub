@@ -11,7 +11,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog"
 
-interface ToolDetailModalProps {
+export interface ToolDetailModalProps {
   isOpen: boolean
   onClose: () => void
   tool: {

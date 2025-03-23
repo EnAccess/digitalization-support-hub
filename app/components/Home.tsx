@@ -13,7 +13,10 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { X, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { ToolDetailModal } from "../components/ToolDetailModel"
+import {
+  ToolDetailModal,
+  ToolDetailModalProps,
+} from "../components/ToolDetailModel"
 interface EnAccessToolMapProps {
   setIsModalOpen: (value: boolean) => void
 }
@@ -342,8 +345,9 @@ const EnAccessToolMap = ({}: EnAccessToolMapProps) => {
       </div>
       {selectedTool && (
         <ToolDetailModal
-          // @ts-ignore
-          tool={selectedTool as any}
+          tool={
+            selectedTool as unknown as NonNullable<ToolDetailModalProps["tool"]>
+          }
           isOpen={isToolModalOpen}
           onClose={() => setIsToolModalOpen(false)}
         />
