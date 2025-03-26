@@ -1,4 +1,5 @@
 "use client"
+
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
@@ -10,10 +11,27 @@ import { BarrierCard } from "../components/BarrierCard"
 import { FaFacebookF, FaYoutube, FaLinkedinIn, FaGithub } from "react-icons/fa"
 import { Modal } from "antd"
 import QuestionaireFilter from "../components/Questionairefilter"
+import { ToolCategoriesDrawer } from "../components/categories-drawer"
+import { useMobile } from "../hooks/use-mobile"
+
 export default function Landing() {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const [tools, setTools] = useState([])
+  const { isMobile, isTablet, isDesktop } = useMobile()
+
   const handleModalOpen = (value: boolean) => {
     setIsModalOpen(value)
+  }
+
+  const handleCategorySelect = (categories: string[]) => {
+    setSelectedCategories(categories)
+  }
+
+  // Get tools from EnAccessToolMap component
+  const handleToolsLoaded = (loadedTools: any) => {
+    setTools(loadedTools)
   }
 
   return (
@@ -21,7 +39,7 @@ export default function Landing() {
       {/* Hero Section */}
       <section className="bg-[#E2F6DF] p-8 md:p-16 ">
         <div className="max-w-6xl mx-auto">
-          <div className="uppercase text-[#0D261A] text-sm lg:text-md  font-bold mb-4">
+          <div className="uppercase text-[#0D261A] text-sm lg:text-md font-bold mb-4">
             DIGITALIZATION SUPPORT HUB
           </div>
           <h1 className="text-3xl md:text-5xl font-bold text-[#161D1A] mb-4">
@@ -41,22 +59,33 @@ export default function Landing() {
             >
               Tool Finder Wizard
             </Button>
-            <Button
-              variant="outline"
-              className="border-[#17412C] text-[#0D261A] font-bold rounded-full  w-full max-w-[328px] min-w-[288px] h-[44px] 
-                px-4 py-2 lg:w-[324px] text-md"
-            >
-              View tool categories
-            </Button>
+            {/* Only show this button on mobile or tablet */}
+            {!isDesktop && (
+              <Button
+                variant="outline"
+                className="border-[#17412C] text-[#0D261A] font-bold rounded-full w-full max-w-[328px] min-w-[288px] h-[44px] 
+                  px-4 py-2 lg:w-[324px] text-md"
+                onClick={() => setIsDrawerOpen(true)}
+              >
+                View tool categories
+              </Button>
+            )}
           </div>
         </div>
       </section>
 
-      <section className=" py-8 mt-auto bg-[#F9FBFA]">
-        <div className="max-w-6xl mx-auto">
-          <EnAccessToolMap setIsModalOpen={handleModalOpen} />
-        </div>
-      </section>
+      {/* Only show tool map section on desktop */}
+      {isDesktop && (
+        <section id="tool-map-section" className="py-8 mt-auto bg-[#F9FBFA]">
+          <div className="max-w-6xl mx-auto">
+            <EnAccessToolMap
+              setIsModalOpen={handleModalOpen}
+              selectedCategories={selectedCategories}
+              onToolsLoaded={handleToolsLoaded}
+            />
+          </div>
+        </section>
+      )}
 
       <Modal
         title="Tool Finder"
@@ -68,6 +97,14 @@ export default function Landing() {
       >
         <QuestionaireFilter />
       </Modal>
+
+      {/* Tool Categories Drawer for Mobile/Tablet */}
+      <ToolCategoriesDrawer
+        open={isDrawerOpen}
+        onOpenChange={setIsDrawerOpen}
+        onCategorySelect={handleCategorySelect}
+        tools={tools}
+      />
 
       {/* Empowering SMEs Section */}
       <section className="pb-4 px-4 bg-[#F9FBFA]">
