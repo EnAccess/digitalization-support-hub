@@ -1,6 +1,6 @@
 "use client"
 
-import { Users, DollarSign } from "lucide-react"
+import { Users, DollarSign, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -10,6 +10,7 @@ import {
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog"
+import Link from "next/link"
 
 export interface ToolDetailModalProps {
   isOpen: boolean
@@ -49,36 +50,54 @@ export function ToolDetailModal({
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
-        <DialogHeader className="flex flex-row items-start justify-between">
+        <DialogHeader className="flex flex-col items-start space-y-2">
+          <div className="w-full flex items-center text-sm text-gray-500 mb-1">
+            <Link href="#" className="hover:underline">
+              Home
+            </Link>
+            <span className="mx-2">&gt;</span>
+            <Link href="#" className="hover:underline">
+              Suggested Tools
+            </Link>
+            <span className="mx-2">&gt;</span>
+            <span className="text-gray-600">{tool.name}</span>
+
+            <DialogClose className="ml-auto h-6 w-6 rounded-full opacity-70 ring-offset-background transition-opacity hover:opacity-100">
+              <X className="h-4 w-4" />
+              <span className="sr-only">Close</span>
+            </DialogClose>
+          </div>
+
           <div>
             <div className="text-sm text-gray-500">{tool.company}</div>
             <DialogTitle className="text-2xl font-bold">
               {tool.name}
             </DialogTitle>
           </div>
-          <DialogClose className="h-6 w-6 rounded-full opacity-70 ring-offset-background transition-opacity hover:opacity-100">
-            {/* <X className="h-4 w-4" />
-            <span className="sr-only">Close</span> */}
-          </DialogClose>
         </DialogHeader>
 
         <div className="flex flex-wrap gap-2 mt-2">
           {tool.isFree && (
-            <Badge className="bg-[#8BDC7F] hover:bg-[#43A047]">100% free</Badge>
+            <Badge className="bg-[#8BDC7F] hover:bg-[#43A047] text-[#161D1A]">
+              100% free
+            </Badge>
           )}
           {tool.categories?.map((feature, index) => (
-            <Badge key={index} className="bg-[#4CAF50] hover:bg-[#43A047]">
+            <Badge
+              key={index}
+              className="bg-[#4CAF50] hover:bg-[#43A047] text-[#161D1A]"
+            >
               {feature}
             </Badge>
           )) || (
             <>
-              <Badge className="bg-[#4CAF50] hover:bg-[#43A047]">
+              <Badge className="bg-[#4CAF50] hover:bg-[#43A047] text-[#161D1A]">
                 Open Source
               </Badge>
-              <Badge className="bg-[#4CAF50] hover:bg-[#43A047]">
+              <Badge className="bg-[#4CAF50] hover:bg-[#43A047] text-[#161D1A]">
                 Some open source features
               </Badge>
-              <Badge className="bg-[#4CAF50] hover:bg-[#43A047]">
+              <Badge className="bg-[#4CAF50] hover:bg-[#43A047] text-[#161D1A]">
                 Free demo
               </Badge>
             </>

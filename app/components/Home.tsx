@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useMemo, useEffect } from "react"
+import { useState, useMemo, useEffect } from "react"
 import yaml from "js-yaml"
 
 import {
@@ -15,10 +15,13 @@ import { X, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
   ToolDetailModal,
-  ToolDetailModalProps,
+  type ToolDetailModalProps,
 } from "../components/ToolDetailModel"
+
 interface EnAccessToolMapProps {
   setIsModalOpen: (value: boolean) => void
+  selectedCategories?: string[]
+  onToolsLoaded?: (tools: Tool[]) => void
 }
 
 interface CategoryMapItem {
@@ -106,6 +109,7 @@ const categories = [
   { id: "optimize", name: "Assess & Optimize", count: null },
   { id: "endoflife", name: "Product End-of-Life", count: null },
 ]
+
 interface ToolCategoriesProps {
   activeCategory: string | null
   onCategoryChange: (category: string) => void
@@ -116,14 +120,14 @@ function ToolCategories({
   onCategoryChange,
 }: ToolCategoriesProps) {
   return (
-    <div className=" border-b border-gray-200 ">
-      <div className="flex overflow-x-auto pb-2 gap-4  ">
+    <div className="border-b border-gray-200">
+      <div className="flex overflow-x-auto pb-2 gap-4">
         {categories.map((category) => (
           <Button
             key={category.id}
             variant="ghost"
             className={cn(
-              "flex items-center gap-1 whitespace-nowrap px-2 py-1 h-auto rounded-none border-b-2 ",
+              "flex items-center gap-1 whitespace-nowrap px-2 py-1 h-auto rounded-none border-b-2",
               activeCategory === category.id
                 ? "border-[#2D6A4F] text-[#2D6A4F]"
                 : "border-transparent hover:border-gray-300"
@@ -144,14 +148,37 @@ function ToolCategories({
   )
 }
 
-const EnAccessToolMap = ({}: EnAccessToolMapProps) => {
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+const EnAccessToolMap = ({
+  selectedCategories = [],
+  onToolsLoaded,
+}: EnAccessToolMapProps) => {
+  const [localSelectedCategories, setLocalSelectedCategories] = useState<
+    string[]
+  >([])
   const [tools, setTools] = useState<Tool[]>([])
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
   const [isToolModalOpen, setIsToolModalOpen] = useState<boolean>(false)
   const [selectedTool, setSelectedTool] = useState<Tool | null>(
     null as Tool | null
   )
+
+  // Update local categories when prop changes
+  useEffect(() => {
+    if (selectedCategories.length > 0) {
+      setLocalSelectedCategories(selectedCategories)
+
+      // Find the category that matches the selected subcategory
+      const categoryId = Object.keys(categoryMap).find((key) =>
+        categoryMap[key].subcategories.some((sub) =>
+          selectedCategories.includes(sub)
+        )
+      )
+
+      if (categoryId) {
+        setActiveCategory(categoryId)
+      }
+    }
+  }, [selectedCategories])
 
   useEffect(() => {
     // Load all YAML files
@@ -184,13 +211,18 @@ const EnAccessToolMap = ({}: EnAccessToolMapProps) => {
         )
 
         setTools(loadedTools)
+
+        // Share loaded tools with parent component
+        if (onToolsLoaded) {
+          onToolsLoaded(loadedTools)
+        }
       } catch (error) {
         console.error("Error loading YAML files:", error)
       }
     }
 
     loadTools()
-  }, [])
+  }, [onToolsLoaded])
 
   const handleToolClick = (toolName: string) => {
     const tool = tools.find((t) => t.name === toolName)
@@ -205,31 +237,31 @@ const EnAccessToolMap = ({}: EnAccessToolMapProps) => {
   }
 
   const toggleSubcategory = (subcategory: string) => {
-    if (selectedCategories.includes(subcategory)) {
-      setSelectedCategories(
-        selectedCategories.filter((cat) => cat !== subcategory)
+    if (localSelectedCategories.includes(subcategory)) {
+      setLocalSelectedCategories(
+        localSelectedCategories.filter((cat) => cat !== subcategory)
       )
     } else {
-      setSelectedCategories([...selectedCategories, subcategory])
+      setLocalSelectedCategories([...localSelectedCategories, subcategory])
     }
   }
 
   const filteredTools = useMemo(() => {
-    if (selectedCategories.length === 0) {
+    if (localSelectedCategories.length === 0) {
       return []
     }
 
     return tools.filter((tool) => {
       const matchesCategories =
-        selectedCategories.length === 0 ||
+        localSelectedCategories.length === 0 ||
         (tool.categories &&
-          selectedCategories.some((category) =>
+          localSelectedCategories.some((category) =>
             tool.categories!.includes(category)
           ))
 
       return matchesCategories
     })
-  }, [selectedCategories, tools])
+  }, [localSelectedCategories, tools])
 
   return (
     <div className="bg-[#F9FBFA] text-gray-800">
@@ -248,8 +280,8 @@ const EnAccessToolMap = ({}: EnAccessToolMapProps) => {
       {activeCategory && (
         <div className="my-6">
           <div className="text-lg text-[#0D261A] font-bold mb-4">
-            {selectedCategories.length > 0
-              ? `0${selectedCategories.length} categories`
+            {localSelectedCategories.length > 0
+              ? `0${localSelectedCategories.length} categories`
               : "Select categories"}
           </div>
           <div className="flex flex-wrap gap-2">
@@ -257,21 +289,21 @@ const EnAccessToolMap = ({}: EnAccessToolMapProps) => {
               <Button
                 key={subcategory}
                 variant={
-                  selectedCategories.includes(subcategory)
+                  localSelectedCategories.includes(subcategory)
                     ? "default"
                     : "outline"
                 }
                 size="default"
                 className={cn(
                   "rounded-lg flex items-center gap-1",
-                  selectedCategories.includes(subcategory)
+                  localSelectedCategories.includes(subcategory)
                     ? "bg-white text-[#0D261A] border border-[#0D261A] hover:bg-gray-100 hover:text-[#0D261A] text-base"
                     : "border-gray-300 hover:bg-gray-50"
                 )}
                 onClick={() => toggleSubcategory(subcategory)}
               >
                 {subcategory}
-                {selectedCategories.includes(subcategory) && (
+                {localSelectedCategories.includes(subcategory) && (
                   <X size={14} className="ml-1" />
                 )}
               </Button>
@@ -287,7 +319,7 @@ const EnAccessToolMap = ({}: EnAccessToolMapProps) => {
         </div>
       )}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredTools.length > 0 ? (
+        {filteredTools.length > 0 &&
           filteredTools.map((tool) => (
             <Card
               key={tool.name}
@@ -311,15 +343,20 @@ const EnAccessToolMap = ({}: EnAccessToolMapProps) => {
               {/* Tool categories as badges */}
               {tool.categories && tool.categories.length > 0 && (
                 <CardFooter className="flex gap-2 mt-4">
-                  {tool.categories.map((category, index) => {
+                  {tool.isFree && (
+                    <Badge className="bg-[#43BC80] rounded-full text-[#161D1A] font-bold text-sm">
+                      100% free
+                    </Badge>
+                  )}
+                  {tool.categories.slice(0, 2).map((category, index) => {
                     // Rotate through different colors for category badges
-                    const colors = ["bg-[#43BC80] ", "bg-[#8BDC7F] "]
+                    const colors = ["bg-[#8BDC7F] ", "bg-[#43BC80] "]
                     const colorClass = colors[index % colors.length]
 
                     return (
                       <Badge
                         key={category}
-                        className={`${colorClass} rounded-full  text-[#161D1A] font-bold text-sm`}
+                        className={`${colorClass} rounded-full text-[#161D1A] font-bold text-sm`}
                       >
                         {category}
                       </Badge>
@@ -328,20 +365,7 @@ const EnAccessToolMap = ({}: EnAccessToolMapProps) => {
                 </CardFooter>
               )}
             </Card>
-          ))
-        ) : (
-          <div className="col-span-full flex justify-center items-center py-4">
-            {/* <Empty
-              description={
-                <span className="text-gray-600">
-                  {selectedCategories.length === 0 
-                    ? "Select a category to view tools"
-                    : "No tools found for the selected filters"}
-                </span>
-              }
-            /> */}
-          </div>
-        )}
+          ))}
       </div>
       {selectedTool && (
         <ToolDetailModal
