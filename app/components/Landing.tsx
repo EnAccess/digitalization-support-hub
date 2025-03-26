@@ -18,8 +18,8 @@ export default function Landing() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
-  const [tools, setTools] = useState([])
-  const { isMobile, isTablet, isDesktop } = useMobile()
+  const [tools, setTools] = useState<Tool[]>([])
+  const { isDesktop } = useMobile()
 
   const handleModalOpen = (value: boolean) => {
     setIsModalOpen(value)
@@ -30,8 +30,32 @@ export default function Landing() {
   }
 
   // Get tools from EnAccessToolMap component
-  const handleToolsLoaded = (loadedTools: any) => {
+  const handleToolsLoaded = (loadedTools: Tool[]) => {
     setTools(loadedTools)
+  }
+  interface Tool {
+    id?: number
+    name: string
+    summary: string
+    logo: string
+    link?: string
+    categories?: string[]
+    company: string
+    isFree?: boolean
+    features?: string[]
+    integrations?: string[]
+    pricing?: {
+      model: string
+      description: string
+    }
+    userTypes?: {
+      label: string
+      description: string
+    }[]
+    documentation?: {
+      title: string
+      description: string
+    }[]
   }
 
   return (

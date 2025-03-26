@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { X, ChevronRight, ArrowLeft } from "lucide-react"
+import { ChevronRight, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
@@ -182,10 +182,6 @@ export function ToolCategoriesDrawer({
       onCategorySelect(selectedSubcategories)
       setShowResults(true)
     }
-  }
-
-  const handleBackToCategories = () => {
-    setShowResults(false)
   }
 
   const handleBackToSubcategories = () => {

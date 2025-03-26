@@ -21,7 +21,7 @@ import {
 interface EnAccessToolMapProps {
   setIsModalOpen: (value: boolean) => void
   selectedCategories?: string[]
-  onToolsLoaded?: (tools: any[]) => void
+  onToolsLoaded?: (tools: Tool[]) => void
 }
 
 interface CategoryMapItem {
@@ -149,7 +149,6 @@ function ToolCategories({
 }
 
 const EnAccessToolMap = ({
-  setIsModalOpen,
   selectedCategories = [],
   onToolsLoaded,
 }: EnAccessToolMapProps) => {
