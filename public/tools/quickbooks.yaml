@@ -4,3 +4,6 @@ logo: /path/to/quickbooks-logo.png
 link: https://quickbooks.intuit.com
 categories:
   - Bookkeeping & Accounting
+
+highlights:
+  - Open Source

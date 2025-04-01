@@ -11,6 +11,10 @@ const schema = {
       type: "array",
       items: { type: "string" },
     },
+    highlights: {
+      type: "array",
+      items: { type: "string" },
+    },
     metadata: {
       type: "object",
       properties: {

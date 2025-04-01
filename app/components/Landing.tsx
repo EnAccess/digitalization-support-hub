@@ -14,6 +14,31 @@ import QuestionaireFilter from "../components/Questionairefilter"
 import { ToolCategoriesDrawer } from "../components/categories-drawer"
 import { useMobile } from "../hooks/use-mobile"
 
+interface Tool {
+  id?: number
+  name: string
+  summary: string
+  logo: string
+  link?: string
+  categories?: string[]
+  company: string
+  isFree?: boolean
+  features?: string[]
+  integrations?: string[]
+  pricing?: {
+    model: string
+    description: string
+  }
+  userTypes?: {
+    label: string
+    description: string
+  }[]
+  documentation?: {
+    title: string
+    description: string
+  }[]
+}
+
 export default function Landing() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
@@ -26,36 +51,13 @@ export default function Landing() {
   }
 
   const handleCategorySelect = (categories: string[]) => {
+    // Update the selected categories state
     setSelectedCategories(categories)
   }
 
   // Get tools from EnAccessToolMap component
   const handleToolsLoaded = (loadedTools: Tool[]) => {
     setTools(loadedTools)
-  }
-  interface Tool {
-    id?: number
-    name: string
-    summary: string
-    logo: string
-    link?: string
-    categories?: string[]
-    company: string
-    isFree?: boolean
-    features?: string[]
-    integrations?: string[]
-    pricing?: {
-      model: string
-      description: string
-    }
-    userTypes?: {
-      label: string
-      description: string
-    }[]
-    documentation?: {
-      title: string
-      description: string
-    }[]
   }
 
   return (
@@ -128,6 +130,7 @@ export default function Landing() {
         onOpenChange={setIsDrawerOpen}
         onCategorySelect={handleCategorySelect}
         tools={tools}
+        selectedCategories={selectedCategories} // Pass the selected categories to the drawer
       />
 
       {/* Empowering SMEs Section */}

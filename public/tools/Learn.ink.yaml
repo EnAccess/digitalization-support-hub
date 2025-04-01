@@ -1,0 +1,11 @@
+name: Learn.ink
+summary: Our digital training platform allows organistions to rapidly create and share fun, bite-size training to their remote field forces in Africa. Enabling them to keep their workforce informed as well as pull key insights from their remote teams.
+company: Learn.ink
+logo: /path/to/learn.ink-logo.png
+link: https://learn.ink/
+categories:
+  - Customer Vetting
+  - Personal Training
+highlights:
+  - Fully Proprietary Open Source
+  - Full offline functionality

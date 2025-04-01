@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { ChevronRight, ArrowLeft } from "lucide-react"
+import { X, ChevronRight, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/card"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
-import { ToolDetailModal, ToolDetailModalProps } from "./ToolDetailModel"
+import { ToolDetailModal, type ToolDetailModalProps } from "./ToolDetailModel"
 
 interface Tool {
   id?: number
@@ -28,6 +28,7 @@ interface Tool {
   logo: string
   link?: string
   categories?: string[]
+  highlights?: string[]
   company: string
   isFree?: boolean
   features?: string[]
@@ -112,6 +113,7 @@ interface ToolCategoriesDrawerProps {
   onOpenChange: (open: boolean) => void
   onCategorySelect: (categories: string[]) => void
   tools: Tool[]
+  selectedCategories: string[] // Add this prop to receive selected categories from parent
 }
 
 export function ToolCategoriesDrawer({
@@ -119,8 +121,11 @@ export function ToolCategoriesDrawer({
   onOpenChange,
   onCategorySelect,
   tools,
+  selectedCategories = [], // Default to empty array
 }: ToolCategoriesDrawerProps) {
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  // Use the selectedCategories prop as initial state
+  const [localSelectedCategories, setLocalSelectedCategories] =
+    useState<string[]>(selectedCategories)
   const [showResults, setShowResults] = useState(false)
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
   const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>(
@@ -132,6 +137,27 @@ export function ToolCategoriesDrawer({
   const [categorySelectionCounts, setCategorySelectionCounts] = useState<
     Record<string, number>
   >({})
+
+  // Update local state when prop changes
+  useEffect(() => {
+    setLocalSelectedCategories(selectedCategories)
+
+    // If we have selected categories, show results view
+    if (selectedCategories.length > 0) {
+      setShowResults(true)
+
+      // Find the category that matches the selected subcategory
+      const categoryId = Object.keys(categoryMap).find((key) =>
+        categoryMap[key].subcategories.some((sub) =>
+          selectedCategories.includes(sub)
+        )
+      )
+
+      if (categoryId) {
+        setActiveCategory(categoryId)
+      }
+    }
+  }, [selectedCategories])
 
   useEffect(() => {
     const checkDevice = () => {
@@ -150,7 +176,7 @@ export function ToolCategoriesDrawer({
 
     Object.keys(categoryMap).forEach((categoryId) => {
       const subcategories = categoryMap[categoryId].subcategories
-      const count = selectedCategories.filter((subcat) =>
+      const count = localSelectedCategories.filter((subcat) =>
         subcategories.includes(subcat)
       ).length
 
@@ -160,7 +186,7 @@ export function ToolCategoriesDrawer({
     })
 
     setCategorySelectionCounts(counts)
-  }, [selectedCategories])
+  }, [localSelectedCategories])
 
   const handleCategorySelect = (categoryId: string) => {
     setActiveCategory(categoryId)
@@ -178,7 +204,9 @@ export function ToolCategoriesDrawer({
 
   const handleApplyFilter = () => {
     if (selectedSubcategories.length > 0) {
-      setSelectedCategories(selectedSubcategories)
+      // Update local state
+      setLocalSelectedCategories(selectedSubcategories)
+      // Notify parent component
       onCategorySelect(selectedSubcategories)
       setShowResults(true)
     }
@@ -208,9 +236,9 @@ export function ToolCategoriesDrawer({
   // Filter tools based on selected categories
   const filteredTools = tools.filter((tool) => {
     return (
-      selectedCategories.length === 0 ||
+      localSelectedCategories.length === 0 ||
       (tool.categories &&
-        selectedCategories.some((category) =>
+        localSelectedCategories.some((category) =>
           tool.categories!.includes(category)
         ))
     )
@@ -273,7 +301,7 @@ export function ToolCategoriesDrawer({
 
             <div
               className={`grid ${
-                isMobile ? "grid-cols-1" : "sm:grid-cols-1"
+                isMobile ? "grid-cols-1" : "sm:grid-cols-2"
               } gap-4 px-4 pb-4`}
             >
               {filteredTools.length > 0 ? (
@@ -298,26 +326,41 @@ export function ToolCategoriesDrawer({
                     </CardContent>
 
                     {/* Tool categories as badges */}
-                    {tool.categories && tool.categories.length > 0 && (
-                      <CardFooter className="flex gap-2 mt-4 px-0 pt-0">
-                        {tool.isFree && (
-                          <Badge className="bg-[#43BC80] text-[#161D1A] font-bold text-sm rounded-full">
-                            100% free
-                          </Badge>
-                        )}
-                        {tool.categories.slice(0, 2).map((category, index) => {
-                          const colors = ["bg-[#8BDC7F]", "bg-[#43BC80]"]
-                          const colorClass = colors[index % colors.length]
+                    {tool.highlights && tool.highlights.length > 0 && (
+                      <CardFooter className="mt-4">
+                        <div className="flex flex-wrap gap-2 w-full">
+                          {tool.highlights.map((category, index) => {
+                            // Define colors explicitly for each badge
+                            const colors = [
+                              "bg-[#43BC80]",
+                              "bg-[#8BDC7F]",
+                              "bg-[#5AC9C5]",
+                              "bg-[#67C6AB]",
+                            ]
 
-                          return (
-                            <Badge
-                              key={category}
-                              className={`${colorClass} rounded-full text-[#161D1A] font-bold text-sm`}
-                            >
-                              {category}
-                            </Badge>
-                          )
-                        })}
+                            // Make sure the index is within the range of the colors array
+                            const colorIndex = index % colors.length
+                            const colorClass = colors[colorIndex]
+
+                            return (
+                              <Badge
+                                key={category}
+                                className={`${colorClass} rounded-full text-[#161D1A] font-bold text-sm `}
+                                style={{
+                                  minWidth: "auto", // Prevents forced stretching
+                                  display: "inline-flex", // Ensures it wraps around text content
+                                  justifyContent: "center", // Centers text inside badge
+                                  alignItems: "center",
+                                  backgroundColor: colorClass
+                                    .replace("bg-[", "")
+                                    .replace("]", ""),
+                                }}
+                              >
+                                {category}
+                              </Badge>
+                            )
+                          })}
+                        </div>
                       </CardFooter>
                     )}
                   </Card>
@@ -424,7 +467,10 @@ export function ToolCategoriesDrawer({
             <h2 className="text-xl font-semibold text-[#0D261A]">
               Tool categories
             </h2>
-            <SheetClose className="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"></SheetClose>
+            <SheetClose className="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
+              <X className="h-5 w-5" />
+              <span className="sr-only">Close</span>
+            </SheetClose>
           </div>
         </SheetHeader>
 

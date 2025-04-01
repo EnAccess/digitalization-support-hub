@@ -3,5 +3,10 @@ summary: Unleash allows integration of different business tools to provide marke
 logo: /path/to/unleashed-logo.png
 link: https://unleashedsoftware.com
 categories:
-  - Product Procurement
+  - Product Logistics & Procurement
   - Impact Measurements & Performance
+  - Stock Management
+
+highlights:
+  - offline Functionality
+  - Fully Proprietary Open Source
