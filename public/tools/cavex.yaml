@@ -1,7 +1,15 @@
 name: cavex
-summary: CarbonClear offers digital Monitoring, Reporting, and Verification (MRV) solutions aimed at supporting carbon finance in underfunded sectors, particularly in distributed renewable energy. Their platform helps track and verify the impact of renewable energy projects, facilitating access to carbon finance and aligning with sustainable development goals, specifically SDG 7. The solutions aim to accelerate the deployment of renewable energy by ensuring transparency and efficiency in the carbon market.
+summary: Cavex is a platform that facilitates climate finance by providing tools for the management and verification of carbon credits. The platform enables organizations to engage in carbon offsetting, helping them track, trade, and verify carbon credits efficiently. By using blockchain technology, Cavex aims to ensure transparency and accountability in the climate finance market, supporting the transition to a low-carbon economy.
 logo: /path/to/cavex-logo.png
-link: https://cavex.com
+link: https://cavex.io
+categories:
+  - Fundraising
+  - Impact Measurements & Performance
+
+highlights:
+  - Open Source
+  - Fully Proprietary Open Source
+  - Free demo
 metadata:
   numberOfClients:
     - <100

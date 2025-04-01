@@ -14,6 +14,31 @@ import QuestionaireFilter from "../components/Questionairefilter"
 import { ToolCategoriesDrawer } from "../components/categories-drawer"
 import { useMobile } from "../hooks/use-mobile"
 
+interface Tool {
+  id?: number
+  name: string
+  summary: string
+  logo: string
+  link?: string
+  categories?: string[]
+  company: string
+  isFree?: boolean
+  features?: string[]
+  integrations?: string[]
+  pricing?: {
+    model: string
+    description: string
+  }
+  userTypes?: {
+    label: string
+    description: string
+  }[]
+  documentation?: {
+    title: string
+    description: string
+  }[]
+}
+
 export default function Landing() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
@@ -26,6 +51,7 @@ export default function Landing() {
   }
 
   const handleCategorySelect = (categories: string[]) => {
+    // Update the selected categories state
     setSelectedCategories(categories)
   }
 
@@ -33,47 +59,19 @@ export default function Landing() {
   const handleToolsLoaded = (loadedTools: Tool[]) => {
     setTools(loadedTools)
   }
-  interface Tool {
-    id?: number
-    name: string
-    summary: string
-    logo: string
-    link?: string
-    categories?: string[]
-    company: string
-    isFree?: boolean
-    features?: string[]
-    integrations?: string[]
-    pricing?: {
-      model: string
-      description: string
-    }
-    userTypes?: {
-      label: string
-      description: string
-    }[]
-    documentation?: {
-      title: string
-      description: string
-    }[]
-  }
 
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
       <section className="bg-[#E2F6DF] p-8 md:p-16 ">
         <div className="max-w-6xl mx-auto">
-          <div className="uppercase text-[#0D261A] text-sm lg:text-md font-bold mb-4">
-            DIGITALIZATION SUPPORT HUB
-          </div>
+          <div className="uppercase text-[#0D261A] text-sm lg:text-md font-bold mb-4">DIGITALIZATION SUPPORT HUB</div>
           <h1 className="text-3xl md:text-5xl font-bold text-[#161D1A] mb-4">
             Digital Solutions for Distributed
             <br />
             Renewable Energy Businesses
           </h1>
-          <p className="text-[#1E1F1E] text-md lg:text-lg font-normal mb-8">
-            Explore the tools that can support you.
-          </p>
+          <p className="text-[#1E1F1E] text-md lg:text-lg font-normal mb-8">Explore the tools that can support you.</p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Button
               className="bg-[#17412C] font-bold text-white rounded-full 
@@ -128,6 +126,7 @@ export default function Landing() {
         onOpenChange={setIsDrawerOpen}
         onCategorySelect={handleCategorySelect}
         tools={tools}
+        selectedCategories={selectedCategories} // Pass the selected categories to the drawer
       />
 
       {/* Empowering SMEs Section */}
@@ -136,8 +135,7 @@ export default function Landing() {
           <h2 className="text-2xl md:text-3xl font-extrabold mb-4">
             <span className="text-[#43BC80]">Empowering</span>{" "}
             <span className="text-[#161D1A]">
-              domestic SMEs in the distributed renewable energy sector through
-              digitalization
+              domestic SMEs in the distributed renewable energy sector through digitalization
             </span>
           </h2>
         </div>
@@ -146,13 +144,10 @@ export default function Landing() {
       {/* Why Digitalization Matters Section */}
       <section className="bg-[#1B4332] text-white py-12 px-4 text-center">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6">
-            Why digitalization matters
-          </h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-6">Why digitalization matters</h2>
           <p className="text-sm md:text-base">
-            Digital tools are key to operational efficiency, scalability, and
-            access to financing for SMEs in the Distributed Renewable Energy
-            (DRE) sector. However, the current situation shows limited adoption.
+            Digital tools are key to operational efficiency, scalability, and access to financing for SMEs in the
+            Distributed Renewable Energy (DRE) sector. However, the current situation shows limited adoption.
           </p>
         </div>
       </section>
@@ -166,10 +161,7 @@ export default function Landing() {
               percentage="60%"
               description="of SMEs in the sector are dissatisfied with their current level of digitalization"
             />
-            <StatisticCard
-              percentage="40%"
-              description="of SMEs are not using any digital tool beyond spreadsheets"
-            />
+            <StatisticCard percentage="40%" description="of SMEs are not using any digital tool beyond spreadsheets" />
           </div>
         </div>
       </section>
@@ -193,23 +185,13 @@ export default function Landing() {
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-8 mb-8">
             <div>
-              <p className="text-base text-[#0D261A] font-bold pb-8 ">
-                Made by
-              </p>
+              <p className="text-base text-[#0D261A] font-bold pb-8 ">Made by</p>
               <div className="h-12 relative">
-                <Image
-                  src="/supporter1.png"
-                  alt="ENACCESS Logo"
-                  width={150}
-                  height={48}
-                  className="object-contain"
-                />
+                <Image src="/supporter1.png" alt="ENACCESS Logo" width={150} height={48} className="object-contain" />
               </div>
             </div>
             <div>
-              <p className="text-base text-[#0D261A] font-bold pb-8">
-                Funded by
-              </p>
+              <p className="text-base text-[#0D261A] font-bold pb-8">Funded by</p>
               <div className="h-12 relative">
                 <Image
                   src="/GoodEnergiesFoundation.png"
@@ -223,9 +205,7 @@ export default function Landing() {
           </div>
 
           <div className="mb-8 pt-8">
-            <p className="text-base text-[#0D261A] font-bold mb-8">
-              Connect with us
-            </p>
+            <p className="text-base text-[#0D261A] font-bold mb-8">Connect with us</p>
             <div className="flex gap-4">
               <Link href="#" className="text-white bg-[#17412C] p-2 rounded-lg">
                 <FaFacebookF size={24} />
@@ -252,3 +232,4 @@ export default function Landing() {
     </div>
   )
 }
+

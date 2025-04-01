@@ -1,0 +1,13 @@
+name: Nithio Risks Analytics Engine
+summary: >
+  The Nithio Risk Analytics Engine is a tool that can be used to drive impact and mitigate investment risks through data-driven insights and AI-enabled models. The engine integrates anonymized customer repayment data directly from borrower CRM systems with localized geospatial socioeconomic and environmental data (down to 1 sq. km) to standardize credit risk assessment and provide precise impact analysis.
+company: Nithio
+logo: /path/to/nithio-logo.png
+link: https://nithio.com/
+categories:
+  - customer finance Management
+  - Impact Measurements & Performance
+  - Portfolio Analysis & Management
+highlights:
+
+  - Free demo

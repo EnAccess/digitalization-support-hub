@@ -1,0 +1,15 @@
+name: Prospect
+summary: Prospect is a platform for collecting, visualising and sharing data on energy access and transition. It is fully open-source.
+company: A2EI
+logo: /path/to/prospect-logo.png
+link: https://prospect.energy/
+categories:
+  - Customer Finance
+  - Fundraising
+  - Impact Measurements & Performance
+  - Portfolio Analysis & Management
+
+highlights:
+  - Open source
+  - offline Functionality
+

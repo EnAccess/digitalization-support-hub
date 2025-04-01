@@ -1,6 +1,26 @@
 name: Odoo
 summary: Odoo is an open-core business management software designed to help companies streamline their operations. As an all-in-one solution, it enables businesses to efficiently manage various aspects of their operations, including sales, accounting, inventory, and field service. With its powerful integrated set of apps, Odoo enables seamless and efficient business processes.
+company: Odoo
 logo: /path/to/odoo-logo.png
 link: https://www.odoo.com/
 categories:
   - Bookkeeping & Accounting
+  - Impact Measurements & Performance
+  - Marketing
+  - Personal Training
+  - Portfolio Analysis & Management
+  - Product Logistics & Procurement
+  - Sales & Contract Management
+  - Service Calls
+  - Stock Management
+  - Upselling
+  - HR Management 
+highlights:
+  - 100% free
+  - Open Source
+  - Partially Open Source
+  - Free demo
+  - Offline Features
+
+
+

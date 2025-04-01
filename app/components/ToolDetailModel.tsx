@@ -3,6 +3,7 @@
 import { Users, DollarSign, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { useMobile } from "../hooks/use-mobile"
 import {
   Dialog,
   DialogContent,
@@ -21,6 +22,7 @@ export interface ToolDetailModalProps {
     name: string
     summary: string
     categories: string[]
+    highlights?: string[]
     isFree?: boolean
     link?: string
     features?: string[]
@@ -51,7 +53,7 @@ export function ToolDetailModal({
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader className="flex flex-col items-start space-y-2">
-          <div className="w-full flex items-center text-sm text-gray-500 mb-1">
+          <div className="w-full flex items-center text-sm text-gray-500 mb-1 sm:block lg:hidden">
             <Link href="#" className="hover:underline">
               Home
             </Link>
@@ -61,12 +63,9 @@ export function ToolDetailModal({
             </Link>
             <span className="mx-2">&gt;</span>
             <span className="text-gray-600">{tool.name}</span>
-
-            <DialogClose className="ml-auto h-6 w-6 rounded-full opacity-70 ring-offset-background transition-opacity hover:opacity-100">
-              <X className="h-4 w-4" />
-              <span className="sr-only">Close</span>
-            </DialogClose>
           </div>
+
+          <DialogClose className="ml-auto h-6 w-6 rounded-full opacity-70 ring-offset-background transition-opacity hover:opacity-100"></DialogClose>
 
           <div>
             <div className="text-sm text-gray-500">{tool.company}</div>
@@ -77,30 +76,40 @@ export function ToolDetailModal({
         </DialogHeader>
 
         <div className="flex flex-wrap gap-2 mt-2">
-          {tool.isFree && (
-            <Badge className="bg-[#8BDC7F] hover:bg-[#43A047] text-[#161D1A]">
-              100% free
-            </Badge>
-          )}
-          {tool.categories?.map((feature, index) => (
-            <Badge
-              key={index}
-              className="bg-[#4CAF50] hover:bg-[#43A047] text-[#161D1A]"
-            >
-              {feature}
-            </Badge>
-          )) || (
-            <>
-              <Badge className="bg-[#4CAF50] hover:bg-[#43A047] text-[#161D1A]">
-                Open Source
-              </Badge>
-              <Badge className="bg-[#4CAF50] hover:bg-[#43A047] text-[#161D1A]">
-                Some open source features
-              </Badge>
-              <Badge className="bg-[#4CAF50] hover:bg-[#43A047] text-[#161D1A]">
-                Free demo
-              </Badge>
-            </>
+          {tool.highlights && tool.highlights.length > 0 && (
+            <div className="flex flex-wrap gap-2 w-full">
+              {tool.highlights.map((category, index) => {
+                // Define colors explicitly for each badge
+                const colors = [
+                  "bg-[#43BC80]",
+                  "bg-[#8BDC7F]",
+                  "bg-[#5AC9C5]",
+                  "bg-[#67C6AB]",
+                ]
+
+                // Make sure the index is within the range of the colors array
+                const colorIndex = index % colors.length
+                const colorClass = colors[colorIndex]
+
+                return (
+                  <Badge
+                    key={category}
+                    className={`${colorClass} rounded-full text-[#161D1A] font-bold text-sm `}
+                    style={{
+                      minWidth: "auto", // Prevents forced stretching
+                      display: "inline-flex", // Ensures it wraps around text content
+                      justifyContent: "center", // Centers text inside badge
+                      alignItems: "center",
+                      backgroundColor: colorClass
+                        .replace("bg-[", "")
+                        .replace("]", ""),
+                    }}
+                  >
+                    {category}
+                  </Badge>
+                )
+              })}
+            </div>
           )}
         </div>
 

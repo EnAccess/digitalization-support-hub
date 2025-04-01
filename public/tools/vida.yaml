@@ -1,0 +1,11 @@
+name: VIDA
+summary: VIDA is a geospatial tool with information of every settlements across the world. This information helps mini-grid developers and solar companies to identify and prioritise sites for deployment. VIDA is used in more than 60 countries by several donors, governments and private sector companies.
+company: VIDA
+logo: /path/to/vida-logo.png
+link: https://vida.place/
+categories:
+  - Market Analysis
+  - Portfolio Analysis & Management
+highlights:
+  - Fully Proprietary Open Source
+  - Free demo
