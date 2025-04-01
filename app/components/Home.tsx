@@ -366,8 +366,7 @@ const EnAccessToolMap = ({
               {/* Tool categories as badges */}
               {tool.highlights && tool.highlights.length > 0 && (
                 <CardFooter className="mt-4">
-                    <div className="flex flex-wrap gap-2 w-full">
-
+                  <div className="flex flex-wrap gap-2 w-full">
                     {tool.highlights.map((category, index) => {
                       // Define colors explicitly for each badge
                       const colors = [
@@ -393,7 +392,7 @@ const EnAccessToolMap = ({
                             backgroundColor: colorClass
                               .replace("bg-[", "")
                               .replace("]", ""),
-                          }} 
+                          }}
                         >
                           {category}
                         </Badge>

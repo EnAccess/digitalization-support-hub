@@ -1,9 +1,8 @@
 "use client"
 
-import { Users, DollarSign, X } from "lucide-react"
+import { Users, DollarSign } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { useMobile } from "../hooks/use-mobile"
 import {
   Dialog,
   DialogContent,
