@@ -7,42 +7,51 @@ const { Title, Paragraph } = Typography
 
 const QUESTIONNAIRE_ORDER = [
   "numberOfClients",
-  "transactionsPerDay",
   "companyStage",
   "companyFocus",
-  "toolsCost",
-  "toolSource",
-  "internalExpertise",
-  "businessArea",
   "functionalArea",
+  "toolsCost",
+  "internalExpertise",
+  "toolSource",
   "interoperability",
-  "offlineFunctionality",
 ]
 
 const filterKeyToQuestion: Record<string, string> = {
-  numberOfClients: "What Size is your company?",
-  companyStage: "At what phase/stage is your company?",
-  companyFocus: "What is the focus area for your company?",
-  toolsCost: "Are you only looking for free-to-use tools?",
-  toolSource: "Are you only interested in open-source tools?",
+  numberOfClients: "On average, how many transactions does your company process per day?",
+  companyStage: "What stage is your company at right now ?",
+  companyFocus: "Which areas does your company focus on? (Select up to 3 options)",
+  functionalArea:"What do you need digital tools to help you with? (Select up to 3 options) ",
+  toolsCost: "Do you only want to explore free-to-use tools?",
   internalExpertise:
-    "Do you have any in-house IT/software R&D expertise and resources?",
-  interoperability: "Are you interested in Inter-operability of the tools?",
-  businessArea: "What is your main business area?",
-  functionalArea: "What is your main functional area?",
-  transactionsPerDay: "How many transactions per day?",
-  offlineFunctionality: "Do you need offline functionality?",
+  "Does your team have in-house IT or software development skills? ",
+  toolSource: "Would you prefer to explore only open source tools?",
+  interoperability: "Interoperabilty: Do you need tools to easily connect and integrate with each other?",
 }
 
-const FILTER_OPTIONS: Record<string, string[]> = {
-  numberOfClients: ["<100", "101-500", "501-1000", ">1000", ">5000"],
-  transactionsPerDay: ["<5", "5-100", "101-500", ">501"],
+// Updated to include options with descriptions
+const FILTER_OPTIONS: Record<string, Array<string | { value: string, description: string }>> = {
+  numberOfClients: ["<5", "5-100", "101-500",">500"],
   companyStage: [
-    "Pre-launch startup",
-    "Early-stage startup",
-    "Growing startup",
-    "Scaling SME",
-    "Established SME",
+    { 
+      value: "Pre-launch Startup", 
+      description: "We are a very early-stage company with an idea or concept but no established customers or revenue yet"
+    },
+    { 
+      value: "Early-Stage Startup", 
+      description: "We are a small company with a product or service launched, a few customers, and some revenue"
+    },
+    { 
+      value: "Growing Startup", 
+      description: "We are a company with a constantly growing customer base and increasing revenue"
+    },
+    { 
+      value: "Scaling SME", 
+      description: "We are a mature company with a stable revenue stream, structured departments, and a growing team"
+    },
+    { 
+      value: "Established SME", 
+      description: "We are a well-established company with several years of operational track record, consistent revenue, clearly structured departments, and stable, well-staffed organization"
+    },
   ],
   companyFocus: ["SHS", "Mini-Grid", "Clean Cooking"],
   toolsCost: [
@@ -103,6 +112,7 @@ const FILTER_OPTIONS: Record<string, string[]> = {
     "No Offline Functionality",
   ],
 }
+
 interface Tool {
   name: string
   summary: string
@@ -194,6 +204,7 @@ const EnAccessToolMap: React.FC = () => {
       setIsQuestionnaireComplete(true)
     }
   }
+  
   const filteredTools = useMemo(() => {
     if (!isQuestionnaireComplete) return []
 
@@ -257,6 +268,44 @@ const EnAccessToolMap: React.FC = () => {
     )
   }
 
+  // Render radio options with descriptions if they exist
+  const renderRadioOptions = () => {
+    const options = FILTER_OPTIONS[currentQuestion];
+    
+    return (
+      <Space direction="vertical" className="w-full">
+        {options.map((option) => {
+          // Check if option is an object with description or just a string
+          if (typeof option === 'string') {
+            return (
+              <Radio
+                key={option}
+                value={option}
+                className="w-full p-2 border rounded hover:bg-gray-100"
+              >
+                {option}
+              </Radio>
+            );
+          } else {
+            // Option with description
+            return (
+              <Radio
+                key={option.value}
+                value={option.value}
+                className="w-full p-2 border rounded hover:bg-gray-100"
+              >
+                <div>
+                  <div>{option.value}</div>
+                  <div className="text-sm text-gray-500 mt-1">{option.description}</div>
+                </div>
+              </Radio>
+            );
+          }
+        })}
+      </Space>
+    );
+  };
+
   return (
     <div className="max-w-2xl mx-auto p-8">
       <Title level={2}>Tool Finder</Title>
@@ -273,17 +322,7 @@ const EnAccessToolMap: React.FC = () => {
         value={answers[currentQuestion]?.[0] || null}
         className="w-full"
       >
-        <Space direction="vertical" className="w-full">
-          {FILTER_OPTIONS[currentQuestion].map((option) => (
-            <Radio
-              key={option}
-              value={option}
-              className="w-full p-2 border rounded hover:bg-gray-100"
-            >
-              {option}
-            </Radio>
-          ))}
-        </Space>
+        {renderRadioOptions()}
       </Radio.Group>
 
       <div className="flex justify-between mt-6">
