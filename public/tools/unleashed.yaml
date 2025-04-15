@@ -1,5 +1,5 @@
 name: Unleashed
-summary: Unleash allows integration of different business tools to provide market insights, better control of product flow, improved operational efficiency, and an efficient procurement strategy. It is a one stop shop, largely customisable through its custom API integrations and add-ons.
+summary: Unleash integrates business tools for market insights, better product flow control, improved efficiency, and streamlined procurement. It’s a customizable, all-in-one platform with custom API integrations and add-ons.
 logo: /path/to/unleashed-logo.png
 link: https://unleashedsoftware.com
 categories:
@@ -8,5 +8,8 @@ categories:
   - Stock Management
 
 highlights:
-  - offline Functionality
-  - Fully Proprietary Open Source
+  - Partially Open Source
+  - offline Features
+  - SHS
+  - Mini Grids
+  - Clean Cooking

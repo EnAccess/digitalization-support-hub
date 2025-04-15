@@ -1,5 +1,5 @@
 name: Universus
-summary: Universal Connectivity provides solutions focused on improving connectivity for businesses, particularly in remote and underserved areas. Their services include internet access, network infrastructure, and communication tools designed to support reliable and efficient connectivity. The platform aims to bridge the digital divide by offering scalable and sustainable solutions for organizations in need of consistent connectivity.
+summary: Universal Connectivity offers solutions to improve connectivity in remote and underserved areas, including internet access, network infrastructure, and communication tools. Their scalable platform bridges the digital divide with reliable, sustainable services.
 logo: /path/to/universalconnectivity-logo.png
 link: https://universalconnectivity.com/
 categories:
@@ -9,5 +9,7 @@ categories:
   - Portfolio Analysis & Management
 
 highlights:
-  - Fully Proprietary Open Source
-  - offline Functionality
+  - offline Features
+  - Mini Grids
+  - SHS
+  - Clean Cooking

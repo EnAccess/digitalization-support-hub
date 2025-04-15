@@ -1,7 +1,12 @@
-name: Odyssey
-summary: A project management tool.
+name: Odyssey Procure - DART
+summary: Access to solar equipment and credit in one seamless transaction. A  tool to support DRE companies in the procurement and financing of their assets. nagement tool.
+company: Odyssey Energy Solutions
 logo: /path/to/odyssey-logo.png
 link: https://odyssey.com
 categories:
-  - Product Procurement
-  - Impact Measurements & Performance
+  - Product Logistics & Procurement
+
+highlights:
+  - Offline Features
+  - Mini Grids
+  - SHS

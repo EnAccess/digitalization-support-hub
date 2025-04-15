@@ -1,8 +1,6 @@
 name: PaygOps
 summary: >-
-  PaygOps is a comprehensive software as a service (SaaS) for micro-lenders to digitalise their processes
-  (in sectors like energy, agriculture or finance for instance). Doing so they can gain in efficiency
-  and scalability toward a greater impact.
+  PaygOps is a comprehensive software as a service (SaaS) for micro-lenders to digitalise their processes (in sectors like energy agriculture or finance for instance). Doing so they can gain in efficiency and scalability toward a greater impact.
 company: PaygOps & Bridgin
 logo: /path/to/paygops-logo.png
 link: https://www.paygops.com/
@@ -26,3 +24,4 @@ highlights:
   - Partially Open Source
   - Offline Features
   - Free demo
+  - SHS

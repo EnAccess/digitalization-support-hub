@@ -1,5 +1,5 @@
 name: Bridgin
-summary: Bridgin is Solaris Offgrid’s receivables purchasing marketplace, a platform that brings receivables financing at scale and sustainably streamline credit toward the last mile. Investors can seamlessly access and purchase pools of receivables from last-mile distributors who, in turn, receive instant liquidity to scale their operations. Bridgin is not a fund or investor, but a technological and legal infrastructure that facilitates funding operations at the benefit of the BoP
+summary: Bridgin is Solaris Offgrid’s marketplace for receivables financing, enabling investors to buy receivables from last-mile distributors, who gain instant liquidity. It’s a tech and legal platform—not a fund—that facilitates BoP-focused funding.
 company: Solaris Offgrid
 logo: /path/to/bridgin-logo.png
 link: https://www.bridgin.io/
@@ -8,7 +8,5 @@ categories:
   - Portfolio Analysis & Management
 
 highlights:
-  - Open Source
-  - Fully Proprietary Open Source
+  - SHS
   - Free demo
-  - online features

@@ -1,5 +1,5 @@
 name: cavex
-summary: Cavex is a platform that facilitates climate finance by providing tools for the management and verification of carbon credits. The platform enables organizations to engage in carbon offsetting, helping them track, trade, and verify carbon credits efficiently. By using blockchain technology, Cavex aims to ensure transparency and accountability in the climate finance market, supporting the transition to a low-carbon economy.
+summary: Cavex is a platform for managing and verifying carbon credits, enabling carbon offsetting with efficient tracking, trading, and verification. Using blockchain, it ensures transparency and accountability to support the transition to a low-carbon economy.
 logo: /path/to/cavex-logo.png
 link: https://cavex.io
 categories:
@@ -7,9 +7,10 @@ categories:
   - Impact Measurements & Performance
 
 highlights:
-  - Open Source
-  - Fully Proprietary Open Source
   - Free demo
+  - SHS
+  - Mini Grids
+  - Clean Cooking
 metadata:
   numberOfClients:
     - <100
