@@ -1,9 +1,11 @@
 name: Quickbooks
-summary: QuickBooks Online gives businesses the ability to track income and expenses, manage accounts receivable, and stay on top of accounts payable (money owed to suppliers). It also gives you the ability to run accounts payable aging reports so you keep up on bill due dates. You can also connect with your accountant, making it easier at tax time.Manage bills; track receipts across different accounts, inventory, income and bank transactions, send and get invoices paid; project cost and income analysis. Can integrate payroll and staff time tracking.
+summary: QuickBooks Online helps businesses track income, expenses, and accounts payable, manage bills, invoices, and project costs. It integrates with payroll, staff time tracking, and connects with accountants for easier tax filing and financial management.
 logo: /path/to/quickbooks-logo.png
 link: https://quickbooks.intuit.com
 categories:
   - Bookkeeping & Accounting
 
 highlights:
-  - Open Source
+  - Mini Grids
+  - SHS
+  - Clean Cooking

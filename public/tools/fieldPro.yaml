@@ -1,5 +1,5 @@
 name: FieldPro
-summary: FieldPro provides innovative mobile and web solutions designed to streamline field operations. With customizable CRM, workflows, real-time analytics, ai-based image recognition technology and seamless integration, FieldPro helps businesses and brands optimize sales, service management and agent networks, ensuring better visibility, efficiency, and decision-making. Its user-friendly platform empowers field teams to work smarter, while managers gain deeper insights to drive performance and growth.
+summary: FieldPro offers mobile and web tools to streamline field ops with customizable CRM, workflows, AI image recognition, and real-time analytics. It boosts visibility, efficiency, and decision-making for smarter teams and data-driven growth.
 company: Optimetriks
 logo: /path/to/fieldpro-logo.png
 link: https://www.fieldproapp.com/
@@ -18,5 +18,7 @@ categories:
   - Tech Response
 
 highlights:
-  - Payment Collections
+  - Mini Grids
   - full offline Functionality
+  - SHS
+  - Clean Cooking

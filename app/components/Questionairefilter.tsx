@@ -17,56 +17,80 @@ const QUESTIONNAIRE_ORDER = [
 ]
 
 const filterKeyToQuestion: Record<string, string> = {
-  numberOfClients: "On average, how many transactions does your company process per day?",
+  numberOfClients:
+    "On average, how many transactions does your company process per day?",
   companyStage: "What stage is your company at right now ?",
-  companyFocus: "Which areas does your company focus on? (Select up to 3 options)",
-  functionalArea:"What do you need digital tools to help you with? (Select up to 3 options) ",
+  companyFocus:
+    "Which areas does your company focus on? (Select up to 3 options)",
+  functionalArea:
+    "What do you need digital tools to help you with? (Select up to 3 options) ",
   toolsCost: "Do you only want to explore free-to-use tools?",
   internalExpertise:
-  "Does your team have in-house IT or software development skills? ",
+    "Does your team have in-house IT or software development skills? ",
   toolSource: "Would you prefer to explore only open source tools?",
-  interoperability: "Interoperabilty: Do you need tools to easily connect and integrate with each other?",
+  interoperability:
+    "Interoperabilty: Do you need tools to easily connect and integrate with each other?",
 }
 
-// Updated to include options with descriptions
-const FILTER_OPTIONS: Record<string, Array<string | { value: string, description: string }>> = {
-  numberOfClients: ["<5", "5-100", "101-500",">500"],
+// Options for filtering that will be displayed in the UI
+const FILTER_OPTIONS: Record<
+  string,
+  Array<string | { value: string; description: string }>
+> = {
+  numberOfClients: ["<5", "5-100", "101-500", ">500"],
   companyStage: [
-    { 
-      value: "Pre-launch Startup", 
-      description: "We are a very early-stage company with an idea or concept but no established customers or revenue yet"
+    {
+      value: "Pre-launch Startup",
+      description:
+        "We are a very early-stage company with an idea or concept but no established customers or revenue yet. We have very little or no staff except us, the funders. We currently focus on product development, initial market research, and company setup.",
     },
-    { 
-      value: "Early-Stage Startup", 
-      description: "We are a small company with a product or service launched, a few customers, and some revenue"
+    {
+      value: "Early-Stage Startup",
+      description:
+        "We are a small company with a product or service launched, a few customers, and some revenue. We have a small team, and the focus is on customer acquisition and refining the product and/or services.",
     },
-    { 
-      value: "Growing Startup", 
-      description: "We are a company with a constantly growing customer base and increasing revenue"
+    {
+      value: "Growing Startup",
+      description:
+        "We are a company with a constantly growing customer base and increasing revenue, and we are starting to establish and grow our team. Our current focus is on scaling our operations, improving product-market fit, and expanding into new markets.",
     },
-    { 
-      value: "Scaling SME", 
-      description: "We are a mature company with a stable revenue stream, structured departments, and a growing team"
+    {
+      value: "Scaling SME",
+      description:
+        "We are a mature company with a stable revenue stream, structured departments, and a growing team. We currently focus on scaling operations, optimizing processes, and expanding our market presence.",
     },
-    { 
-      value: "Established SME", 
-      description: "We are a well-established company with several years of operational track record, consistent revenue, clearly structured departments, and stable, well-staffed organization"
+    {
+      value: "Established SME",
+      description:
+        "We are a well-established company with several years of operational track record, consistent revenue, clearly structured departments, and a stable, well-staffed organization. Our current focus is on maintaining growth, optimizing efficiency, and potentially exploring new business opportunities.",
     },
   ],
-  companyFocus: ["SHS", "Mini-Grid", "Clean Cooking"],
+  companyFocus: [
+    "Solar Home Systems(SHS)",
+    "Mini-Grids(MGs)",
+    "Clean Cooking",
+    "Other",
+  ],
   toolsCost: [
-    "Free-to-use or freemium versions only",
-    "All tools (free and paid)",
+    "Yes, I am only interested in free-to-use tools or tools with freemium versions.",
+    "No, all tools are good. Free and non-free tools are fine.",
   ],
   toolSource: [
-    "Open-source only",
-    "Strictly closed source",
-    "Both (open and closed source)",
+    {
+      value: "Yes please, we love open source",
+      description:
+        "Choose this if you prefer tools that are free and customisable.",
+    },
+    {
+      value: "It may be interesting, but it's not a must",
+      description:
+        "Choose this if you require proprietary solutions with dedicated support and features",
+    },
   ],
   internalExpertise: [
-    "No expertise at all",
-    "Some knowledge and capabilities",
-    "Full IT and software R&D team in place",
+    "No, not at all",
+    "Yes, we have some knowledge and capabilities",
+    "We have a full IT and Software R&D team (or good access to reliable third-party providers)",
   ],
   businessArea: [
     "Preparation and Setup",
@@ -76,41 +100,56 @@ const FILTER_OPTIONS: Record<string, Array<string | { value: string, description
     "End of Life",
   ],
   functionalArea: [
-    "Market Analysis",
-    "Company Set-up",
-    "Book-keeping and Accounting",
-    "Product Procurement",
-    "Fundraising",
-    "Stock Management",
-    "Personnel Training",
-    "Marketing",
-    "Customer Vetting",
-    "Product Logistics and Procurement",
-    "Sales and Contract Management",
-    "Payment Collections",
-    "Service Calls",
-    "Technical Response",
-    "Upselling",
-    "CRM",
-    "Portfolio Analysis and Management",
-    "Impact Measurements and Performance",
-    "Remote Team Management",
-    "API Integration and Connection",
-    "Data Download",
-    "Repossession and Reverse Logistics",
-    "E-waste Management",
+    {
+      value: "Preparation and Setup",
+      description: "(Research, setup, accounting)",
+    },
+    {
+      value: "Distribution/Sales",
+      description: "(Management, marketing, logistics, training)",
+    },
+    {
+      value: "After Sales/Operations",
+      description: "(Collection, support, finance, CRM)",
+    },
+    {
+      value: "Assess & optimize (portfolio & impact analysis)",
+      description: "(Portfolio & impact analysis)",
+    },
+    {
+      value: "Product end-of-life ",
+      description: "(E-Waste, repossession & reverse logistics)",
+    },
   ],
   interoperability: [
-    "External Custom API Integration",
-    "Integration with Pay-Go Apps",
-    "Workflow Integration with Commercial Software",
-    "No Interoperability",
+    "Yes, we need external custom API Integration & documentation",
+    "We need workflow integration with commercial software",
+    "We need data download in editable format (csv, excel, etc.)",
+    "No, interoperability and integration with other tools is not important for us",
   ],
-  offlineFunctionality: [
-    "Full Offline Functionality",
-    "Offline Functionality to a Limited Extent",
-    "No Offline Functionality",
-  ],
+}
+
+const VALUE_MAPPING: Record<string, Record<string, string>> = {
+  toolSource: {
+    "Yes please, we love open source": "Open-source only",
+    "It may be interesting, but it's not a must":
+      "Both (open and closed source)",
+  },
+  companyStage: {
+    "Pre-launch Startup": "Pre-launch Startup",
+    "Early-Stage Startup": "Early-Stage Startup",
+    "Growing Startup": "Growing Startup",
+    "Scaling SME": "Scaling SME",
+    "Established SME": "Established SME",
+  },
+  functionalArea: {
+    "Preparation and Setup": "Preparation and Setup",
+    "Distribution/Sales": "Distribution/Sales",
+    "After Sales/Operations": "After Sales/Operations",
+    "Assess & optimize (portfolio & impact analysis)":
+      "Assess & optimize (portfolio & impact analysis)",
+    "Product end-of-life ": "Product end-of-life",
+  },
 }
 
 interface Tool {
@@ -204,7 +243,18 @@ const EnAccessToolMap: React.FC = () => {
       setIsQuestionnaireComplete(true)
     }
   }
-  
+
+  // Map UI values to metadata values for filtering
+  const mapUIValueToMetadataValue = (
+    filterKey: string,
+    uiValue: string
+  ): string => {
+    if (VALUE_MAPPING[filterKey] && VALUE_MAPPING[filterKey][uiValue]) {
+      return VALUE_MAPPING[filterKey][uiValue]
+    }
+    return uiValue
+  }
+
   const filteredTools = useMemo(() => {
     if (!isQuestionnaireComplete) return []
 
@@ -213,16 +263,22 @@ const EnAccessToolMap: React.FC = () => {
         if (selectedValues.length === 0) return true
 
         const metadataValue = tool.metadata[filterKey]
-
         if (metadataValue === undefined) return false
 
+        // Map the UI values to actual metadata values for comparison
+        const mappedSelectedValues = selectedValues.map((val) =>
+          mapUIValueToMetadataValue(filterKey, val)
+        )
+
         if (Array.isArray(metadataValue)) {
-          return selectedValues.some((value) => metadataValue.includes(value))
+          return mappedSelectedValues.some((value) =>
+            metadataValue.includes(value)
+          )
         }
 
         return (
           typeof metadataValue === "string" &&
-          selectedValues.includes(metadataValue)
+          mappedSelectedValues.includes(metadataValue)
         )
       })
     })
@@ -270,13 +326,13 @@ const EnAccessToolMap: React.FC = () => {
 
   // Render radio options with descriptions if they exist
   const renderRadioOptions = () => {
-    const options = FILTER_OPTIONS[currentQuestion];
-    
+    const options = FILTER_OPTIONS[currentQuestion]
+
     return (
       <Space direction="vertical" className="w-full">
         {options.map((option) => {
           // Check if option is an object with description or just a string
-          if (typeof option === 'string') {
+          if (typeof option === "string") {
             return (
               <Radio
                 key={option}
@@ -285,7 +341,7 @@ const EnAccessToolMap: React.FC = () => {
               >
                 {option}
               </Radio>
-            );
+            )
           } else {
             // Option with description
             return (
@@ -296,15 +352,17 @@ const EnAccessToolMap: React.FC = () => {
               >
                 <div>
                   <div>{option.value}</div>
-                  <div className="text-sm text-gray-500 mt-1">{option.description}</div>
+                  <div className="text-sm text-gray-500 mt-1">
+                    {option.description}
+                  </div>
                 </div>
               </Radio>
-            );
+            )
           }
         })}
       </Space>
-    );
-  };
+    )
+  }
 
   return (
     <div className="max-w-2xl mx-auto p-8">
