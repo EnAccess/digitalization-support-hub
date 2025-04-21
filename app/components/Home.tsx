@@ -18,7 +18,7 @@ import {
   type ToolDetailModalProps,
 } from "../components/ToolDetailModel"
 
-interface EnAccessToolMapProps {
+interface HomeProps {
   setIsModalOpen: (value: boolean) => void
   selectedCategories?: string[]
   onToolsLoaded?: (tools: Tool[]) => void
@@ -159,10 +159,7 @@ function ToolCategories({
   )
 }
 
-const EnAccessToolMap = ({
-  selectedCategories = [],
-  onToolsLoaded,
-}: EnAccessToolMapProps) => {
+const Home = ({ selectedCategories = [], onToolsLoaded }: HomeProps) => {
   const [localSelectedCategories, setLocalSelectedCategories] = useState<
     string[]
   >([])
@@ -207,7 +204,6 @@ const EnAccessToolMap = ({
           "/tools/d-rec.yaml",
           "/tools/ixo.yaml",
           "/tools/p-rec.yaml",
-          "/tools/sendy.yaml",
           "/tools/challenges.yaml",
           "/tools/carbon-clear.yaml",
           "/tools/cavex.yaml",
@@ -417,4 +413,4 @@ const EnAccessToolMap = ({
   )
 }
 
-export default EnAccessToolMap
+export default Home

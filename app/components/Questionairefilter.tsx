@@ -1,63 +1,93 @@
 "use client"
-import React, { useState, useMemo, useEffect } from "react"
-import { Card, Typography, Button, Radio, Space } from "antd"
+import { useState, useMemo, useEffect } from "react"
 import yaml from "js-yaml"
-
-const { Title, Paragraph } = Typography
+import { ChevronRight, ChevronLeft } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Label } from "@/components/ui/label"
+import { cn } from "@/lib/utils"
 
 const QUESTIONNAIRE_ORDER = [
   "numberOfClients",
-  "transactionsPerDay",
   "companyStage",
   "companyFocus",
   "toolsCost",
-  "toolSource",
   "internalExpertise",
-  "businessArea",
-  "functionalArea",
-  "interoperability",
-  "offlineFunctionality",
+  "toolSource",
 ]
 
 const filterKeyToQuestion: Record<string, string> = {
-  numberOfClients: "What Size is your company?",
-  companyStage: "At what phase/stage is your company?",
-  companyFocus: "What is the focus area for your company?",
-  toolsCost: "Are you only looking for free-to-use tools?",
-  toolSource: "Are you only interested in open-source tools?",
+  numberOfClients:
+    "On average, how many transactions does your company process per day?",
+  companyStage: "What stage is your company at right now?",
+  companyFocus:
+    "Which areas does your company focus on? (Select up to 3 options)",
+  toolsCost: "Do you only want to explore free-to-use tools?",
   internalExpertise:
-    "Do you have any in-house IT/software R&D expertise and resources?",
-  interoperability: "Are you interested in Inter-operability of the tools?",
-  businessArea: "What is your main business area?",
-  functionalArea: "What is your main functional area?",
-  transactionsPerDay: "How many transactions per day?",
-  offlineFunctionality: "Do you need offline functionality?",
+    "Does your team have in-house IT or software development skills?",
+  toolSource: "Would you prefer to explore only open source tools?",
 }
 
-const FILTER_OPTIONS: Record<string, string[]> = {
-  numberOfClients: ["<100", "101-500", "501-1000", ">1000", ">5000"],
-  transactionsPerDay: ["<5", "5-100", "101-500", ">501"],
+// Options for filtering that will be displayed in the UI
+const FILTER_OPTIONS: Record<
+  string,
+  Array<string | { value: string; description: string }>
+> = {
+  numberOfClients: ["<5", "5-100", "101-500", ">500"],
   companyStage: [
-    "Pre-launch startup",
-    "Early-stage startup",
-    "Growing startup",
-    "Scaling SME",
-    "Established SME",
+    {
+      value: "Pre-launch Startup",
+      description:
+        "We are a very early-stage company with an idea or concept but no established customers or revenue yet. We have very little or no staff except us, the funders. We currently focus on product development, initial market research, and company setup.",
+    },
+    {
+      value: "Early-Stage Startup",
+      description:
+        "We are a small company with a product or service launched, a few customers, and some revenue. We have a small team, and the focus is on customer acquisition and refining the product and/or services.",
+    },
+    {
+      value: "Growing Startup",
+      description:
+        "We are a company with a constantly growing customer base and increasing revenue, and we are starting to establish and grow our team. Our current focus is on scaling our operations, improving product-market fit, and expanding into new markets.",
+    },
+    {
+      value: "Scaling SME",
+      description:
+        "We are a mature company with a stable revenue stream, structured departments, and a growing team. We currently focus on scaling operations, optimizing processes, and expanding our market presence.",
+    },
+    {
+      value: "Established SME",
+      description:
+        "We are a well-established company with several years of operational track record, consistent revenue, clearly structured departments, and a stable, well-staffed organization. Our current focus is on maintaining growth, optimizing efficiency, and potentially exploring new business opportunities.",
+    },
   ],
-  companyFocus: ["SHS", "Mini-Grid", "Clean Cooking"],
+  companyFocus: [
+    "Solar Home Systems(SHS)",
+    "Mini-Grids(MGs)",
+    "Clean Cooking",
+    "Other",
+  ],
   toolsCost: [
-    "Free-to-use or freemium versions only",
-    "All tools (free and paid)",
+    "Yes, I am only interested in free-to-use tools or tools with freemium versions.",
+    "No, all tools are good. Free and non-free tools are fine.",
   ],
   toolSource: [
-    "Open-source only",
-    "Strictly closed source",
-    "Both (open and closed source)",
+    {
+      value: "Yes please, we love open source",
+      description:
+        "Choose this if you prefer tools that are free and customisable.",
+    },
+    {
+      value: "It may be interesting, but it's not a must",
+      description:
+        "Choose this if you require proprietary solutions with dedicated support and features",
+    },
   ],
   internalExpertise: [
-    "No expertise at all",
-    "Some knowledge and capabilities",
-    "Full IT and software R&D team in place",
+    "No, not at all",
+    "Yes, we have some knowledge and capabilities",
+    "We have a full IT and Software R&D team (or good access to reliable third-party providers)",
   ],
   businessArea: [
     "Preparation and Setup",
@@ -66,43 +96,23 @@ const FILTER_OPTIONS: Record<string, string[]> = {
     "Assess & Optimize",
     "End of Life",
   ],
-  functionalArea: [
-    "Market Analysis",
-    "Company Set-up",
-    "Book-keeping and Accounting",
-    "Product Procurement",
-    "Fundraising",
-    "Stock Management",
-    "Personnel Training",
-    "Marketing",
-    "Customer Vetting",
-    "Product Logistics and Procurement",
-    "Sales and Contract Management",
-    "Payment Collections",
-    "Service Calls",
-    "Technical Response",
-    "Upselling",
-    "CRM",
-    "Portfolio Analysis and Management",
-    "Impact Measurements and Performance",
-    "Remote Team Management",
-    "API Integration and Connection",
-    "Data Download",
-    "Repossession and Reverse Logistics",
-    "E-waste Management",
-  ],
-  interoperability: [
-    "External Custom API Integration",
-    "Integration with Pay-Go Apps",
-    "Workflow Integration with Commercial Software",
-    "No Interoperability",
-  ],
-  offlineFunctionality: [
-    "Full Offline Functionality",
-    "Offline Functionality to a Limited Extent",
-    "No Offline Functionality",
-  ],
 }
+
+const VALUE_MAPPING: Record<string, Record<string, string>> = {
+  toolSource: {
+    "Yes please, we love open source": "Open-source only",
+    "It may be interesting, but it's not a must":
+      "Both (open and closed source)",
+  },
+  companyStage: {
+    "Pre-launch Startup": "Pre-launch Startup",
+    "Early-Stage Startup": "Early-Stage Startup",
+    "Growing Startup": "Growing Startup",
+    "Scaling SME": "Scaling SME",
+    "Established SME": "Established SME",
+  },
+}
+
 interface Tool {
   name: string
   summary: string
@@ -123,7 +133,58 @@ interface Tool {
   }
 }
 
-const EnAccessToolMap: React.FC = () => {
+const TOOL_CATEGORIES = [
+  "Bookkeeping & Accounting",
+  "Company set up",
+  "Fundraising",
+  "Market Analysis",
+  "Product procurement",
+  "Stock Management",
+]
+
+// Stepper component
+interface StepperProps {
+  steps: number
+  currentStep: number
+}
+
+const Stepper = ({ steps, currentStep }: StepperProps) => {
+  return (
+    <div className="flex items-center justify-center w-full mb-8">
+      <div className="flex items-center w-full max-w-3xl">
+        {Array.from({ length: steps }).map((_, index) => (
+          <div key={index} className="flex items-center flex-1 last:flex-none">
+            <div className="relative flex items-center justify-center">
+              <div
+                className={cn(
+                  "w-8 h-8 rounded-full flex items-center justify-center z-10 text-sm font-medium",
+                  index <= currentStep
+                    ? "bg-emerald-500 text-white"
+                    : "bg-gray-200 text-gray-500"
+                )}
+              >
+                {index + 1}
+              </div>
+              <div className="absolute -bottom-6 whitespace-nowrap text-xs text-gray-500">
+                Step {index + 1}
+              </div>
+            </div>
+            {index < steps - 1 && (
+              <div
+                className={cn(
+                  "h-0.5 flex-1",
+                  index < currentStep ? "bg-emerald-500" : "bg-gray-200"
+                )}
+              ></div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+const QuestionaireFilter = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [answers, setAnswers] = useState<Record<string, string[]>>({})
   const [isQuestionnaireComplete, setIsQuestionnaireComplete] = useState(false)
@@ -159,11 +220,39 @@ const EnAccessToolMap: React.FC = () => {
 
   const currentQuestion = QUESTIONNAIRE_ORDER[currentQuestionIndex]
 
-  const handleAnswer = (values: string[]) => {
+  const handleRadioAnswer = (value: string) => {
     setAnswers((prev) => ({
       ...prev,
-      [currentQuestion]: values,
+      [currentQuestion]: [value],
     }))
+  }
+
+  const handleCheckboxAnswer = (value: string, checked: boolean) => {
+    setAnswers((prev) => {
+      const currentAnswers = prev[currentQuestion] || []
+
+      if (checked) {
+        // Limit to 3 selections
+        if (currentQuestion === "companyFocus" && currentAnswers.length >= 3) {
+          return prev
+        }
+        return {
+          ...prev,
+          [currentQuestion]: [...currentAnswers, value],
+        }
+      } else {
+        return {
+          ...prev,
+          [currentQuestion]: currentAnswers.filter((item) => item !== value),
+        }
+      }
+    })
+  }
+
+  const toggleCheckboxAnswer = (value: string) => {
+    const isCurrentlyChecked =
+      answers[currentQuestion]?.includes(value) || false
+    handleCheckboxAnswer(value, !isCurrentlyChecked)
   }
 
   const handleNext = () => {
@@ -182,6 +271,12 @@ const EnAccessToolMap: React.FC = () => {
     }
   }
 
+  const handleBack = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex((prev) => prev - 1)
+    }
+  }
+
   const handleSkip = () => {
     setAnswers((prev) => ({
       ...prev,
@@ -194,6 +289,18 @@ const EnAccessToolMap: React.FC = () => {
       setIsQuestionnaireComplete(true)
     }
   }
+
+  // Map UI values to metadata values for filtering
+  const mapUIValueToMetadataValue = (
+    filterKey: string,
+    uiValue: string
+  ): string => {
+    if (VALUE_MAPPING[filterKey] && VALUE_MAPPING[filterKey][uiValue]) {
+      return VALUE_MAPPING[filterKey][uiValue]
+    }
+    return uiValue
+  }
+
   const filteredTools = useMemo(() => {
     if (!isQuestionnaireComplete) return []
 
@@ -202,106 +309,271 @@ const EnAccessToolMap: React.FC = () => {
         if (selectedValues.length === 0) return true
 
         const metadataValue = tool.metadata[filterKey]
-
         if (metadataValue === undefined) return false
 
+        // Map the UI values to actual metadata values for comparison
+        const mappedSelectedValues = selectedValues.map((val) =>
+          mapUIValueToMetadataValue(filterKey, val)
+        )
+
         if (Array.isArray(metadataValue)) {
-          return selectedValues.some((value) => metadataValue.includes(value))
+          return mappedSelectedValues.some((value) =>
+            metadataValue.includes(value)
+          )
         }
 
         return (
           typeof metadataValue === "string" &&
-          selectedValues.includes(metadataValue)
+          mappedSelectedValues.includes(metadataValue)
         )
       })
     })
   }, [answers, isQuestionnaireComplete, tools])
 
-  if (isQuestionnaireComplete) {
-    return (
-      <div className="p-8">
-        <Title level={2}>Recommended Tools</Title>
-        {filteredTools.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredTools.map((tool) => (
-              <Card key={tool.name} className="bg-[#2D6A4F] text-white">
-                <Title level={3} className="text-white">
-                  {tool.name}
-                </Title>
-                <Paragraph className="text-gray-100">{tool.summary}</Paragraph>
-                <a
-                  href={tool.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-200 hover:text-blue-100"
-                >
-                  Visit Website
-                </a>
-              </Card>
-            ))}
-          </div>
-        ) : (
-          <Paragraph>No tools match your criteria.</Paragraph>
-        )}
-        <Button
-          onClick={() => {
-            setIsQuestionnaireComplete(false)
-            setCurrentQuestionIndex(0)
-            setAnswers({})
-          }}
-          className="mt-4"
-        >
-          Start Over
-        </Button>
-      </div>
-    )
+  const resetQuestionnaire = () => {
+    setIsQuestionnaireComplete(false)
+    setCurrentQuestionIndex(0)
+    setAnswers({})
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-8">
-      <Title level={2}>Tool Finder</Title>
-      <Paragraph className="mb-6">
-        Question {currentQuestionIndex + 1} of {QUESTIONNAIRE_ORDER.length}
-      </Paragraph>
-
-      <Title level={3} className="mb-4">
-        {filterKeyToQuestion[currentQuestion]}
-      </Title>
-
-      <Radio.Group
-        onChange={(e) => handleAnswer([e.target.value])}
-        value={answers[currentQuestion]?.[0] || null}
-        className="w-full"
-      >
-        <Space direction="vertical" className="w-full">
-          {FILTER_OPTIONS[currentQuestion].map((option) => (
-            <Radio
-              key={option}
-              value={option}
-              className="w-full p-2 border rounded hover:bg-gray-100"
-            >
-              {option}
-            </Radio>
-          ))}
-        </Space>
-      </Radio.Group>
-
-      <div className="flex justify-between mt-6">
-        <Button onClick={handleSkip} className="mr-4">
-          Skip
-        </Button>
-        <Button
-          type="primary"
-          onClick={handleNext}
-          disabled={!answers[currentQuestion]?.[0]}
-        >
-          {currentQuestionIndex === QUESTIONNAIRE_ORDER.length - 1
-            ? "See Recommendations"
-            : "Next"}
-        </Button>
+    <div>
+      {/* Header */}
+      <div className="flex items-center justify-between p-6 border-b">
+        <h2 className="text-2xl font-semibold">Tool Finder</h2>
       </div>
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto">
+        {!isQuestionnaireComplete ? (
+          <div className="p-6">
+            {/* Progress stepper */}
+            <div className="mb-12 pt-6">
+              <Stepper steps={6} currentStep={currentQuestionIndex} />
+            </div>
+
+            <div className="mb-8 text-center">
+              <div className="text-sm text-gray-500 mb-2">
+                {currentQuestionIndex + 1}/{QUESTIONNAIRE_ORDER.length}
+              </div>
+              <h3 className="text-xl font-bold">
+                {filterKeyToQuestion[currentQuestion]}
+              </h3>
+            </div>
+
+            {/* Options - Using checkboxes for companyFocus question */}
+            <div className="space-y-4 max-w-2xl mx-auto">
+              {currentQuestion === "companyFocus" ? (
+                // Checkbox options for "select up to 3"
+                <div className="space-y-4">
+                  {FILTER_OPTIONS[currentQuestion].map((option, index) => {
+                    const optionValue =
+                      typeof option === "string" ? option : option.value
+                    const isChecked =
+                      answers[currentQuestion]?.includes(optionValue) || false
+
+                    return (
+                      <div
+                        key={index}
+                        className={`border rounded-lg p-4 cursor-pointer ${
+                          isChecked
+                            ? "border-emerald-500 bg-emerald-50"
+                            : "border-gray-200"
+                        }`}
+                        onClick={() => toggleCheckboxAnswer(optionValue)}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="mt-0.5">
+                            <Checkbox
+                              id={`checkbox-${index}`}
+                              checked={isChecked}
+                              onCheckedChange={(checked) =>
+                                handleCheckboxAnswer(
+                                  optionValue,
+                                  checked === true
+                                )
+                              }
+                              className="pointer-events-none data-[state=checked]:bg-emerald-500 data-[state=checked]:border-emerald-500"
+                            />
+                          </div>
+                          <Label
+                            htmlFor={`checkbox-${index}`}
+                            className="font-medium cursor-pointer"
+                          >
+                            {optionValue}
+                          </Label>
+                        </div>
+                      </div>
+                    )
+                  })}
+                  <div className="text-sm text-gray-500 mt-2">
+                    Selected: {answers[currentQuestion]?.length || 0}/3
+                  </div>
+                </div>
+              ) : (
+                // Radio options for other questions
+                <RadioGroup
+                  value={answers[currentQuestion]?.[0] || ""}
+                  onValueChange={handleRadioAnswer}
+                  className="space-y-4"
+                >
+                  {FILTER_OPTIONS[currentQuestion].map((option, index) => {
+                    const optionValue =
+                      typeof option === "string" ? option : option.value
+                    const optionDescription =
+                      typeof option === "string" ? null : option.description
+                    const isSelected =
+                      answers[currentQuestion]?.[0] === optionValue
+
+                    return (
+                      <div
+                        key={index}
+                        className={`border rounded-lg p-4 cursor-pointer ${
+                          isSelected
+                            ? "border-emerald-500 bg-emerald-50"
+                            : "border-gray-200"
+                        }`}
+                        onClick={() => handleRadioAnswer(optionValue)}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="mt-0.5">
+                            <RadioGroupItem
+                              value={optionValue}
+                              id={`radio-${index}`}
+                              className="pointer-events-none data-[state=checked]:border-emerald-500 data-[state=checked]:text-emerald-500"
+                            />
+                          </div>
+                          <div>
+                            <Label
+                              htmlFor={`radio-${index}`}
+                              className="font-medium cursor-pointer"
+                            >
+                              {optionValue}
+                            </Label>
+                            {optionDescription && (
+                              <p className="text-sm text-gray-500 mt-1">
+                                {optionDescription}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </RadioGroup>
+              )}
+            </div>
+          </div>
+        ) : (
+          <div className="p-6">
+            {/* Results */}
+            {filteredTools.length > 0 ? (
+              <div>
+                <div className="bg-emerald-50 rounded-lg p-6 mb-8">
+                  <div className="text-emerald-700 font-medium mb-2">
+                    Finished!
+                  </div>
+                  <h3 className="text-xl font-medium mb-4">
+                    Based on your answers, we&apos;ve selected{" "}
+                    {filteredTools.length} tools that could be a great fit for
+                    you.
+                  </h3>
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {TOOL_CATEGORIES.map((category, index) => (
+                      <div
+                        key={index}
+                        className="px-3 py-1.5 bg-white rounded-full text-sm border"
+                      >
+                        {category}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="text-sm text-gray-500 mb-2">
+                    {filteredTools.length} items
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {filteredTools.map((tool, index) => (
+                    <div
+                      key={index}
+                      className="border rounded-lg overflow-hidden"
+                    >
+                      <div className="p-4">
+                        <div className="text-sm text-gray-500 mb-1">
+                          Company name
+                        </div>
+                        <h4 className="font-semibold text-lg mb-2">
+                          {tool.name}
+                        </h4>
+                        <p className="text-sm text-gray-700 mb-4">
+                          {tool.summary}
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                            100% free
+                          </span>
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                            Free demo
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-8 text-center">
+                  <Button variant="ghost">View more</Button>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-10">
+                <h3 className="text-xl font-medium mb-4">
+                  No tools match your criteria.
+                </h3>
+                <Button onClick={resetQuestionnaire} variant="default">
+                  Start Over
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Footer */}
+      {!isQuestionnaireComplete && (
+        <div className="p-6 border-t flex justify-between">
+          {currentQuestionIndex > 0 ? (
+            <Button
+              onClick={handleBack}
+              variant="outline"
+              className="flex items-center"
+            >
+              <ChevronLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+          ) : (
+            <Button onClick={handleSkip} variant="ghost">
+              Skip
+            </Button>
+          )}
+          <Button
+            onClick={handleNext}
+            disabled={
+              currentQuestion === "companyFocus"
+                ? !(answers[currentQuestion]?.length > 0)
+                : !answers[currentQuestion]?.[0]
+            }
+            className="flex items-center"
+          >
+            {currentQuestionIndex === QUESTIONNAIRE_ORDER.length - 1
+              ? "See Recommendations"
+              : "Next"}
+            <ChevronRight className="w-4 h-4 ml-2" />
+          </Button>
+        </div>
+      )}
     </div>
   )
 }
 
-export default EnAccessToolMap
+export default QuestionaireFilter

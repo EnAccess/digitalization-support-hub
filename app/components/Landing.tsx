@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
-import EnAccessToolMap from "../components/Home"
+import Home from "../components/Home"
 import { StatisticCard } from "../components/StatisticCard"
 import { BarrierCard } from "../components/BarrierCard"
 import { FaFacebookF, FaYoutube, FaLinkedinIn, FaGithub } from "react-icons/fa"
@@ -55,7 +55,7 @@ export default function Landing() {
     setSelectedCategories(categories)
   }
 
-  // Get tools from EnAccessToolMap component
+  // Get tools from Home component
   const handleToolsLoaded = (loadedTools: Tool[]) => {
     setTools(loadedTools)
   }
@@ -104,7 +104,7 @@ export default function Landing() {
       {isDesktop && (
         <section id="tool-map-section" className="py-8 mt-auto bg-[#F9FBFA]">
           <div className="max-w-6xl mx-auto">
-            <EnAccessToolMap
+            <Home
               setIsModalOpen={handleModalOpen}
               selectedCategories={selectedCategories}
               onToolsLoaded={handleToolsLoaded}
@@ -114,7 +114,6 @@ export default function Landing() {
       )}
 
       <Modal
-        title="Tool Finder"
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
         width="90vw"
