@@ -1,7 +1,7 @@
 "use client"
 import { useState, useMemo, useEffect } from "react"
 import yaml from "js-yaml"
-import { X, ChevronRight, ChevronLeft } from "lucide-react"
+import { ChevronRight, ChevronLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
@@ -331,10 +331,6 @@ const QuestionaireFilter = () => {
     })
   }, [answers, isQuestionnaireComplete, tools])
 
-  const closeModal = () => {
-    setIsModalOpen(false)
-  }
-
   const resetQuestionnaire = () => {
     setIsQuestionnaireComplete(false)
     setCurrentQuestionIndex(0)
@@ -480,8 +476,9 @@ const QuestionaireFilter = () => {
                     Finished!
                   </div>
                   <h3 className="text-xl font-medium mb-4">
-                    Based on your answers, we've selected {filteredTools.length}{" "}
-                    tools that could be a great fit for you.
+                    Based on your answers, we&apos;ve selected{" "}
+                    {filteredTools.length} tools that could be a great fit for
+                    you.
                   </h3>
                   <div className="flex flex-wrap gap-2 mb-6">
                     {TOOL_CATEGORIES.map((category, index) => (
