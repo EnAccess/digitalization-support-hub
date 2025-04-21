@@ -189,7 +189,6 @@ const QuestionaireFilter = () => {
   const [answers, setAnswers] = useState<Record<string, string[]>>({})
   const [isQuestionnaireComplete, setIsQuestionnaireComplete] = useState(false)
   const [tools, setTools] = useState<Tool[]>([])
-  const [isModalOpen, setIsModalOpen] = useState(true)
 
   // Load tools from YAML files
   useEffect(() => {
@@ -336,8 +335,6 @@ const QuestionaireFilter = () => {
     setCurrentQuestionIndex(0)
     setAnswers({})
   }
-
-  if (!isModalOpen) return null
 
   return (
     <div>
