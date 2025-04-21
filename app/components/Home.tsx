@@ -18,7 +18,7 @@ import {
   type ToolDetailModalProps,
 } from "../components/ToolDetailModel"
 
-interface EnAccessToolMapProps {
+interface HomeProps {
   setIsModalOpen: (value: boolean) => void
   selectedCategories?: string[]
   onToolsLoaded?: (tools: Tool[]) => void
@@ -159,10 +159,7 @@ function ToolCategories({
   )
 }
 
-const EnAccessToolMap = ({
-  selectedCategories = [],
-  onToolsLoaded,
-}: EnAccessToolMapProps) => {
+const Home = ({ selectedCategories = [], onToolsLoaded }: HomeProps) => {
   const [localSelectedCategories, setLocalSelectedCategories] = useState<
     string[]
   >([])
@@ -416,4 +413,4 @@ const EnAccessToolMap = ({
   )
 }
 
-export default EnAccessToolMap
+export default Home
