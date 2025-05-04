@@ -17,11 +17,16 @@ import {
   ToolDetailModal,
   type ToolDetailModalProps,
 } from "../components/ToolDetailModel"
+import {
+  buildFilterQueryFromAnswers,
+  filterToolsByQuery,
+} from "../utils/filter-utils"
+import { Tool } from "../types"
 
 interface HomeProps {
-  setIsModalOpen: (value: boolean) => void
-  selectedCategories?: string[]
-  onToolsLoaded?: (tools: Tool[]) => void
+  setIsModalOpen: (isOpen: boolean) => void
+  selectedCategories: string[]
+  onToolsLoaded: (tools: Tool[]) => void
 }
 
 interface CategoryMapItem {
@@ -31,32 +36,6 @@ interface CategoryMapItem {
 
 interface CategoryMap {
   [key: string]: CategoryMapItem
-}
-
-interface Tool {
-  id?: number
-  name: string
-  summary: string
-  logo: string
-  link?: string
-  categories?: string[]
-  highlights?: string[]
-  company: string
-  isFree?: boolean
-  features?: string[]
-  integrations?: string[]
-  pricing?: {
-    model: string
-    description: string
-  }
-  userTypes?: {
-    label: string
-    description: string
-  }[]
-  documentation?: {
-    title: string
-    description: string
-  }[]
 }
 
 const categoryMap: CategoryMap = {
@@ -159,16 +138,18 @@ function ToolCategories({
   )
 }
 
-const Home = ({ selectedCategories = [], onToolsLoaded }: HomeProps) => {
+export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
   const [localSelectedCategories, setLocalSelectedCategories] = useState<
     string[]
   >([])
   const [tools, setTools] = useState<Tool[]>([])
+  const [, setFilteredTools] = useState<Tool[]>([])
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
   const [isToolModalOpen, setIsToolModalOpen] = useState<boolean>(false)
   const [selectedTool, setSelectedTool] = useState<Tool | null>(
     null as Tool | null
   )
+  const [questionnaireAnswers] = useState<Record<string, string[]> | null>(null)
 
   // Update local categories when prop changes
   useEffect(() => {
@@ -243,6 +224,33 @@ const Home = ({ selectedCategories = [], onToolsLoaded }: HomeProps) => {
     loadTools()
   }, [onToolsLoaded])
 
+  // Filter tools based on both categories and questionnaire answers
+  useEffect(() => {
+    if (!tools.length) return
+
+    let filtered = tools
+
+    // Apply category filters with safety check
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter(
+        (tool) =>
+          // Add safety check for categories
+          Array.isArray(tool.categories) &&
+          tool.categories.some((category) =>
+            selectedCategories.includes(category)
+          )
+      )
+    }
+
+    // Apply questionnaire filters if they exist
+    if (questionnaireAnswers) {
+      const query = buildFilterQueryFromAnswers(questionnaireAnswers)
+      filtered = filterToolsByQuery(filtered, query)
+    }
+
+    setFilteredTools(filtered)
+  }, [tools, selectedCategories, questionnaireAnswers])
+
   const handleToolClick = (toolName: string) => {
     const tool = tools.find((t) => t.name === toolName)
     if (tool) {
@@ -265,22 +273,37 @@ const Home = ({ selectedCategories = [], onToolsLoaded }: HomeProps) => {
     }
   }
 
-  const filteredTools = useMemo(() => {
+  const filteredToolsMemo = useMemo(() => {
     if (localSelectedCategories.length === 0) {
       return []
     }
 
     return tools.filter((tool) => {
-      const matchesCategories =
-        localSelectedCategories.length === 0 ||
-        (tool.categories &&
-          localSelectedCategories.some((category) =>
-            tool.categories!.includes(category)
-          ))
-
-      return matchesCategories
+      // Add safety check for categories
+      return (
+        Array.isArray(tool.categories) &&
+        tool.categories.some((category) =>
+          localSelectedCategories.includes(category)
+        )
+      )
     })
   }, [localSelectedCategories, tools])
+
+  // Handle questionnaire completion
+  // const handleQuestionnaireComplete = (answers: Record<string, string[]>) => {
+  //   const categories = mapAnswersToCategories(answers)
+  //   setLocalSelectedCategories(categories)
+
+  //   // Find and set active category based on first matching category
+  //   const firstCategory = Object.keys(categoryMap).find((key) =>
+  //     categoryMap[key].some((cat) => categories.includes(cat))
+  //   )
+
+  //   if (firstCategory) {
+  //     setActiveCategory(firstCategory)
+  //   }
+  //   setIsModalOpen(false)
+  // }
 
   return (
     <div className="bg-[#F9FBFA] text-gray-800">
@@ -332,14 +355,14 @@ const Home = ({ selectedCategories = [], onToolsLoaded }: HomeProps) => {
       )}
 
       {/* Tools count */}
-      {filteredTools.length > 0 && (
+      {filteredToolsMemo.length > 0 && (
         <div className="my-4 text-sm text-[#0D261A] ">
-          {filteredTools.length} items
+          {filteredToolsMemo.length} items
         </div>
       )}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredTools.length > 0 &&
-          filteredTools.map((tool) => (
+        {filteredToolsMemo.length > 0 &&
+          filteredToolsMemo.map((tool) => (
             <Card
               key={tool.name}
               className="border border-gray-200 rounded-md overflow-hidden hover:shadow-md transition-shadow bg-white p-4"
@@ -412,5 +435,3 @@ const Home = ({ selectedCategories = [], onToolsLoaded }: HomeProps) => {
     </div>
   )
 }
-
-export default Home
