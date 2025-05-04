@@ -138,18 +138,25 @@ function ToolCategories({
   )
 }
 
-export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
+export default function Home({
+  setIsModalOpen,
+  selectedCategories,
+  onToolsLoaded,
+}: HomeProps) {
   const [localSelectedCategories, setLocalSelectedCategories] = useState<
     string[]
   >([])
   const [tools, setTools] = useState<Tool[]>([])
-  const [, setFilteredTools] = useState<Tool[]>([])
+  const [filteredTools, setFilteredTools] = useState<Tool[]>([])
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
   const [isToolModalOpen, setIsToolModalOpen] = useState<boolean>(false)
   const [selectedTool, setSelectedTool] = useState<Tool | null>(
     null as Tool | null
   )
-  const [questionnaireAnswers] = useState<Record<string, string[]> | null>(null)
+  const [questionnaireAnswers, setQuestionnaireAnswers] = useState<Record<
+    string,
+    string[]
+  > | null>(null)
 
   // Update local categories when prop changes
   useEffect(() => {

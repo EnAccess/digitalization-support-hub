@@ -8,6 +8,8 @@ import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
 import { mapAnswersToCategories } from "../utils/questionnaire-utils"
 
+import { buildFilterQueryFromAnswers } from "../utils/filter-utils"
+
 const QUESTIONNAIRE_ORDER = [
   "numberOfClients",
   "companyStage",
@@ -154,7 +156,8 @@ const QuestionaireFilter = ({
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [answers, setAnswers] = useState<Record<string, string[]>>({})
   const [isQuestionnaireComplete, setIsQuestionnaireComplete] = useState(false)
-  const [, setFilteredToolsCount] = useState(0)
+  const [editMode, setEditMode] = useState(false)
+  const [filteredToolsCount, setFilteredToolsCount] = useState(0)
 
   const currentQuestion = QUESTIONNAIRE_ORDER[currentQuestionIndex]
 
@@ -237,10 +240,16 @@ const QuestionaireFilter = ({
     onClose()
   }
 
+  const handleEdit = (questionIndex: number) => {
+    setIsQuestionnaireComplete(false)
+    setCurrentQuestionIndex(questionIndex)
+    setEditMode(true)
+  }
+
   useEffect(() => {
     if (isQuestionnaireComplete) {
       // Calculate the filter query based on answers
-      // const filterQuery = buildFilterQueryFromAnswers(answers)
+      const filterQuery = buildFilterQueryFromAnswers(answers)
       // This would normally filter actual tools data
       // For now, we'll set a calculated value based on the number of answers
       const answerCount = Object.values(answers).flat().length
@@ -396,7 +405,7 @@ const QuestionaireFilter = ({
                   Finished!
                 </div>
                 <h3 className="text-xl font-medium">
-                  Based on your answers, we&apos;ve found{" "}
+                  Based on your answers, we've found{" "}
                   {toolCount > 0 ? toolCount : 4} tools that could be a great
                   fit for you.
                 </h3>
