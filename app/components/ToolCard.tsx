@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 
-
 interface ToolCardProps {
   tool: Tool
   isRecommended?: boolean

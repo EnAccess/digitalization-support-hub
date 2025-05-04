@@ -23,7 +23,6 @@ import {
 } from "../utils/filter-utils"
 import { Tool } from "../types"
 
-
 interface HomeProps {
   setIsModalOpen: (isOpen: boolean) => void
   selectedCategories: string[]
