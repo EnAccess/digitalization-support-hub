@@ -13,7 +13,7 @@ import { Modal } from "antd"
 import QuestionaireFilter from "../components/Questionairefilter"
 import { ToolCategoriesDrawer } from "../components/categories-drawer"
 import { useMobile } from "../hooks/use-mobile"
-import { FilterQuery, Tool } from "../types"
+import { Tool } from "../types"
 import { calculateFilteredToolsCount } from "../utils/filter-utils"
 
 // Remove the local Tool interface since we're now importing it
