@@ -80,20 +80,20 @@ export function filterToolsByQuery(tools: Tool[], query: FilterQuery): Tool[] {
   })
 }
 
-function parseClientRange(range: string): [number, number] {
-  switch (range) {
-    case "<5":
-      return [0, 5]
-    case "5-100":
-      return [5, 100]
-    case "101-500":
-      return [101, 500]
-    case ">500":
-      return [500, Infinity]
-    default:
-      return [0, Infinity]
-  }
-}
+// function parseClientRange(range: string): [number, number] {
+//   switch (range) {
+//     case "<5":
+//       return [0, 5]
+//     case "5-100":
+//       return [5, 100]
+//     case "101-500":
+//       return [101, 500]
+//     case ">500":
+//       return [500, Infinity]
+//     default:
+//       return [0, Infinity]
+//   }
+// }
 
 function mapExpertiseLevel(expertise: string): "none" | "basic" | "advanced" {
   if (expertise.includes("No, not at all")) return "none"

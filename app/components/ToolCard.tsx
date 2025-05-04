@@ -30,7 +30,7 @@ const ToolCard = ({ tool }: ToolCardProps) => {
       {tool.highlights && tool.highlights.length > 0 && (
         <CardFooter className="mt-4">
           <div className="flex flex-wrap gap-2">
-            {tool.highlights.map((highlight, index) => (
+            {tool.highlights.map((highlight) => (
               <Badge
                 key={highlight}
                 variant="secondary"
