@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -13,38 +13,19 @@ import { Modal } from "antd"
 import QuestionaireFilter from "../components/Questionairefilter"
 import { ToolCategoriesDrawer } from "../components/categories-drawer"
 import { useMobile } from "../hooks/use-mobile"
+import { FilterQuery, Tool } from "../types"
+import { calculateFilteredToolsCount } from "../utils/filter-utils"
 
-interface Tool {
-  id?: number
-  name: string
-  summary: string
-  logo: string
-  link?: string
-  categories?: string[]
-  company: string
-  isFree?: boolean
-  features?: string[]
-  integrations?: string[]
-  pricing?: {
-    model: string
-    description: string
-  }
-  userTypes?: {
-    label: string
-    description: string
-  }[]
-  documentation?: {
-    title: string
-    description: string
-  }[]
-}
+// Remove the local Tool interface since we're now importing it
 
 export default function Landing() {
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
-  const [tools, setTools] = useState<Tool[]>([])
+  const [tools, setTools] = useState<Tool[]>([]) // Explicitly type the state
   const { isDesktop } = useMobile()
+  const [filteredToolsCount, setFilteredToolsCount] = useState(0)
+  const [answers, setAnswers] = useState<Record<string, string[]>>({})
 
   const handleModalOpen = (value: boolean) => {
     setIsModalOpen(value)
@@ -59,6 +40,29 @@ export default function Landing() {
   const handleToolsLoaded = (loadedTools: Tool[]) => {
     setTools(loadedTools)
   }
+
+  const handleModalClose = () => setIsModalOpen(false)
+
+  const handleQuestionnaireComplete = (
+    categories: string[],
+    questionnaireAnswers: Record<string, string[]>
+  ) => {
+    setSelectedCategories(categories)
+    setAnswers(questionnaireAnswers) // Save the answers
+    setIsModalOpen(false)
+
+    // Scroll to tools section
+    document.getElementById("tool-map-section")?.scrollIntoView({
+      behavior: "smooth",
+    })
+  }
+
+  useEffect(() => {
+    if (tools.length && Object.keys(answers).length) {
+      const count = calculateFilteredToolsCount(tools, answers)
+      setFilteredToolsCount(count)
+    }
+  }, [tools, answers])
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -115,12 +119,16 @@ export default function Landing() {
 
       <Modal
         open={isModalOpen}
-        onCancel={() => setIsModalOpen(false)}
+        onCancel={handleModalClose}
         width="90vw"
         footer={null}
         className="max-w-7xl"
       >
-        <QuestionaireFilter />
+        <QuestionaireFilter
+          onComplete={handleQuestionnaireComplete}
+          onClose={handleModalClose}
+          toolCount={filteredToolsCount}
+        />
       </Modal>
 
       {/* Tool Categories Drawer for Mobile/Tablet */}
@@ -253,4 +261,17 @@ export default function Landing() {
       </footer>
     </div>
   )
+}
+
+function mapQueryToCategories(query: FilterQuery): string[] {
+  const categories = new Set<string>()
+
+  // Map company focus to relevant categories
+  query.companyFocus?.forEach((focus) => {
+    if (focus === "SHS") categories.add("Solar Home Systems")
+    if (focus === "Mini-Grids") categories.add("Mini-Grids")
+    // Add other mappings...
+  })
+
+  return Array.from(categories)
 }

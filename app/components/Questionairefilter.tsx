@@ -1,12 +1,14 @@
 "use client"
-import { useState, useMemo, useEffect } from "react"
-import yaml from "js-yaml"
+import { useState, useEffect } from "react"
 import { ChevronRight, ChevronLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
+import { mapAnswersToCategories } from "../utils/questionnaire-utils"
+
+import { buildFilterQueryFromAnswers } from "../utils/filter-utils"
 
 const QUESTIONNAIRE_ORDER = [
   "numberOfClients",
@@ -98,50 +100,6 @@ const FILTER_OPTIONS: Record<
   ],
 }
 
-const VALUE_MAPPING: Record<string, Record<string, string>> = {
-  toolSource: {
-    "Yes please, we love open source": "Open-source only",
-    "It may be interesting, but it's not a must":
-      "Both (open and closed source)",
-  },
-  companyStage: {
-    "Pre-launch Startup": "Pre-launch Startup",
-    "Early-Stage Startup": "Early-Stage Startup",
-    "Growing Startup": "Growing Startup",
-    "Scaling SME": "Scaling SME",
-    "Established SME": "Established SME",
-  },
-}
-
-interface Tool {
-  name: string
-  summary: string
-  link: string
-  metadata: {
-    numberOfClients?: string | string[]
-    transactionsPerDay?: string | string[]
-    companyStage?: string | string[]
-    companyFocus?: string | string[]
-    toolsCost?: string | string[]
-    toolSource?: string | string[]
-    internalExpertise?: string | string[]
-    businessArea?: string | string[]
-    functionalArea?: string | string[]
-    interoperability?: string | string[]
-    offlineFunctionality?: string | string[]
-    [key: string]: string | string[] | undefined
-  }
-}
-
-const TOOL_CATEGORIES = [
-  "Bookkeeping & Accounting",
-  "Company set up",
-  "Fundraising",
-  "Market Analysis",
-  "Product procurement",
-  "Stock Management",
-]
-
 // Stepper component
 interface StepperProps {
   steps: number
@@ -184,39 +142,22 @@ const Stepper = ({ steps, currentStep }: StepperProps) => {
   )
 }
 
-const QuestionaireFilter = () => {
+interface QuestionaireFilterProps {
+  onComplete: (categories: string[], answers: Record<string, string[]>) => void
+  onClose: () => void
+  toolCount?: number
+}
+
+const QuestionaireFilter = ({
+  onComplete,
+  onClose,
+  toolCount = 0,
+}: QuestionaireFilterProps) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [answers, setAnswers] = useState<Record<string, string[]>>({})
   const [isQuestionnaireComplete, setIsQuestionnaireComplete] = useState(false)
-  const [tools, setTools] = useState<Tool[]>([])
-
-  // Load tools from YAML files
-  useEffect(() => {
-    const loadTools = async () => {
-      const toolFiles = [
-        "/tools/3cx.yaml",
-        "/tools/d-rec.yaml",
-        "/tools/ixo.yaml",
-        "/tools/p-rec.yaml",
-        "/tools/sendy.yaml",
-        "/tools/challenges.yaml",
-        "/tools/carbon-clear.yaml",
-        "/tools/cavex.yaml",
-      ]
-
-      const loadedTools = await Promise.all(
-        toolFiles.map(async (file) => {
-          const response = await fetch(file)
-          const text = await response.text()
-          return yaml.load(text) as Tool
-        })
-      )
-
-      setTools(loadedTools)
-    }
-
-    loadTools()
-  }, [])
+  const [editMode, setEditMode] = useState(false)
+  const [filteredToolsCount, setFilteredToolsCount] = useState(0)
 
   const currentQuestion = QUESTIONNAIRE_ORDER[currentQuestionIndex]
 
@@ -272,7 +213,10 @@ const QuestionaireFilter = () => {
   }
 
   const handleBack = () => {
-    if (currentQuestionIndex > 0) {
+    if (isQuestionnaireComplete) {
+      setIsQuestionnaireComplete(false)
+      setCurrentQuestionIndex(QUESTIONNAIRE_ORDER.length - 1)
+    } else if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex((prev) => prev - 1)
     }
   }
@@ -290,51 +234,28 @@ const QuestionaireFilter = () => {
     }
   }
 
-  // Map UI values to metadata values for filtering
-  const mapUIValueToMetadataValue = (
-    filterKey: string,
-    uiValue: string
-  ): string => {
-    if (VALUE_MAPPING[filterKey] && VALUE_MAPPING[filterKey][uiValue]) {
-      return VALUE_MAPPING[filterKey][uiValue]
-    }
-    return uiValue
+  const handleComplete = () => {
+    const relevantCategories = mapAnswersToCategories(answers)
+    onComplete(relevantCategories, answers) // Pass both categories and answers
+    onClose()
   }
 
-  const filteredTools = useMemo(() => {
-    if (!isQuestionnaireComplete) return []
-
-    return tools.filter((tool) => {
-      return Object.entries(answers).every(([filterKey, selectedValues]) => {
-        if (selectedValues.length === 0) return true
-
-        const metadataValue = tool.metadata[filterKey]
-        if (metadataValue === undefined) return false
-
-        // Map the UI values to actual metadata values for comparison
-        const mappedSelectedValues = selectedValues.map((val) =>
-          mapUIValueToMetadataValue(filterKey, val)
-        )
-
-        if (Array.isArray(metadataValue)) {
-          return mappedSelectedValues.some((value) =>
-            metadataValue.includes(value)
-          )
-        }
-
-        return (
-          typeof metadataValue === "string" &&
-          mappedSelectedValues.includes(metadataValue)
-        )
-      })
-    })
-  }, [answers, isQuestionnaireComplete, tools])
-
-  const resetQuestionnaire = () => {
+  const handleEdit = (questionIndex: number) => {
     setIsQuestionnaireComplete(false)
-    setCurrentQuestionIndex(0)
-    setAnswers({})
+    setCurrentQuestionIndex(questionIndex)
+    setEditMode(true)
   }
+
+  useEffect(() => {
+    if (isQuestionnaireComplete) {
+      // Calculate the filter query based on answers
+      const filterQuery = buildFilterQueryFromAnswers(answers)
+      // This would normally filter actual tools data
+      // For now, we'll set a calculated value based on the number of answers
+      const answerCount = Object.values(answers).flat().length
+      setFilteredToolsCount(Math.max(5, Math.min(20, answerCount * 3)))
+    }
+  }, [isQuestionnaireComplete, answers])
 
   return (
     <div>
@@ -465,111 +386,124 @@ const QuestionaireFilter = () => {
           </div>
         ) : (
           <div className="p-6">
-            {/* Results */}
-            {filteredTools.length > 0 ? (
-              <div>
-                <div className="bg-emerald-50 rounded-lg p-6 mb-8">
-                  <div className="text-emerald-700 font-medium mb-2">
-                    Finished!
-                  </div>
-                  <h3 className="text-xl font-medium mb-4">
-                    Based on your answers, we&apos;ve selected{" "}
-                    {filteredTools.length} tools that could be a great fit for
-                    you.
-                  </h3>
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {TOOL_CATEGORIES.map((category, index) => (
-                      <div
-                        key={index}
-                        className="px-3 py-1.5 bg-white rounded-full text-sm border"
-                      >
-                        {category}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="text-sm text-gray-500 mb-2">
-                    {filteredTools.length} items
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {filteredTools.map((tool, index) => (
+            <div className="max-w-2xl mx-auto">
+              {/* Progress indicator */}
+              <div className="flex justify-center mb-8">
+                <div className="flex items-center space-x-2">
+                  {Array.from({ length: 8 }).map((_, i) => (
                     <div
-                      key={index}
-                      className="border rounded-lg overflow-hidden"
+                      key={i}
+                      className="w-2 h-2 rounded-full bg-emerald-500"
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Finished heading */}
+              <div className="text-center mb-8">
+                <div className="text-sm text-emerald-600 font-medium mb-2">
+                  Finished!
+                </div>
+                <h3 className="text-xl font-medium">
+                  Based on your answers, we've found{" "}
+                  {toolCount > 0 ? toolCount : 4} tools that could be a great
+                  fit for you.
+                </h3>
+              </div>
+
+              {/* Summary section */}
+              <div className="bg-white rounded-lg border p-6 mb-8">
+                <h4 className="text-base font-medium mb-4">Your Summary</h4>
+                <div className="space-y-4">
+                  {QUESTIONNAIRE_ORDER.map((question, index) => (
+                    <div
+                      key={question}
+                      className="flex items-start gap-3 pb-2 border-b last:border-b-0"
                     >
-                      <div className="p-4">
-                        <div className="text-sm text-gray-500 mb-1">
-                          Company name
+                      <div className="flex items-center gap-2">
+                        <div className="flex-shrink-0 w-6 h-6 flex items-center justify-center"></div>
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => {
+                            setIsQuestionnaireComplete(false)
+                            setCurrentQuestionIndex(index)
+                          }}
+                        >
+                          <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="text-gray-500 hover:text-emerald-700"
+                          >
+                            <path
+                              d="M11.5931 1.33594C11.9837 0.945312 12.6134 0.945312 13.004 1.33594L14.6681 3C15.0587 3.39062 15.0587 4.02031 14.6681 4.41094L12.7368 6.34219L9.66181 3.26719L11.5931 1.33594ZM3.99994 8.92969L9.14369 3.78594L12.2181 6.86094L7.07447 12.0047C6.97447 12.1047 6.84994 12.175 6.71181 12.2094L3.83744 12.9594C3.54682 13.0344 3.27447 12.9594 3.08119 12.7656C2.88791 12.5719 2.81244 12.3 2.88791 12.0094L3.63791 9.13437C3.67213 8.99687 3.74213 8.87188 3.84213 8.77188L3.99994 8.92969Z"
+                              fill="currentColor"
+                            />
+                          </svg>
                         </div>
-                        <h4 className="font-semibold text-lg mb-2">
-                          {tool.name}
-                        </h4>
-                        <p className="text-sm text-gray-700 mb-4">
-                          {tool.summary}
-                        </p>
-                        <div className="flex flex-wrap gap-2">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
-                            100% free
-                          </span>
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                            Free demo
-                          </span>
+                      </div>
+                      <div className="flex-1">
+                        <div className="text-sm font-medium">
+                          {filterKeyToQuestion[question]}
+                        </div>
+                        <div className="text-sm text-gray-600 mt-1">
+                          {answers[question]?.join(", ") || "Skipped"}
                         </div>
                       </div>
                     </div>
                   ))}
                 </div>
-
-                <div className="mt-8 text-center">
-                  <Button variant="ghost">View more</Button>
-                </div>
               </div>
-            ) : (
-              <div className="text-center py-10">
-                <h3 className="text-xl font-medium mb-4">
-                  No tools match your criteria.
-                </h3>
-                <Button onClick={resetQuestionnaire} variant="default">
-                  Start Over
+
+              {/* Action buttons */}
+              <div className="mt-6">
+                <Button
+                  onClick={handleComplete}
+                  className="w-full bg-emerald-700 text-white hover:bg-emerald-800"
+                >
+                  View {toolCount > 0 ? toolCount : 4} suggestions
                 </Button>
               </div>
-            )}
+            </div>
           </div>
         )}
       </div>
 
       {/* Footer */}
       {!isQuestionnaireComplete && (
-        <div className="p-6 border-t flex justify-between">
-          {currentQuestionIndex > 0 ? (
+        <div className="p-6 border-t">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <Button
+                onClick={handleBack}
+                variant="outline"
+                className="flex items-center"
+                disabled={currentQuestionIndex === 0}
+              >
+                <ChevronLeft className="w-4 h-4 mr-2" />
+                Back
+              </Button>
+              <Button onClick={handleSkip} variant="ghost">
+                Skip
+              </Button>
+            </div>
             <Button
-              onClick={handleBack}
-              variant="outline"
+              onClick={handleNext}
+              disabled={
+                currentQuestion === "companyFocus"
+                  ? !(answers[currentQuestion]?.length > 0)
+                  : !answers[currentQuestion]?.[0]
+              }
               className="flex items-center"
             >
-              <ChevronLeft className="w-4 h-4 mr-2" />
-              Back
+              {currentQuestionIndex === QUESTIONNAIRE_ORDER.length - 1
+                ? "See Recommendations"
+                : "Next"}
+              <ChevronRight className="w-4 h-4 ml-2" />
             </Button>
-          ) : (
-            <Button onClick={handleSkip} variant="ghost">
-              Skip
-            </Button>
-          )}
-          <Button
-            onClick={handleNext}
-            disabled={
-              currentQuestion === "companyFocus"
-                ? !(answers[currentQuestion]?.length > 0)
-                : !answers[currentQuestion]?.[0]
-            }
-            className="flex items-center"
-          >
-            {currentQuestionIndex === QUESTIONNAIRE_ORDER.length - 1
-              ? "See Recommendations"
-              : "Next"}
-            <ChevronRight className="w-4 h-4 ml-2" />
-          </Button>
+          </div>
         </div>
       )}
     </div>
