@@ -8,8 +8,6 @@ import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
 import { mapAnswersToCategories } from "../utils/questionnaire-utils"
 
-import { buildFilterQueryFromAnswers } from "../utils/filter-utils"
-
 const QUESTIONNAIRE_ORDER = [
   "numberOfClients",
   "companyStage",

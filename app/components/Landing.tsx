@@ -263,15 +263,15 @@ export default function Landing() {
   )
 }
 
-function mapQueryToCategories(query: FilterQuery): string[] {
-  const categories = new Set<string>()
+// function mapQueryToCategories(query: FilterQuery): string[] {
+//   const categories = new Set<string>()
 
-  // Map company focus to relevant categories
-  query.companyFocus?.forEach((focus) => {
-    if (focus === "SHS") categories.add("Solar Home Systems")
-    if (focus === "Mini-Grids") categories.add("Mini-Grids")
-    // Add other mappings...
-  })
+//   // Map company focus to relevant categories
+//   query.companyFocus?.forEach((focus) => {
+//     if (focus === "SHS") categories.add("Solar Home Systems")
+//     if (focus === "Mini-Grids") categories.add("Mini-Grids")
+//     // Add other mappings...
+//   })
 
-  return Array.from(categories)
-}
+//   return Array.from(categories)
+// }
