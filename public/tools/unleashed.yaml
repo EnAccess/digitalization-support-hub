@@ -1,15 +1,33 @@
+id: unleashed
 name: Unleashed
-summary: Unleash integrates business tools for market insights, better product flow control, improved efficiency, and streamlined procurement. It’s a customizable, all-in-one platform with custom API integrations and add-ons.
+summary: Unleash integrates business tools for market insights, better product flow control, improved efficiency, and streamlined procurement. It's a customizable, all-in-one platform with custom API integrations and add-ons.
 logo: /path/to/unleashed-logo.png
 link: https://unleashedsoftware.com
+
 categories:
   - Product Logistics & Procurement
   - Impact Measurements & Performance
   - Stock Management
 
-highlights:
-  - Partially Open Source
-  - offline Features
+license: Partially Open Source
+user_type:
+  - Basic digital literacy
+
+pricing:
+
+free_demo_available: true
+
+interoperatibility:
+  - We provide bi-directional data exchange via API. It is possible to export data via API and import data via API
+  - our tool offers automatic data exchange with selected tools
+
+interoperatibility_pricing:
+
+documentation:
+
+offline_functionality: Yes, some functionalities are available offline
+
+business_type:
   - SHS
   - Mini Grids
   - Clean Cooking

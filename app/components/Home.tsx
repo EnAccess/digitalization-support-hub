@@ -13,14 +13,12 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { X, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useSupportBubble } from "./support-bubble-provider"
 import {
   ToolDetailModal,
   type ToolDetailModalProps,
 } from "../components/ToolDetailModel"
-import {
-  buildFilterQueryFromAnswers,
-  filterToolsByQuery,
-} from "../utils/filter-utils"
+
 import { Tool } from "../types"
 
 interface HomeProps {
@@ -150,6 +148,7 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
     null as Tool | null
   )
   const [questionnaireAnswers] = useState<Record<string, string[]> | null>(null)
+  const { openSupportForm, openMiniBubble } = useSupportBubble()
 
   // Update local categories when prop changes
   useEffect(() => {
@@ -243,10 +242,6 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
     }
 
     // Apply questionnaire filters if they exist
-    if (questionnaireAnswers) {
-      const query = buildFilterQueryFromAnswers(questionnaireAnswers)
-      filtered = filterToolsByQuery(filtered, query)
-    }
 
     setFilteredTools(filtered)
   }, [tools, selectedCategories, questionnaireAnswers])
@@ -383,30 +378,35 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
               </CardContent>
 
               {/* Tool categories as badges */}
-              {tool.highlights && tool.highlights.length > 0 && (
+              {((tool.business_type?.length ?? 0) > 0 || tool.license) && (
                 <CardFooter className="mt-4">
                   <div className="flex flex-wrap gap-2 w-full">
-                    {tool.highlights.map((category, index) => {
-                      // Define colors explicitly for each badge
+                    {/* Convert license to array if it's a string */}
+                    {[
+                      ...(tool.business_type || []),
+                      ...(Array.isArray(tool.license)
+                        ? tool.license
+                        : tool.license
+                          ? [tool.license]
+                          : []),
+                    ].map((category, index) => {
                       const colors = [
                         "bg-[#43BC80]",
                         "bg-[#8BDC7F]",
                         "bg-[#5AC9C5]",
                         "bg-[#67C6AB]",
                       ]
-
-                      // Make sure the index is within the range of the colors array
                       const colorIndex = index % colors.length
                       const colorClass = colors[colorIndex]
 
                       return (
                         <Badge
-                          key={category}
-                          className={`${colorClass} rounded-full text-[#161D1A] font-bold text-sm `}
+                          key={`${category}-${index}`}
+                          className={`${colorClass} rounded-full text-[#161D1A] font-bold text-sm`}
                           style={{
-                            minWidth: "auto", // Prevents forced stretching
-                            display: "inline-flex", // Ensures it wraps around text content
-                            justifyContent: "center", // Centers text inside badge
+                            minWidth: "auto",
+                            display: "inline-flex",
+                            justifyContent: "center",
                             alignItems: "center",
                             backgroundColor: colorClass
                               .replace("bg-[", "")

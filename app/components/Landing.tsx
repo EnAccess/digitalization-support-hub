@@ -14,7 +14,6 @@ import QuestionaireFilter from "../components/Questionairefilter"
 import { ToolCategoriesDrawer } from "../components/categories-drawer"
 import { useMobile } from "../hooks/use-mobile"
 import { Tool } from "../types"
-import { calculateFilteredToolsCount } from "../utils/filter-utils"
 
 // Remove the local Tool interface since we're now importing it
 
@@ -56,13 +55,6 @@ export default function Landing() {
       behavior: "smooth",
     })
   }
-
-  useEffect(() => {
-    if (tools.length && Object.keys(answers).length) {
-      const count = calculateFilteredToolsCount(tools, answers)
-      setFilteredToolsCount(count)
-    }
-  }, [tools, answers])
 
   return (
     <div className="flex flex-col min-h-screen">

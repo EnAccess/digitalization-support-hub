@@ -1,37 +1,31 @@
+id: ixo
 name: IXO
 summary: IXO offers software solutions that utilize blockchain technology and data analytics to help organizations in the energy access and off-grid energy sectors track, verify, and manage energy projects. The platform provides tools for real-time monitoring and reporting, allowing users to measure the impact and progress of energy initiatives with greater transparency and accuracy.
 logo: /path/to/ixo-logo.png
 link: https://www.ixo.world/solutions
+
 categories:
   - Customer Vetting
   - Impact Measurements & Performance
   - Portfolio Analysis & Management
   - Tech Response
+  - Market Analysis
 
-highlights:
+license: Fully Propriatary
+user_type:
+  - Basic digital literacy
+pricing:
+
+free_demo_available:
+
+interoperatibility:
+
+interoperatibility_pricing:
+
+documentation:
+
+offline_functionality: No, it works only with an internet connection
+
+business_type:
   - Mini Grids
   - SHS
-metadata:
-  numberOfClients:
-    - <100
-    - 101-500
-    - 501-1000
-    - ">1000"
-    - ">5000"
-  transactionsPerDay:
-    - <5
-    - 5-100
-    - 101-500
-    - ">501"
-  companyStage: Pre-launch startup
-  companyFocus:
-    - SHS
-  toolsCost: Free-to-use or freemium versions only
-  toolSource: Open-source only
-  internalExpertise: No expertise at all
-  businessArea:
-    - Preparation and Setup
-  functionalArea:
-    - Market Analysis
-  interoperability: No Interoperability
-  offlineFunctionality: Full Offline Functionality

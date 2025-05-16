@@ -1,8 +1,10 @@
+id: fieldpro
 name: FieldPro
-summary: FieldPro offers mobile and web tools to streamline field ops with customizable CRM, workflows, AI image recognition, and real-time analytics. It boosts visibility, efficiency, and decision-making for smarter teams and data-driven growth.
 company: Optimetriks
+summary: FieldPro offers mobile and web tools to streamline field ops with customizable CRM, workflows, AI image recognition, and real-time analytics. It boosts visibility, efficiency, and decision-making for smarter teams and data-driven growth.
 logo: /path/to/fieldpro-logo.png
 link: https://www.fieldproapp.com/
+
 categories:
   - Company Set Up
   - Impact Measurements & Performance
@@ -17,8 +19,26 @@ categories:
   - Upselling
   - Tech Response
 
-highlights:
+license: Fully Propriatary
+user_type:
+  - Basic digital literacy
+
+pricing: By user Numbers
+
+free_demo_available: false
+
+interoperatibility:
+  - Data export is possible via file download (CSV/XLSX/...)
+  - We provide bi-directional data exchange via API. It is possible to export data via API and import data via API
+  - our tool offers automatic data exchange with selected tools
+
+interoperatibility_pricing: Yes, is it a usage-based fee
+
+documentation:
+
+offline_functionality: Yes, some functionalities are available offline
+
+business_type:
   - Mini Grids
-  - full offline Functionality
   - SHS
   - Clean Cooking

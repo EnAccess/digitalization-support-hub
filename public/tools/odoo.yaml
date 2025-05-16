@@ -1,8 +1,10 @@
+id: odoo
 name: Odoo
-summary: Odoo is a partially open-core, all-in-one business management software that streamlines operations across sales, accounting, inventory, and field service with powerful, integrated apps for seamless efficiency.
 company: Odoo
+summary: Odoo is a partially open-core, all-in-one business management software that streamlines operations across sales, accounting, inventory, and field service with powerful, integrated apps for seamless efficiency.
 logo: /path/to/odoo-logo.png
 link: https://www.odoo.com/
+
 categories:
   - Bookkeeping & Accounting
   - Impact Measurements & Performance
@@ -15,9 +17,27 @@ categories:
   - Stock Management
   - Upselling
   - HR Management
-highlights:
-  - Free demo
-  - Offline Features
+
+license: Partially Open Source
+user_type:
+  - Basic digital literacy
+pricing: By user Numbers
+
+free_demo_available: true
+
+interoperatibility:
+  - Data export is possible via file download (CSV/XLSX/...)
+  - We provide bi-directional data exchange via API. It is possible to export data via API and import data via API
+  - our tool offers automatic data exchange with selected tools
+
+interoperatibility_pricing: No there are no (extra) costs associated with data exchange for cross-platform integrations
+
+documentation:
+  - High-level documentation
+
+offline_functionality: Yes, some functionalities are available offline
+
+business_type:
   - SHS
   - Mini Grids
   - Clean Cooking

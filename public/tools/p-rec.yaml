@@ -1,29 +1,30 @@
+id: p-rec
 name: P-REC
 summary: Communication and management tool.
 logo: /path/to/prec-logo.png
 link: https://p-rec.com
-metadata:
-  numberOfClients:
-    - <100
-    - 101-500
-    - 501-1000
-    - ">1000"
-    - ">5000"
-  transactionsPerDay:
-    - <5
-    - 5-100
-    - 101-500
-    - ">501"
-  companyStage: Pre-launch startup
-  companyFocus:
-    - SHS
-    - Clean Cooking
-  toolsCost: Free-to-use or freemium versions only
-  toolSource: Open-source only
-  internalExpertise: No expertise at all
-  businessArea:
-    - Preparation and Setup
-  functionalArea:
-    - Market Analysis
-  interoperability: No Interoperability
-  offlineFunctionality: Full Offline Functionality
+
+categories:
+
+license: Fully Open Source
+user_type:
+  - Basic digital literacy
+  - No technical expertise required
+
+pricing: option1
+
+free_demo_available: true
+
+interoperatibility:
+  - Data export is possible via file download (CSV/XLSX/...)
+
+interoperatibility_pricing: No, there are no (extra) costs associated with data exchange for cross-platform integrations.
+
+documentation:
+  - High-level documentation
+
+offline_functionality: Yes, full functionality is available offline
+
+business_type:
+  - SHS
+  - Clean Cooking

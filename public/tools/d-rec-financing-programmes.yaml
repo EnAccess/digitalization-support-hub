@@ -1,15 +1,30 @@
+id: d-rec-financing-programmes
 name: DRE Financing programmes
-summary: Access financing for DRE projects via Odyssey. The platform connects you with financiers across the capital stack, letting you browse and apply for relevant programs to streamline funding into distributed energy.
 company: Odyssey Energy Solutions
+summary: Access financing for DRE projects via Odyssey. The platform connects you with financiers across the capital stack, letting you browse and apply for relevant programs to streamline funding into distributed energy.
 logo: /path/to/odyssey-logo.png
 link: https://odysseyenergysolutions.com/finance-solutions
+
 categories:
   - Fundraising
   - Portfolio Analysis & Management
 
-highlights:
-  - 100% free
-  - Offline Features
-  - Mini-Grids
+license:
+user_type:
+  - Basic digital literacy
+
+pricing: option1
+
+free_demo_available: true
+
+interoperatibility:
+
+interoperatibility_pricing:
+
+documentation:
+offline_functionality: Yes, some functionalities are available offline
+
+business_type:
+  - Mini Grids
   - SHS
   - Clean Cooking

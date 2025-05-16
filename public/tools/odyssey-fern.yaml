@@ -1,14 +1,28 @@
+id: odyssey-fern
 name: Odyssey FernView Portal
-summary: Odyssey FernView is a leading platform to remotely manage energy systems at scale. Its web portal offers real-time analytics, advanced controls, and fast troubleshooting to cut O&M time, boost productivity, and maximize ROI.
 company: Odyssey Energy Solutions
+summary: Odyssey FernView is a leading platform to remotely manage energy systems at scale. Its web portal offers real-time analytics, advanced controls, and fast troubleshooting to cut O&M time, boost productivity, and maximize ROI.
 logo: /path/to/odyssey-logo.png
 link: https://odysseyenergysolutions.com/remote-monitoring-control
+
 categories:
   - Impact Measurements & Performance
   - Portfolio Analysis & Management
 
-highlights:
-  - Offline Features
-  - Free demo
+license: Fully Propriatary
+user_type:
+  - Basic digital literacy
+
+pricing:
+free_demo_available: true
+
+interoperatibility:
+interoperatibility_pricing:
+
+documentation:
+
+offline_functionality: Yes, some functionalities are available offline
+
+business_type:
   - Mini Grids
   - SHS

@@ -1,30 +1,30 @@
-name: cavex
+id: cavex
+name: Cavex
 summary: Cavex is a platform for managing and verifying carbon credits, enabling carbon offsetting with efficient tracking, trading, and verification. Using blockchain, it ensures transparency and accountability to support the transition to a low-carbon economy.
 logo: /path/to/cavex-logo.png
 link: https://cavex.io
+
 categories:
   - Fundraising
   - Impact Measurements & Performance
 
-highlights:
-  - Free demo
+license: Fully Propriatary
+user_type:
+  - Basic digital literacy
+
+pricing:
+
+free_demo_available: true
+
+interoperatibility:
+
+interoperatibility_pricing:
+
+documentation:
+
+offline_functionality: No, it works only with an internet connection
+
+business_type:
   - SHS
   - Mini Grids
   - Clean Cooking
-metadata:
-  numberOfClients:
-    - <100
-  transactionsPerDay:
-    - <5
-  companyStage: Pre-launch startup
-  companyFocus:
-    - SHS
-  toolsCost: Free-to-use or freemium versions only
-  toolSource: Open-source only
-  internalExpertise: No expertise at all
-  businessArea:
-    - Preparation and Setup
-  functionalArea:
-    - Market Analysis
-  interoperability: No Interoperability
-  offlineFunctionality: Full Offline Functionality

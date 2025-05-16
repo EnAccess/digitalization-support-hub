@@ -20,32 +20,7 @@ import {
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { ToolDetailModal, type ToolDetailModalProps } from "./ToolDetailModel"
-
-interface Tool {
-  id?: number
-  name: string
-  summary: string
-  logo: string
-  link?: string
-  categories?: string[]
-  highlights?: string[]
-  company: string
-  isFree?: boolean
-  features?: string[]
-  integrations?: string[]
-  pricing?: {
-    model: string
-    description: string
-  }
-  userTypes?: {
-    label: string
-    description: string
-  }[]
-  documentation?: {
-    title: string
-    description: string
-  }[]
-}
+import { Tool } from "../types"
 
 interface CategoryMapItem {
   name: string
@@ -325,31 +300,36 @@ export function ToolCategoriesDrawer({
                       </p>
                     </CardContent>
 
-                    {/* Tool categories as badges */}
-                    {tool.highlights && tool.highlights.length > 0 && (
+                    {((tool.business_type?.length ?? 0) > 0 ||
+                      tool.license) && (
                       <CardFooter className="mt-4">
                         <div className="flex flex-wrap gap-2 w-full">
-                          {tool.highlights.map((category, index) => {
-                            // Define colors explicitly for each badge
+                          {/* Convert license to array if it's a string */}
+                          {[
+                            ...(tool.business_type || []),
+                            ...(Array.isArray(tool.license)
+                              ? tool.license
+                              : tool.license
+                                ? [tool.license]
+                                : []),
+                          ].map((category, index) => {
                             const colors = [
                               "bg-[#43BC80]",
                               "bg-[#8BDC7F]",
                               "bg-[#5AC9C5]",
                               "bg-[#67C6AB]",
                             ]
-
-                            // Make sure the index is within the range of the colors array
                             const colorIndex = index % colors.length
                             const colorClass = colors[colorIndex]
 
                             return (
                               <Badge
-                                key={category}
-                                className={`${colorClass} rounded-full text-[#161D1A] font-bold text-sm `}
+                                key={`${category}-${index}`}
+                                className={`${colorClass} rounded-full text-[#161D1A] font-bold text-sm`}
                                 style={{
-                                  minWidth: "auto", // Prevents forced stretching
-                                  display: "inline-flex", // Ensures it wraps around text content
-                                  justifyContent: "center", // Centers text inside badge
+                                  minWidth: "auto",
+                                  display: "inline-flex",
+                                  justifyContent: "center",
                                   alignItems: "center",
                                   backgroundColor: colorClass
                                     .replace("bg-[", "")

@@ -1,7 +1,9 @@
+id: upya
 name: Upya
 summary: Plug-and-play software to efficiently manage customers, field teams & operations, digitalize business processes,collect payments, and improve profitability at scale
 logo: /path/to/upya-logo.png
 link: www.upya.io
+
 categories:
   - Bookkeeping & Accounting
   - Impact Measurements & Performance
@@ -12,6 +14,21 @@ categories:
   - Personal Training
   - Stock Management
 
-highlights:
+license: Fully Propriatary
+user_type:
+  - Basic digital literacy
+
+pricing:
+
+free_demo_available: false
+
+interoperatibility:
+
+interoperatibility_pricing:
+
+documentation:
+
+offline_functionality: Yes, full functionality is available offline
+
+business_type:
   - SHS
-  - offline Features

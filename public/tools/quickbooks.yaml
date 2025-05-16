@@ -1,11 +1,30 @@
+id: quickbooks
 name: Quickbooks
 summary: QuickBooks Online helps businesses track income, expenses, and accounts payable, manage bills, invoices, and project costs. It integrates with payroll, staff time tracking, and connects with accountants for easier tax filing and financial management.
 logo: /path/to/quickbooks-logo.png
 link: https://quickbooks.intuit.com
+
 categories:
   - Bookkeeping & Accounting
 
-highlights:
+license: Fully Propriatary
+user_type:
+  - Basic digital literacy
+pricing: By time based license
+
+free_demo_available: false
+
+interoperatibility:
+  - Data export is possible via file download (CSV/XLSX/...)
+  - We provide bi-directional data exchange via API
+
+interoperatibility_pricing:
+
+documentation:
+
+offline_functionality: No, it works only with an internet connection
+
+business_type:
   - Mini Grids
   - SHS
   - Clean Cooking

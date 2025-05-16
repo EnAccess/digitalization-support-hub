@@ -1,7 +1,8 @@
 const schema = {
   type: "object",
-  required: ["name", "summary", "logo", "link"],
+  required: ["name", "summary", "logo", "link", "categories"],
   properties: {
+    id: { type: "string" },
     name: { type: "string" },
     company: { type: "string" },
     summary: { type: "string" },
@@ -11,80 +12,26 @@ const schema = {
       type: "array",
       items: { type: "string" },
     },
-    highlights: {
+    license: { type: "string" },
+    user_type: {
       type: "array",
       items: { type: "string" },
     },
-    metadata: {
-      type: "object",
-      properties: {
-        numberOfClients: {
-          oneOf: [
-            { type: "string" },
-            { type: "array", items: { type: "string" } },
-          ],
-        },
-        transactionsPerDay: {
-          oneOf: [
-            { type: "string" },
-            { type: "array", items: { type: "string" } },
-          ],
-        },
-        companyStage: {
-          oneOf: [
-            { type: "string" },
-            { type: "array", items: { type: "string" } },
-          ],
-        },
-        companyFocus: {
-          oneOf: [
-            { type: "string" },
-            { type: "array", items: { type: "string" } },
-          ],
-        },
-        toolsCost: {
-          oneOf: [
-            { type: "string" },
-            { type: "array", items: { type: "string" } },
-          ],
-        },
-        toolSource: {
-          oneOf: [
-            { type: "string" },
-            { type: "array", items: { type: "string" } },
-          ],
-        },
-        internalExpertise: {
-          oneOf: [
-            { type: "string" },
-            { type: "array", items: { type: "string" } },
-          ],
-        },
-        businessArea: {
-          oneOf: [
-            { type: "string" },
-            { type: "array", items: { type: "string" } },
-          ],
-        },
-        functionalArea: {
-          oneOf: [
-            { type: "string" },
-            { type: "array", items: { type: "string" } },
-          ],
-        },
-        interoperability: {
-          oneOf: [
-            { type: "string" },
-            { type: "array", items: { type: "string" } },
-          ],
-        },
-        offlineFunctionality: {
-          oneOf: [
-            { type: "string" },
-            { type: "array", items: { type: "string" } },
-          ],
-        },
-      },
+    pricing: { type: "string" },
+    free_demo_available: { type: "boolean" },
+    interoperatibility: {
+      type: "array",
+      items: { type: "string" },
+    },
+    interoperatibility_pricing: { type: "string" },
+    documentation: {
+      type: "array",
+      items: { type: "string" },
+    },
+    offline_functionality: { type: "string" },
+    business_type: {
+      type: "array",
+      items: { type: "string" },
     },
   },
 }

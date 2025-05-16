@@ -1,12 +1,28 @@
+id: odyssey-procure
 name: Odyssey Procure - DART
-summary: Access to solar equipment and credit in one seamless transaction. A  tool to support DRE companies in the procurement and financing of their assets. nagement tool.
 company: Odyssey Energy Solutions
+summary: Access to solar equipment and credit in one seamless transaction. A  tool to support DRE companies in the procurement and financing of their assets. nagement tool.
 logo: /path/to/odyssey-logo.png
 link: https://odyssey.com
+
 categories:
   - Product Logistics & Procurement
 
-highlights:
-  - Offline Features
+license:
+user_type:
+  - Basic digital literacy
+
+pricing:
+free_demo_available: true
+
+interoperatibility:
+
+interoperatibility_pricing:
+
+documentation:
+
+offline_functionality: Yes, some functionalities are available offline
+
+business_type:
   - Mini Grids
   - SHS

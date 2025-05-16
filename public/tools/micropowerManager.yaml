@@ -1,18 +1,38 @@
+id: micropowermanager
 name: MicroPowerManager
-summary: Manage off-grid customers, revenues and assets with this all-in one Open Source platform.
 company: EnAccess
+summary: Manage off-grid customers, revenues and assets with this all-in one Open Source platform.
 logo: /path/to/micropowerManager-logo.png
 link: https://micropowermanager.io/
+
 categories:
   - Bookkeeping & Accounting
-  - customer finance Management
+  - Customer Finance Management
   - CRM
   - Payment Collections
   - Repair, Refurbishment Facilitation
   - Sales & Contract Management
   - Tech Response
-highlights:
-  - 100% free
-  - Open Source
+
+license: Fully Open Source
+user_type:
+  - Basic digital literacy
+pricing: option1
+
+free_demo_available: true
+
+interoperatibility:
+  - Data export is possible via file download (CSV/XLSX/...)
+  - We provide bi-directional data exchange via API. It is possible to export data via API and import data via API
+
+interoperatibility_pricing: No, there are no (extra) costs associated with data exchange for cross-platform integrations.
+
+documentation:
+  - High-level documentation
+  - Technical documentation (like OpenAPI)
+
+offline_functionality: No, it works only with an internet connection
+
+business_type:
   - SHS
   - Mini Grids

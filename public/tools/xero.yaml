@@ -1,11 +1,29 @@
+id: xero
 name: Xero
 summary: Accounting software that allows you to pay bills, claim expenses, track expenses, projects and inventory, connect and reconcilate bank accounts, etc.
 logo: /path/to/xero-logo.png
 link: https://xero.com
+
 categories:
   - Bookkeeping & Accounting
 
-highlights:
+license: Fully Propriatary
+user_type:
+  - Basic digital literacy
+
+pricing:
+
+free_demo_available: true
+
+interoperatibility:
+
+interoperatibility_pricing:
+
+documentation:
+
+offline_functionality: No it works only with an internet connection
+
+business_type:
   - SHS
   - Clean Cooking
   - Mini Grids

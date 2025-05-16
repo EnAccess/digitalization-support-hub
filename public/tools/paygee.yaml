@@ -1,8 +1,10 @@
+id: paygee
 name: PayGee
-summary: Paygee provides a fully integrated Pay-As-You-Go (PAYG) platform. The hardware-agnostics software suite enables remote access and management of PAYG products. Solutions exist for distributors and manufacturers
 company: Engie
+summary: Paygee provides a fully integrated Pay-As-You-Go (PAYG) platform. The hardware-agnostics software suite enables remote access and management of PAYG products. Solutions exist for distributors and manufacturers
 logo: /path/to/paygee-logo.png
 link: https://paygee.com
+
 categories:
   - Customer Finance
   - Customer Vetting
@@ -18,7 +20,26 @@ categories:
   - Upselling
   - Tech Response
 
-highlights:
-  - Partially Open Source
-  - offline Features
+license: Partially Open Source
+user_type:
+  - Basic digital literacy
+  - Basic IoT know-how
+  - Has E-learning platform
+
+pricing:
+
+free_demo_available: false
+
+interoperatibility:
+  - We provide uni-directional data export via API
+  - our tool offers automatic data exchange with selected tools
+
+interoperatibility_pricing: No, there are no (extra) costs associated with data exchange for cross-platform integrations.
+
+documentation:
+  - Technical documentation (like OpenAPI)
+
+offline_functionality: Yes, some functionalities are available offline
+
+business_type:
   - SHS
