@@ -13,7 +13,6 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { X, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { useSupportBubble } from "./support-bubble-provider"
 import {
   ToolDetailModal,
   type ToolDetailModalProps,

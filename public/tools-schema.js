@@ -1,6 +1,6 @@
 const schema = {
   type: "object",
-  required: ["name", "summary", "logo", "link", "categories"],
+  required: ["name", "summary", "logo", "link"], // Removed categories from required
   properties: {
     id: { type: "string" },
     name: { type: "string" },
@@ -9,12 +9,13 @@ const schema = {
     logo: { type: "string" },
     link: { type: "string" },
     categories: {
-      type: "array",
+      type: ["array", "null"], // Can be array or null
       items: { type: "string" },
+      default: null, // Defaults to null if not provided
     },
     license: {
-      type: ["string", "null"], // Allows string or null
-      default: null, // Optional default
+      type: ["string", "null"],
+      default: null,
     },
     user_type: {
       type: ["array", "null"],
@@ -22,12 +23,12 @@ const schema = {
       default: null,
     },
     pricing: {
-      type: ["string", "null"], // Allows string or null/empty
+      type: ["string", "null"],
       default: null,
     },
     free_demo_available: {
-      type: "boolean",
-      default: false, // Optional default
+      type: ["boolean", "null"], // Can be boolean or null
+      default: null,
     },
     interoperatibility: {
       type: ["array", "null"],
