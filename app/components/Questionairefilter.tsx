@@ -7,6 +7,64 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
 import { mapAnswersToCategories } from "../utils/questionnaire-utils"
+import yaml from "js-yaml"
+import { Tool } from "../types"
+const getToolCountForCategories = async (
+  categories: string[]
+): Promise<number> => {
+  try {
+    // Assuming tools data is stored in YAML files in a public directory
+    const toolFiles = [
+      "/tools/paygee.yaml",
+      "/tools/odoo.yaml",
+      "/tools/quickbooks.yaml",
+      "/tools/upya.yaml",
+      "/tools/xero.yaml",
+      "/tools/odyssey.yaml",
+      "/tools/unleashed.yaml",
+      "/tools/3cx.yaml",
+      "/tools/d-rec.yaml",
+      "/tools/ixo.yaml",
+      "/tools/p-rec.yaml",
+      "/tools/challenges.yaml",
+      "/tools/carbon-clear.yaml",
+      "/tools/cavex.yaml",
+      "/tools/bridgin.yaml",
+      "/tools/d-rec-financing-programmes.yaml",
+      "/tools/fieldPro.yaml",
+      "/tools/Learn.ink.yaml",
+      "/tools/micropowerManager.yaml",
+      "/tools/nithio.yaml",
+      "/tools/odyssey-fern.yaml",
+      "/tools/paygops.yaml",
+      "/tools/vida.yaml",
+      "/tools/angaza.yaml",
+      "/tools/prospect.yaml",
+      "/tools/universus.yaml",
+    ]
+
+    // Load all tool data
+    const loadedTools = await Promise.all(
+      toolFiles.map(async (file) => {
+        const response = await fetch(file)
+        const text = await response.text()
+        return yaml.load(text) as Tool
+      })
+    )
+
+    // Filter tools based on categories
+    const matchingTools = loadedTools.filter(
+      (tool) =>
+        Array.isArray(tool.categories) &&
+        tool.categories.some((category) => categories.includes(category))
+    )
+
+    return matchingTools.length
+  } catch (error) {
+    console.error("Error loading tool data:", error)
+    return 0
+  }
+}
 
 const QUESTIONNAIRE_ORDER = [
   "numberOfClients",
@@ -149,12 +207,12 @@ interface QuestionaireFilterProps {
 const QuestionaireFilter = ({
   onComplete,
   onClose,
-  toolCount = 0,
 }: QuestionaireFilterProps) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [answers, setAnswers] = useState<Record<string, string[]>>({})
   const [isQuestionnaireComplete, setIsQuestionnaireComplete] = useState(false)
   const [, setFilteredToolsCount] = useState(0)
+  const [matchingToolCount, setMatchingToolCount] = useState(0)
 
   const currentQuestion = QUESTIONNAIRE_ORDER[currentQuestionIndex]
 
@@ -236,6 +294,16 @@ const QuestionaireFilter = ({
     onComplete(relevantCategories, answers) // Pass both categories and answers
     onClose()
   }
+  const test = mapAnswersToCategories(answers)
+
+  // Update tool count when test categories change
+  useEffect(() => {
+    if (test.length > 0) {
+      getToolCountForCategories(test).then((count) => {
+        setMatchingToolCount(count)
+      })
+    }
+  }, [test])
 
   useEffect(() => {
     if (isQuestionnaireComplete) {
@@ -397,8 +465,8 @@ const QuestionaireFilter = ({
                 </div>
                 <h3 className="text-xl font-medium">
                   Based on your answers, we&apos;ve found{" "}
-                  {toolCount > 0 ? toolCount : 4} tools that could be a great
-                  fit for you.
+                  {matchingToolCount > 0 ? matchingToolCount : 0} tools that
+                  could be a great fit for you.
                 </h3>
               </div>
 
@@ -454,7 +522,8 @@ const QuestionaireFilter = ({
                   onClick={handleComplete}
                   className="w-full bg-emerald-700 text-white hover:bg-emerald-800"
                 >
-                  View {toolCount > 0 ? toolCount : 4} suggestions
+                  View {matchingToolCount > 0 ? matchingToolCount : 0}{" "}
+                  suggestions
                 </Button>
               </div>
             </div>

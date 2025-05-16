@@ -1,6 +1,6 @@
 "use client"
 
-import { Users, DollarSign } from "lucide-react"
+import { Users, DollarSign, FileText } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -21,23 +21,17 @@ export interface ToolDetailModalProps {
     name: string
     summary: string
     categories: string[]
-    highlights?: string[]
-    isFree?: boolean
-    link?: string
-    features?: string[]
-    integrations?: string[]
-    pricing?: {
-      model: string
-      description: string
-    }
-    userTypes?: {
-      label: string
-      description: string
-    }[]
-    documentation?: {
-      title: string
-      description: string
-    }[]
+    logo: string
+    link: string
+    license: string
+    user_type: string[]
+    pricing: string
+    free_demo_available: boolean
+    interoperatibility: string[]
+    interoperability_pricing: string
+    documentation: string
+    offline_functionality: string
+    business_type: string[]
   } | null
 }
 
@@ -75,29 +69,34 @@ export function ToolDetailModal({
         </DialogHeader>
 
         <div className="flex flex-wrap gap-2 mt-2">
-          {tool.highlights && tool.highlights.length > 0 && (
+          {/* First evaluate the condition, THEN render JSX */}
+          {((tool.business_type && tool.business_type.length > 0) ||
+            tool.license) && (
             <div className="flex flex-wrap gap-2 w-full">
-              {tool.highlights.map((category, index) => {
-                // Define colors explicitly for each badge
+              {[
+                ...(tool.business_type || []),
+                ...(Array.isArray(tool.license)
+                  ? tool.license
+                  : tool.license
+                    ? [`${tool.license}`]
+                    : []),
+              ].map((category, index) => {
                 const colors = [
                   "bg-[#43BC80]",
                   "bg-[#8BDC7F]",
                   "bg-[#5AC9C5]",
                   "bg-[#67C6AB]",
                 ]
-
-                // Make sure the index is within the range of the colors array
                 const colorIndex = index % colors.length
                 const colorClass = colors[colorIndex]
-
                 return (
                   <Badge
-                    key={category}
-                    className={`${colorClass} rounded-full text-[#161D1A] font-bold text-sm `}
+                    key={`${category}-${index}`}
+                    className={`${colorClass} rounded-full text-[#161D1A] font-bold text-sm`}
                     style={{
-                      minWidth: "auto", // Prevents forced stretching
-                      display: "inline-flex", // Ensures it wraps around text content
-                      justifyContent: "center", // Centers text inside badge
+                      minWidth: "auto",
+                      display: "inline-flex",
+                      justifyContent: "center",
                       alignItems: "center",
                       backgroundColor: colorClass
                         .replace("bg-[", "")
@@ -127,13 +126,17 @@ export function ToolDetailModal({
                 Interoperability, Data Exchange & Integrations
               </h3>
               <ul className="list-disc pl-5 text-sm text-gray-700 space-y-1">
-                {tool.integrations?.map((item, index) => (
-                  <li key={index}>{item}</li>
-                )) || (
+                {tool?.interoperatibility ? (
+                  Array.isArray(tool.interoperatibility) ? (
+                    tool.interoperatibility.map((item, index) => (
+                      <li key={index}>{item}</li>
+                    ))
+                  ) : (
+                    <li>{tool.interoperatibility}</li>
+                  )
+                ) : (
                   <>
-                    <li>Item 1</li>
-                    <li>Item 2</li>
-                    <li>Item 3</li>
+                    <li>No interoperability information available</li>
                   </>
                 )}
               </ul>
@@ -147,10 +150,10 @@ export function ToolDetailModal({
                 <DollarSign className="h-6 w-6 text-gray-700 mt-0.5" />
                 <div>
                   <p className="font-medium">
-                    {tool.pricing?.model || "By time based license"}
+                    {tool?.pricing || "By time based license"}
                   </p>
                   <p className="text-sm text-gray-500">
-                    {tool.pricing?.description ||
+                    {tool.pricing ||
                       "The tool is 100% free for 2025, with pricing for subsequent years yet to be determined."}
                   </p>
                 </div>
@@ -163,10 +166,12 @@ export function ToolDetailModal({
                 <Users className="h-6 w-6 text-gray-700 mt-0.5" />
                 <div>
                   <p className="font-medium">
-                    {tool.userTypes?.[0]?.label || "Label"}
+                    {tool?.user_type ? "Suitable for" : "General Users"}
                   </p>
                   <p className="text-sm text-gray-500">
-                    {tool.userTypes?.[0]?.description || "Secondary text"}
+                    {Array.isArray(tool?.user_type)
+                      ? tool.user_type.join(", ")
+                      : tool?.user_type || "Basic digital literacy required"}
                   </p>
                 </div>
               </div>
@@ -177,13 +182,19 @@ export function ToolDetailModal({
                 Documentation & Guides
               </h3>
               <div className="flex items-start gap-3">
-                <Users className="h-6 w-6 text-gray-700 mt-0.5" />
+                <FileText className="h-6 w-6 text-gray-700 mt-0.5" />
                 <div>
                   <p className="font-medium">
-                    {tool.documentation?.[0]?.title || "User Guides"}
+                    {tool?.documentation
+                      ? "Documentation Available"
+                      : "Documentation"}
                   </p>
                   <p className="text-sm text-gray-500">
-                    {tool.documentation?.[0]?.description || "Secondary text"}
+                    {typeof tool?.documentation === "string"
+                      ? tool.documentation
+                      : Array.isArray(tool?.documentation)
+                        ? tool.documentation
+                        : "Please contact the vendor for documentation and guides."}
                   </p>
                 </div>
               </div>

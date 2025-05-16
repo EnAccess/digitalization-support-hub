@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -14,7 +14,6 @@ import QuestionaireFilter from "../components/Questionairefilter"
 import { ToolCategoriesDrawer } from "../components/categories-drawer"
 import { useMobile } from "../hooks/use-mobile"
 import { Tool } from "../types"
-import { calculateFilteredToolsCount } from "../utils/filter-utils"
 
 // Remove the local Tool interface since we're now importing it
 
@@ -24,8 +23,8 @@ export default function Landing() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [tools, setTools] = useState<Tool[]>([]) // Explicitly type the state
   const { isDesktop } = useMobile()
-  const [filteredToolsCount, setFilteredToolsCount] = useState(0)
-  const [answers, setAnswers] = useState<Record<string, string[]>>({})
+
+  const [, setAnswers] = useState<Record<string, string[]>>({})
 
   const handleModalOpen = (value: boolean) => {
     setIsModalOpen(value)
@@ -56,13 +55,6 @@ export default function Landing() {
       behavior: "smooth",
     })
   }
-
-  useEffect(() => {
-    if (tools.length && Object.keys(answers).length) {
-      const count = calculateFilteredToolsCount(tools, answers)
-      setFilteredToolsCount(count)
-    }
-  }, [tools, answers])
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -127,7 +119,6 @@ export default function Landing() {
         <QuestionaireFilter
           onComplete={handleQuestionnaireComplete}
           onClose={handleModalClose}
-          toolCount={filteredToolsCount}
         />
       </Modal>
 

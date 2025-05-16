@@ -1,30 +1,31 @@
+id: 3cx
 name: 3CX
 summary: A scalable, easy-to-manage call center solution with unified communications—offering call handling, live chat, and video conferencing to help businesses streamline customer communications, from small teams to large organizations.
 logo: /path/to/3cx-logo.png
 link: https://www.3cx.com/call-center/
+
 categories:
   - Market Analysis
   - Service Calls
   - Tech Response
-highlights:
-  - Free demo
+
+license: Fully Propriatary
+user_type:
+  - Basic digital literacy
+
+pricing:
+
+free_demo_available: true
+
+interoperatibility:
+
+interoperatibility_pricing:
+
+documentation:
+
+offline_functionality: No, it works only with an internet connection
+
+business_type:
   - SHS
   - Mini Grids
   - Clean Cooking
-metadata:
-  numberOfClients:
-    - <100
-  transactionsPerDay:
-    - <5
-  companyStage: Pre-launch startup
-  companyFocus:
-    - SHS
-  toolsCost: Free-to-use or freemium versions only
-  toolSource: Open-source only
-  internalExpertise: No expertise at all
-  businessArea:
-    - Preparation and Setup
-  functionalArea:
-    - Market Analysis
-  interoperability: No Interoperability
-  offlineFunctionality: Full Offline Functionality

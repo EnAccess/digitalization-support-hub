@@ -3,21 +3,18 @@ export interface Tool {
   name: string
   company: string
   summary: string
-  categories: string[]
-  highlights?: string[]
   logo: string
   link?: string
-  capabilities?: {
-    sectors: string[]
-    pricing: {
-      isFree: boolean
-      hasFreemium: boolean
-    }
-    technicalRequirements: {
-      expertiseLevel: "none" | "basic" | "advanced"
-      isOpenSource: boolean
-    }
-  }
+  categories: string[]
+  license?: string[]
+  user_type?: string[]
+  pricing?: string
+  free_demo_available?: boolean
+  interoperability?: string[]
+  interoperability_pricing?: string
+  documentation?: string
+  offline_functionality?: string
+  business_type?: string[]
 }
 
 export interface FilterQuery {

@@ -1,9 +1,11 @@
+id: paygops
 name: PaygOps
+company: PaygOps & Bridgin
 summary: >-
   PaygOps is a comprehensive software as a service (SaaS) for micro-lenders to digitalise their processes (in sectors like energy agriculture or finance for instance). Doing so they can gain in efficiency and scalability toward a greater impact.
-company: PaygOps & Bridgin
 logo: /path/to/paygops-logo.png
 link: https://www.paygops.com/
+
 categories:
   - Bookkeeping & Accounting
   - Customer Finance
@@ -20,8 +22,27 @@ categories:
   - Stock Management
   - Upselling
   - Tech Response
-highlights:
-  - Partially Open Source
-  - Offline Features
-  - Free demo
+
+license: Partially Open Source
+user_type:
+  - Basic digital literacy
+
+pricing: by time based license
+
+free_demo_available: true
+
+interoperatibility:
+  - Data export is possible via file download (CSV/XLSX/...)
+  - We provide uni-directional data export via API
+  - We provide bi-directional data exchange via API. It is possible to export data via API and import data via API
+  - our tool offers automatic data exchange with selected tools
+
+interoperatibility_pricing: Yes, is it a usage-based fee
+
+documentation:
+  - Technical documentation (like OpenAPI)
+
+offline_functionality: Yes, some functionalities are available offline
+
+business_type:
   - SHS

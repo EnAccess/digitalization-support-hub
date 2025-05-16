@@ -1,37 +1,34 @@
+id: d-rec
 name: D-RECs
-summary: D-RECs are verified labels that enhance EACs like I-RECs for Distributed Renewable Energy. They help developers access global markets, monetize co-benefits, cover costs, unlock financing, and scale impact sustainably.
 company: Green South B.V.
+summary: D-RECs are verified labels that enhance EACs like I-RECs for Distributed Renewable Energy. They help developers access global markets, monetize co-benefits, cover costs, unlock financing, and scale impact sustainably.
 logo: /path/to/d-rec-logo.png
 link: www.drecs.org
+
 categories:
   - Impact Measurements & Performance
   - Portfolio Analysis & Management
+  - Market Analysis
 
-highlights:
-  - 100% Free
-  - Mini-Grids
+license: Fully Open Source
+user_type:
+  - Basic digital literacy
 
-metadata:
-  numberOfClients:
-    - <100
-    - 101-500
-    - 501-1000
-    - ">1000"
-    - ">5000"
-  transactionsPerDay:
-    - <5
-    - 5-100
-    - 101-500
-    - ">501"
-  companyStage: Pre-launch startup
-  companyFocus:
-    - SHS
-  toolsCost: Free-to-use or freemium versions only
-  toolSource: Open-source only
-  internalExpertise: No expertise at all
-  businessArea:
-    - Preparation and Setup
-  functionalArea:
-    - Market Analysis
-  interoperability: No Interoperability
-  offlineFunctionality: Full Offline Functionality
+pricing: The tool is offered as a single open-source version with permission-based access. Currently, there are no different versions or licenses available. Access to certain features and usage is determined based on predefined permissions to ensure transparency and accountability.
+
+free_demo_available: true
+
+interoperatibility:
+  - Data export is possible via file download (CSV/XLSX/...)
+  - We provide bi-directional data exchange via API. It is possible to export data via API and import data via API
+  - our tool offers automatic data exchange with selected tools
+
+interoperatibility_pricing: Currently, there are no additional costs for data exchange, downloads, or integrations. However, pricing for these features may be defined in the future as part of the platform’s broader financial structure.
+
+documentation:
+  - Technical documentation (like OpenAPI)
+
+offline_functionality: No, it works only with an internet connection
+
+business_type:
+  - Mini Grids

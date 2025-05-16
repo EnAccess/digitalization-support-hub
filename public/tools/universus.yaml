@@ -1,15 +1,32 @@
+id: universus
 name: Universus
 summary: Universal Connectivity offers solutions to improve connectivity in remote and underserved areas, including internet access, network infrastructure, and communication tools. Their scalable platform bridges the digital divide with reliable, sustainable services.
 logo: /path/to/universalconnectivity-logo.png
 link: https://universalconnectivity.com/
+
 categories:
   - Marketing
   - Service Calls
   - Tech Response
   - Portfolio Analysis & Management
 
-highlights:
-  - offline Features
+license: Fully Propriatary
+user_type:
+  - Basic digital literacy
+
+pricing:
+
+free_demo_available: false
+
+interoperatibility:
+
+interoperatibility_pricing: Yes, additional subscription/feature fee
+
+documentation:
+
+offline_functionality: Yes, full functionality is available offline
+
+business_type:
   - Mini Grids
   - SHS
   - Clean Cooking

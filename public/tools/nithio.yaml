@@ -1,15 +1,32 @@
+id: nithio
 name: Nithio Risks Analytics Engine
-summary: >
-  Nithio’s Risk Analytics Engine uses AI and data to assess credit risk, guide capital deployment, and track impact. It integrates CRM and geospatial data for real-time insights, enabling smarter, lower-risk investments in decentralized energy.
 company: Nithio
+summary: Nithio's Risk Analytics Engine uses AI and data to assess credit risk, guide capital deployment, and track impact. It integrates CRM and geospatial data for real-time insights, enabling smarter, lower-risk investments in decentralized energy.
 logo: /path/to/nithio-logo.png
 link: https://nithio.com/
+
 categories:
-  - customer finance Management
+  - Customer Finance Management
   - Impact Measurements & Performance
   - Portfolio Analysis & Management
-highlights:
-  - Free demo
+
+license: Fully Propriatary
+user_type:
+  - Basic digital literacy
+
+pricing: By Data Volume
+
+free_demo_available: true
+
+interoperatibility:
+
+interoperatibility_pricing:
+
+documentation:
+
+offline_functionality: No, it works only with an internet connection
+
+business_type:
   - SHS
   - Mini Grids
   - Clean Cooking
