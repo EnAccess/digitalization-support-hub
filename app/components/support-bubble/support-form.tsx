@@ -39,8 +39,6 @@ export function SupportForm({ onSubmitSuccess }: SupportFormProps) {
     event.preventDefault()
     setIsSubmitting(true)
 
-    const formData = new FormData(event.currentTarget)
-
     try {
       onSubmitSuccess()
     } catch (error) {
