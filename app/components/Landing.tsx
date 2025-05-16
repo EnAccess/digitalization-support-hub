@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -23,8 +23,8 @@ export default function Landing() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [tools, setTools] = useState<Tool[]>([]) // Explicitly type the state
   const { isDesktop } = useMobile()
-  const [filteredToolsCount, setFilteredToolsCount] = useState(0)
-  const [answers, setAnswers] = useState<Record<string, string[]>>({})
+
+  const [, setAnswers] = useState<Record<string, string[]>>({})
 
   const handleModalOpen = (value: boolean) => {
     setIsModalOpen(value)
@@ -119,7 +119,6 @@ export default function Landing() {
         <QuestionaireFilter
           onComplete={handleQuestionnaireComplete}
           onClose={handleModalClose}
-          toolCount={filteredToolsCount}
         />
       </Modal>
 

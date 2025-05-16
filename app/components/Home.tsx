@@ -148,7 +148,6 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
     null as Tool | null
   )
   const [questionnaireAnswers] = useState<Record<string, string[]> | null>(null)
-  const { openSupportForm, openMiniBubble } = useSupportBubble()
 
   // Update local categories when prop changes
   useEffect(() => {

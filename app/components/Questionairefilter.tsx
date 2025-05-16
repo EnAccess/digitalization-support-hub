@@ -207,7 +207,6 @@ interface QuestionaireFilterProps {
 const QuestionaireFilter = ({
   onComplete,
   onClose,
-  toolCount = 0,
 }: QuestionaireFilterProps) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [answers, setAnswers] = useState<Record<string, string[]>>({})
@@ -466,8 +465,8 @@ const QuestionaireFilter = ({
                 </div>
                 <h3 className="text-xl font-medium">
                   Based on your answers, we&apos;ve found{" "}
-                  {matchingToolCount > 0 ? matchingToolCount : toolCount} tools
-                  that could be a great fit for you.
+                  {matchingToolCount > 0 ? matchingToolCount : 0} tools that
+                  could be a great fit for you.
                 </h3>
               </div>
 
@@ -523,7 +522,7 @@ const QuestionaireFilter = ({
                   onClick={handleComplete}
                   className="w-full bg-emerald-700 text-white hover:bg-emerald-800"
                 >
-                  View {matchingToolCount > 0 ? matchingToolCount : toolCount}{" "}
+                  View {matchingToolCount > 0 ? matchingToolCount : 0}{" "}
                   suggestions
                 </Button>
               </div>

@@ -12,8 +12,8 @@ export async function submitSupportRequest(formData: FormData) {
   const company = formData.get("company") as string
   const email = formData.get("email") as string
   const companySize = formData.get("companySize") as string
-  const revenue = formData.get("revenue") as string
-  const transactions = formData.get("transactions") as string
+  // const revenue = formData.get("revenue") as string
+  // const transactions = formData.get("transactions") as string
   const country = formData.get("country") as string
   const application = formData.get("application") as string
 
@@ -27,7 +27,7 @@ export async function submitSupportRequest(formData: FormData) {
     // ...
 
     // Send confirmation email using Resend
-    const { data, error } = await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: "Support <support@yourdomain.com>",
       to: email,
       subject: "Thanks for reaching out!",

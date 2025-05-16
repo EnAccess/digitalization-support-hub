@@ -2,7 +2,7 @@ interface ThankYouMessageProps {
   onClose: () => void
 }
 
-export function ThankYouMessage({ onClose }: ThankYouMessageProps) {
+export function ThankYouMessage({}: ThankYouMessageProps) {
   return (
     <div className="text-center py-6">
       <h2 className="text-2xl font-medium mb-2">Thank you!</h2>
