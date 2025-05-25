@@ -34,10 +34,10 @@ const schema = {
           type: "array",
           items: { type: "string" },
         },
-        description:{
-          type:["string", "null"],
+        description: {
+          type: ["string", "null"],
           default: null,
-        }
+        },
       },
     },
     free_demo_available: {
