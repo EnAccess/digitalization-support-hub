@@ -25,7 +25,11 @@ export interface ToolDetailModalProps {
     link: string
     license: string
     user_type: string[]
-    pricing: string
+    pricing: {
+      title: string[]
+      description?: string
+    } | null
+    is_free: boolean
     free_demo_available: boolean
     interoperatibility: string[]
     interoperability_pricing: string
@@ -107,6 +111,34 @@ export function ToolDetailModal({
                   </Badge>
                 )
               })}
+              {tool.is_free && (
+                <Badge
+                  className="bg-[#43BC80] rounded-full text-[#161D1A] font-bold text-sm"
+                  style={{
+                    minWidth: "auto",
+                    display: "inline-flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: "#43BC80",
+                  }}
+                >
+                  100% Free
+                </Badge>
+              )}
+              {tool.free_demo_available && (
+                <Badge
+                  className="bg-[#8BDC7F] rounded-full text-[#161D1A] font-bold text-sm"
+                  style={{
+                    minWidth: "auto",
+                    display: "inline-flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: "#8BDC7F",
+                  }}
+                >
+                  Free Demo
+                </Badge>
+              )}
             </div>
           )}
         </div>
@@ -146,18 +178,35 @@ export function ToolDetailModal({
           <div className="space-y-6">
             <div>
               <h3 className="text-lg font-semibold mb-4">Pricing</h3>
-              <div className="flex items-start gap-3">
-                <DollarSign className="h-6 w-6 text-gray-700 mt-0.5" />
-                <div>
-                  <p className="font-medium">
-                    {tool?.pricing || "By time based license"}
-                  </p>
+              {tool?.pricing?.title && tool.pricing.title.length > 0 ? (
+                <div className="flex items-start gap-3">
+                  <DollarSign className="h-6 w-6 text-gray-700 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <div className="space-y-1">
+                      {tool.pricing.title.map((title, index) => (
+                        <p key={index} className="font-medium">
+                          {tool.pricing && tool.pricing.title.length > 1
+                            ? `• ${title}`
+                            : title}
+                        </p>
+                      ))}
+                    </div>
+                    {tool.pricing.description && (
+                      <p className="text-sm text-gray-500 mt-2">
+                        {tool.pricing.description}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-start gap-3">
+                  <DollarSign className="h-6 w-6 text-gray-700 mt-0.5 flex-shrink-0" />
                   <p className="text-sm text-gray-500">
-                    {tool.pricing ||
-                      "The tool is 100% free for 2025, with pricing for subsequent years yet to be determined."}
+                    Information coming soon. Please contact the vendor for
+                    additional details.
                   </p>
                 </div>
-              </div>
+              )}
             </div>
 
             <div>
@@ -186,7 +235,7 @@ export function ToolDetailModal({
                 <div>
                   <p className="font-medium">
                     {tool?.documentation
-                      ? "Documentation Available"
+                      ? "Documentation available"
                       : "Documentation"}
                   </p>
                   <p className="text-sm text-gray-500">

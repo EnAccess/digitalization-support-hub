@@ -1,19 +1,22 @@
 id: 3cx
 name: 3CX
+company: 3CX
 summary: A scalable, easy-to-manage call center solution with unified communications—offering call handling, live chat, and video conferencing to help businesses streamline customer communications, from small teams to large organizations.
 logo: /path/to/3cx-logo.png
-link: https://www.3cx.com/call-center/
+link: https://www.3cx.com
 
 categories:
   - Market Analysis
   - Service Calls
   - Tech Response
 
-license: Fully Propriatary
+license:
 user_type:
   - Basic digital literacy
 
 pricing:
+  title:
+  description:
 
 free_demo_available: true
 

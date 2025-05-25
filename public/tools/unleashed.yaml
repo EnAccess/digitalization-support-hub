@@ -1,5 +1,6 @@
 id: unleashed
 name: Unleashed
+company: Unleashed
 summary: Unleash integrates business tools for market insights, better product flow control, improved efficiency, and streamlined procurement. It's a customizable, all-in-one platform with custom API integrations and add-ons.
 logo: /path/to/unleashed-logo.png
 link: https://unleashedsoftware.com
@@ -14,6 +15,8 @@ user_type:
   - Basic digital literacy
 
 pricing:
+  title:
+  description:
 
 free_demo_available: true
 

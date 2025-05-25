@@ -47,7 +47,7 @@ const categoryMap: CategoryMap = {
     ],
   },
   distribution: {
-    name: "Distribution/Sales",
+    name: "Distribution & Sales",
     subcategories: [
       "Stock Management",
       "Personal Training",
@@ -58,7 +58,7 @@ const categoryMap: CategoryMap = {
     ],
   },
   operations: {
-    name: "After Sales/Operations",
+    name: "After Sales & Operations",
     subcategories: [
       "Payment Collections",
       "Service Calls",
@@ -91,8 +91,8 @@ const categoryMap: CategoryMap = {
 
 const categories = [
   { id: "preparation", name: "Preparation & Setup", count: null },
-  { id: "distribution", name: "Distribution/Sales", count: null },
-  { id: "operations", name: "After Sales/Operations", count: null },
+  { id: "distribution", name: "Distribution & Sales", count: null },
+  { id: "operations", name: "After Sales & Operations", count: null },
   { id: "optimize", name: "Assess & Optimize", count: null },
   { id: "endoflife", name: "Product End-of-Life", count: null },
 ]
@@ -415,6 +415,34 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
                         </Badge>
                       )
                     })}
+                    {tool.is_free && (
+                      <Badge
+                        className="bg-[#43BC80] rounded-full text-[#161D1A] font-bold text-sm"
+                        style={{
+                          minWidth: "auto",
+                          display: "inline-flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          backgroundColor: "#43BC80",
+                        }}
+                      >
+                        100% Free
+                      </Badge>
+                    )}
+                    {tool.free_demo_available && (
+                      <Badge
+                        className="bg-[#8BDC7F] rounded-full text-[#161D1A] font-bold text-sm"
+                        style={{
+                          minWidth: "auto",
+                          display: "inline-flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          backgroundColor: "#8BDC7F",
+                        }}
+                      >
+                        Free demo
+                      </Badge>
+                    )}
                   </div>
                 </CardFooter>
               )}

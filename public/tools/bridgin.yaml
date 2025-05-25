@@ -1,6 +1,6 @@
 id: bridgin
 name: Bridgin
-company: Solaris Offgrid
+company: masunga
 summary: Bridgin is Solaris Offgrid's marketplace for receivables financing, enabling investors to buy receivables from last-mile distributors, who gain instant liquidity. It's a tech and legal platform—not a fund—that facilitates BoP-focused funding.
 logo: /images/bridgin-logo.png
 link: https://www.bridgin.io/
@@ -9,12 +9,15 @@ categories:
   - Fundraising
   - Portfolio Analysis & Management
 
-license: Fully Propriatary
+license:
 
 user_type:
   - Basic digital literacy
 
 pricing:
+  title:
+    - By data volume
+  description:
 
 free_demo_available: true
 

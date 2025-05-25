@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import Home from "../components/Home"
 import { StatisticCard } from "../components/StatisticCard"
 import { BarrierCard } from "../components/BarrierCard"
-import { FaFacebookF, FaYoutube, FaLinkedinIn, FaGithub } from "react-icons/fa"
+import { FaYoutube, FaLinkedinIn, FaGithub } from "react-icons/fa"
 import { Modal } from "antd"
 import QuestionaireFilter from "../components/Questionairefilter"
 import { ToolCategoriesDrawer } from "../components/categories-drawer"
@@ -57,17 +57,28 @@ export default function Landing() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Hero Section */}
-      <section className="bg-[#E2F6DF] p-8 md:p-16 ">
-        <div className="max-w-6xl mx-auto">
-          <div className="uppercase text-[#0D261A] text-sm lg:text-md font-bold mb-4">
+    <div className="flex flex-col min-h-screen ">
+      <div className="bg-[#F9FBFA]">
+        <header className=" py-8 px-8">
+          <div className="max-w-6xl mx-auto flex items-start justify-start">
+            <Link href="/">
+              <Image
+                src="/Digital Support Hub-approved logo-02.svg"
+                alt="Logo"
+                width={150}
+                height={48}
+                className="object-contain"
+              />
+            </Link>
+          </div>
+        </header>
+        {/* Hero Section */}
+        <section className="bg-[#E2F6DF] px-8 md:py-24 max-w-6xl py-8 rounded-lg mx-auto font-raleway ">
+          <div className="uppercase font-raleway text-[#0D261A] text-sm font-bold mb-4">
             DIGITALIZATION SUPPORT HUB
           </div>
-          <h1 className="text-3xl md:text-5xl font-bold text-[#161D1A] mb-4">
-            Digital Solutions for Distributed
-            <br />
-            Renewable Energy Businesses
+          <h1 className="text-3xl md:text-5xl font-bold text-[#161D1A] mb-4 max-w-4xl">
+            Digital Solutions for Distributed Renewable Energy Businesses
           </h1>
           <p className="text-[#1E1F1E] text-md lg:text-lg font-normal mb-8">
             Explore the tools that can support you.
@@ -75,8 +86,8 @@ export default function Landing() {
           <div className="flex flex-col sm:flex-row gap-4">
             <Button
               className="bg-[#17412C] font-bold text-white rounded-full 
-                w-full max-w-[328px] min-w-[288px] h-[44px] 
-                px-4 py-2 lg:w-[324px] hover:opacity-200 text-md"
+          w-full max-w-[328px] min-w-[200px] h-[44px] 
+          px-4 py-2 hover:opacity-90 text-md"
               onClick={() => setIsModalOpen(true)}
             >
               Tool Finder Wizard
@@ -85,16 +96,16 @@ export default function Landing() {
             {!isDesktop && (
               <Button
                 variant="outline"
-                className="border-[#17412C] text-[#0D261A] font-bold rounded-full w-full max-w-[328px] min-w-[288px] h-[44px] 
-                  px-4 py-2 lg:w-[324px] text-md"
+                className="border-[#17412C] text-[#0D261A] font-bold rounded-full w-full max-w-[328px] min-w-[200px] h-[44px] 
+            px-4 py-2 text-md"
                 onClick={() => setIsDrawerOpen(true)}
               >
                 View tool categories
               </Button>
             )}
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       {/* Only show tool map section on desktop */}
       {isDesktop && (
@@ -132,7 +143,7 @@ export default function Landing() {
       />
 
       {/* Empowering SMEs Section */}
-      <section className="pb-4 px-4 bg-[#F9FBFA]">
+      <section className="pb-4 px-4 bg-[#F9FBFA] py-8 text-center">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold mb-4">
             <span className="text-[#43BC80]">Empowering</span>{" "}
@@ -192,7 +203,7 @@ export default function Landing() {
       {/* Footer */}
       <footer className="bg-[#E2F6DF] py-8 px-4 mt-auto">
         <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-8 mb-8">
+          <div className="flex flex-col md:flex-row justify-between gap-8 mb-8">
             <div>
               <p className="text-base text-[#0D261A] font-bold pb-8 ">
                 Made by
@@ -207,7 +218,7 @@ export default function Landing() {
                 />
               </div>
             </div>
-            <div>
+            <div className="">
               <p className="text-base text-[#0D261A] font-bold pb-8">
                 Funded by
               </p>
@@ -228,16 +239,22 @@ export default function Landing() {
               Connect with us
             </p>
             <div className="flex gap-4">
-              <Link href="#" className="text-white bg-[#17412C] p-2 rounded-lg">
-                <FaFacebookF size={24} />
-              </Link>
-              <Link href="#" className="text-white bg-[#17412C] p-2 rounded-lg">
+              <Link
+                href="https://www.youtube.com/@EnAccessFoundation"
+                className="text-white bg-[#17412C] p-2 rounded-lg"
+              >
                 <FaYoutube size={24} />
               </Link>
-              <Link href="#" className="text-white bg-[#17412C] p-2 rounded-lg">
+              <Link
+                href="https://www.linkedin.com/company/enaccess/"
+                className="text-white bg-[#17412C] p-2 rounded-lg"
+              >
                 <FaLinkedinIn size={24} />
               </Link>
-              <Link href="#" className="text-white bg-[#17412C] p-2 rounded-lg">
+              <Link
+                href="https://github.com/EnAccess"
+                className="text-white bg-[#17412C] p-2 rounded-lg"
+              >
                 <FaGithub size={24} />
               </Link>
             </div>
@@ -253,16 +270,3 @@ export default function Landing() {
     </div>
   )
 }
-
-// function mapQueryToCategories(query: FilterQuery): string[] {
-//   const categories = new Set<string>()
-
-//   // Map company focus to relevant categories
-//   query.companyFocus?.forEach((focus) => {
-//     if (focus === "SHS") categories.add("Solar Home Systems")
-//     if (focus === "Mini-Grids") categories.add("Mini-Grids")
-//     // Add other mappings...
-//   })
-
-//   return Array.from(categories)
-// }

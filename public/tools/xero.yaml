@@ -1,5 +1,6 @@
 id: xero
 name: Xero
+company: Xero
 summary: Accounting software that allows you to pay bills, claim expenses, track expenses, projects and inventory, connect and reconcilate bank accounts, etc.
 logo: /path/to/xero-logo.png
 link: https://xero.com
@@ -7,15 +8,17 @@ link: https://xero.com
 categories:
   - Bookkeeping & Accounting
 
-license: Fully Propriatary
+license:
 user_type:
   - Basic digital literacy
 
 pricing:
-
+  title:
+  description:
 free_demo_available: true
 
 interoperatibility:
+  - our tool offers automatic data exchange with selected tools
 
 interoperatibility_pricing:
 

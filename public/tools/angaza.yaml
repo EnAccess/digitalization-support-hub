@@ -1,6 +1,6 @@
 id: angaza
 name: Angaza
-company: Angaza Inc.
+company: Angaza
 summary: Angaza makes it possible for over 2 billion people around the world to access life-changing products. We redefine how these products are purchased, enabling distributors to offer affordable payments to consumers without access to traditional banking.
 logo: /path/to/agaza-logo.png
 link: https://www.angaza.com/
@@ -14,11 +14,13 @@ categories:
   - Stock Management
   - Upselling
 
-license: Fully Propriatary
+license:
 user_type:
   - Basic digital literacy
 
 pricing:
+  title:
+  description: By systems supported through the platform
 
 free_demo_available:
 

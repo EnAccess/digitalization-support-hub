@@ -11,13 +11,17 @@ categories:
   - Impact Measurements & Performance
   - Portfolio Analysis & Management
 
-license: Fully Proprietary
+license: Fully Open Source
 user_type:
   - Basic digital literacy
 
-pricing: By time based license
+pricing:
+  title:
+    - By time based license
+  description:
 
 free_demo_available: false
+is_free: true
 
 interoperatibility:
 

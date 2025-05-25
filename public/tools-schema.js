@@ -22,9 +22,20 @@ const schema = {
       items: { type: "string" },
       default: null,
     },
-    pricing: {
-      type: ["string", "null"],
+    is_free: {
+      type: ["boolean", "null"], // Can be boolean or null
       default: null,
+    },
+    pricing: {
+      type: ["object", "null"],
+      default: null,
+      properties: {
+        titles: {
+          type: "array",
+          items: { type: "string" },
+        },
+        description: { type: "string" },
+      },
     },
     free_demo_available: {
       type: ["boolean", "null"], // Can be boolean or null

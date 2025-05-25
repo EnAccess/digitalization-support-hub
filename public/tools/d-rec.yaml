@@ -10,11 +10,14 @@ categories:
   - Portfolio Analysis & Management
   - Market Analysis
 
-license: Fully Open Source
+license: Partially Open Source
 user_type:
   - Basic digital literacy
 
-pricing: The tool is offered as a single open-source version with permission-based access. Currently, there are no different versions or licenses available. Access to certain features and usage is determined based on predefined permissions to ensure transparency and accountability.
+pricing:
+  title:
+    - By data volume
+  description: Tool is offered as a single open-source version with permission-based access.
 
 free_demo_available: true
 

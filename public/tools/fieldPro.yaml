@@ -19,11 +19,14 @@ categories:
   - Upselling
   - Tech Response
 
-license: Fully Propriatary
+license:
 user_type:
   - Basic digital literacy
 
-pricing: By user Numbers
+pricing:
+  title:
+    - By user Number
+  description:
 
 free_demo_available: false
 

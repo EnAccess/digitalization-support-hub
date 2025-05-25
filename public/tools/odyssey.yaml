@@ -13,6 +13,8 @@ user_type:
   - Basic digital literacy
 
 pricing:
+  title:
+  description:
 free_demo_available: true
 
 interoperatibility:
