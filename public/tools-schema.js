@@ -30,11 +30,14 @@ const schema = {
       type: ["object", "null"],
       default: null,
       properties: {
-        titles: {
+        title: {
           type: "array",
           items: { type: "string" },
         },
-        description: { type: "string" },
+        description:{
+          type:["string", "null"],
+          default: null,
+        }
       },
     },
     free_demo_available: {

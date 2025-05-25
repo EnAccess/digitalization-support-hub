@@ -41,6 +41,8 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Build Next.js Project
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: npm run build
 
       - name: Upload artifact
