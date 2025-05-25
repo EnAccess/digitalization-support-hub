@@ -31,8 +31,9 @@ const schema = {
       default: null,
       properties: {
         title: {
-          type: "array",
+          type: ["array", "null"],
           items: { type: "string" },
+          default: null,
         },
         description: {
           type: ["string", "null"],
