@@ -9,14 +9,22 @@ categories:
   - Impact Measurements & Performance
   - Portfolio Analysis & Management
 
-license: Fully Propriatary
+license:
 user_type:
   - Basic digital literacy
 
 pricing:
+  title:
+    - By user Number
+    - By time based license
+    - By data volume
+  description: Various pricing schemes. Contact vendor for details
 free_demo_available: true
 
 interoperatibility:
+  - Data export is possible via file download (CSV/XLSX/...)
+  - contact vendor for more details o
+
 interoperatibility_pricing:
 
 documentation:

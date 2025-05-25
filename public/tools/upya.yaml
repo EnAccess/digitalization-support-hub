@@ -1,8 +1,9 @@
 id: upya
 name: Upya
-summary: Plug-and-play software to efficiently manage customers, field teams & operations, digitalize business processes,collect payments, and improve profitability at scale
+company: Upya
+summary: Plug-and-play software to efficiently manage customers, field teams & operations, digitalize business processes, collect payments, and improve profitability at scale.
 logo: /path/to/upya-logo.png
-link: www.upya.io
+link: https://upya.io
 
 categories:
   - Bookkeeping & Accounting
@@ -14,11 +15,13 @@ categories:
   - Personal Training
   - Stock Management
 
-license: Fully Propriatary
+license:
 user_type:
   - Basic digital literacy
 
 pricing:
+  title:
+  description:
 
 free_demo_available: false
 

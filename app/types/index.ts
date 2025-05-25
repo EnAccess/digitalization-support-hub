@@ -8,8 +8,12 @@ export interface Tool {
   categories: string[]
   license?: string[]
   user_type?: string[]
-  pricing?: string
+  pricing: {
+    title: string[]
+    description: string
+  } | null
   free_demo_available?: boolean
+  is_free?: boolean
   interoperability?: string[]
   interoperability_pricing?: string
   documentation?: string

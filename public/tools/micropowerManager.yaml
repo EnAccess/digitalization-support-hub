@@ -17,9 +17,12 @@ categories:
 license: Fully Open Source
 user_type:
   - Basic digital literacy
-pricing: option1
+pricing:
+  title:
+  description:
 
 free_demo_available: true
+is_free: true
 
 interoperatibility:
   - Data export is possible via file download (CSV/XLSX/...)
@@ -28,7 +31,7 @@ interoperatibility:
 interoperatibility_pricing: No, there are no (extra) costs associated with data exchange for cross-platform integrations.
 
 documentation:
-  - High-level documentation
+  - High-level documentation.
   - Technical documentation (like OpenAPI)
 
 offline_functionality: No, it works only with an internet connection

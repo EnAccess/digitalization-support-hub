@@ -13,7 +13,10 @@ license: Fully Propriatary
 user_type:
   - Basic digital literacy
 
-pricing: By user Numbers By time based license
+pricing:
+  title:
+    - By user numbers.
+    - By time based license
 
 free_demo_available: true
 

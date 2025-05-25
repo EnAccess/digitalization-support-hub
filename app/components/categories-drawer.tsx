@@ -43,7 +43,7 @@ const categoryMap: CategoryMap = {
     ],
   },
   distribution: {
-    name: "Distribution/Sales",
+    name: "Distribution & Sales",
     subcategories: [
       "Stock Management",
       "Personal Training",
@@ -54,7 +54,7 @@ const categoryMap: CategoryMap = {
     ],
   },
   operations: {
-    name: "After Sales/Operations",
+    name: "After Sales & Operations",
     subcategories: [
       "Payment Collections",
       "Service Calls",

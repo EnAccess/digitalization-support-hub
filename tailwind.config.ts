@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss"
+import { fontFamily } from "tailwindcss/defaultTheme"
 
 const config = {
   darkMode: ["class"],
@@ -19,6 +20,10 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        raleway: ["var(--font-raleway)", ...fontFamily.sans],
+        merriweather: ["var(--font-merriweather)", ...fontFamily.serif],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

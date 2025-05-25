@@ -10,15 +10,20 @@ categories:
   - Impact Measurements & Performance
   - Portfolio Analysis & Management
 
-license: Fully Propriatary
+license:
 user_type:
   - Basic digital literacy
 
-pricing: By Data Volume
+pricing:
+  title:
+    - By data volume
+  description:
 
 free_demo_available: true
 
 interoperatibility:
+  - our tool offers automatic data exchange with selected tools
+  - Contact vendor for more details
 
 interoperatibility_pricing:
 

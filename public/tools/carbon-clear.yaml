@@ -1,6 +1,6 @@
 id: carbon-clear
-name: Carbon Clear
-company: Carbon Clear Ltd
+name: CarbonClear
+company: CarbonClear
 summary: CarbonClear provides digital MRV solutions to support carbon finance in underfunded sectors like distributed renewable energy. Their platform tracks impact, ensures transparency, and aligns with SDG 7 to accelerate renewable energy deployment.
 logo: /path/to/carboclear-logo.png
 link: https://www.carbonclear.earth/
@@ -8,11 +8,14 @@ categories:
   - Fundraising
   - Impact Measurements & Performance
 
-license: Fully Propriatary
+license:
 user_type:
   - Basic digital literacy
 
 pricing:
+  title:
+    - By data volume
+  description:
 
 free_demo_available:
 

@@ -1,5 +1,6 @@
 id: quickbooks
 name: Quickbooks
+company: QuickBooks
 summary: QuickBooks Online helps businesses track income, expenses, and accounts payable, manage bills, invoices, and project costs. It integrates with payroll, staff time tracking, and connects with accountants for easier tax filing and financial management.
 logo: /path/to/quickbooks-logo.png
 link: https://quickbooks.intuit.com
@@ -7,10 +8,13 @@ link: https://quickbooks.intuit.com
 categories:
   - Bookkeeping & Accounting
 
-license: Fully Propriatary
+license:
 user_type:
   - Basic digital literacy
-pricing: By time based license
+pricing:
+  title:
+    - By time based license
+  description:
 
 free_demo_available: false
 

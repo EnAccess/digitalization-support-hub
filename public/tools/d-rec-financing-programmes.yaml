@@ -13,9 +13,12 @@ license:
 user_type:
   - Basic digital literacy
 
-pricing: option1
+pricing:
+  title:
+  description:
 
 free_demo_available: true
+is_free: true
 
 interoperatibility:
 

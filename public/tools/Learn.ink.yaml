@@ -9,11 +9,14 @@ categories:
   - Customer Vetting
   - Personal Training
 
-license: Fully Propriatary
+license:
 user_type:
   - Basic digital literacy
 
-pricing: By user Numbers
+pricing:
+  title:
+    - By user numbers
+  description:
 
 free_demo_available: true
 

@@ -1,6 +1,6 @@
 id: paygops
 name: PaygOps
-company: PaygOps & Bridgin
+company: masunga
 summary: >-
   PaygOps is a comprehensive software as a service (SaaS) for micro-lenders to digitalise their processes (in sectors like energy agriculture or finance for instance). Doing so they can gain in efficiency and scalability toward a greater impact.
 logo: /path/to/paygops-logo.png
@@ -27,7 +27,10 @@ license: Partially Open Source
 user_type:
   - Basic digital literacy
 
-pricing: by time based license
+pricing:
+  title:
+    - By user Number
+  description:
 
 free_demo_available: true
 

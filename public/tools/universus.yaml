@@ -1,5 +1,6 @@
 id: universus
 name: Universus
+company: Universus
 summary: Universal Connectivity offers solutions to improve connectivity in remote and underserved areas, including internet access, network infrastructure, and communication tools. Their scalable platform bridges the digital divide with reliable, sustainable services.
 logo: /path/to/universalconnectivity-logo.png
 link: https://universalconnectivity.com/
@@ -10,11 +11,13 @@ categories:
   - Tech Response
   - Portfolio Analysis & Management
 
-license: Fully Propriatary
+license:
 user_type:
   - Basic digital literacy
 
 pricing:
+  title:
+  description:
 
 free_demo_available: false
 

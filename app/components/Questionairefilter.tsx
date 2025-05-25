@@ -149,8 +149,8 @@ const FILTER_OPTIONS: Record<
   ],
   businessArea: [
     "Preparation and Setup",
-    "Distribution/Sales",
-    "After Sales/Operation",
+    "Distribution & Sales",
+    "After Sales & Operation",
     "Assess & Optimize",
     "End of Life",
   ],
@@ -260,6 +260,16 @@ const QuestionaireFilter = ({
       return
     }
 
+    // Check if we're on question 5 (internalExpertise) and "No, not at all" is selected
+    if (
+      currentQuestion === "internalExpertise" &&
+      answers[currentQuestion]?.[0] === "No, not at all"
+    ) {
+      // Skip question 6 (toolSource) and go directly to completion
+      setIsQuestionnaireComplete(true)
+      return
+    }
+
     if (currentQuestionIndex < QUESTIONNAIRE_ORDER.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1)
     } else {
@@ -270,7 +280,12 @@ const QuestionaireFilter = ({
   const handleBack = () => {
     if (isQuestionnaireComplete) {
       setIsQuestionnaireComplete(false)
-      setCurrentQuestionIndex(QUESTIONNAIRE_ORDER.length - 1)
+      // Check if we skipped question 6, if so go back to question 5
+      if (answers["internalExpertise"]?.[0] === "No, not at all") {
+        setCurrentQuestionIndex(4) // Index 4 is question 5 (internalExpertise)
+      } else {
+        setCurrentQuestionIndex(QUESTIONNAIRE_ORDER.length - 1)
+      }
     } else if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex((prev) => prev - 1)
     }

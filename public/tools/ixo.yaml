@@ -1,5 +1,6 @@
 id: ixo
 name: IXO
+company: IXO
 summary: IXO offers software solutions that utilize blockchain technology and data analytics to help organizations in the energy access and off-grid energy sectors track, verify, and manage energy projects. The platform provides tools for real-time monitoring and reporting, allowing users to measure the impact and progress of energy initiatives with greater transparency and accuracy.
 logo: /path/to/ixo-logo.png
 link: https://www.ixo.world/solutions
@@ -11,10 +12,12 @@ categories:
   - Tech Response
   - Market Analysis
 
-license: Fully Propriatary
+license:
 user_type:
   - Basic digital literacy
 pricing:
+  title:
+  description:
 
 free_demo_available:
 
