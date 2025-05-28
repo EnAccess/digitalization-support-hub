@@ -58,7 +58,7 @@ export function SupportForm({ onSubmitSuccess }: SupportFormProps) {
             APPLY FOR TECHNICAL SUPPORT
           </h2>
           <h3 className="text-2xl font-medium mb-4">
-             We offer technical assistance to support eligible businesses in
+            We offer technical assistance to support eligible businesses in
             digitalizing their operations.
           </h3>
           <p className="text-gray-600">
