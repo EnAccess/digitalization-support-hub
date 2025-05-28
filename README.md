@@ -1,3 +1,6 @@
+<div align="center">
+  <img src="public/Digital Support Hub-approved logo-02.svg" alt="DSH Logo" height="200"/>
+</div>  
 
 # Digitalization Support Hub
 
@@ -12,10 +15,10 @@ Despite the widespread availability of digital tools, these technologies are und
 ## 🚀 Tech Stack
 
 - **Framework**: [Next.js](https://nextjs.org/) (React-based)
-- **Language**: JavaScript / TypeScript
-- **Styling**: Tailwind CSS (or other styling library)
-- **Package Manager**: npm or yarn
-- **Deployment**: Vercel (optional)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS & shadcn
+- **Package Manager**: npm
+- **Deployment**: github pages
 
 ---
 
@@ -28,33 +31,24 @@ To get started with local development, make sure you have the following installe
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/[your-org-or-username]/DSH.git
-cd DSH
+git clone https://github.com/EnAccess/digitalization-support-hub.git
+
 2. Install Dependencies
 Using npm:
 
-bash
-Copy
-Edit
 npm install
 Or using yarn:
 
-bash
-Copy
-Edit
 yarn
 3. Run the Development Server
 Using npm:
 
-bash
-Copy
-Edit
+
 npm run dev
 Or using yarn:
 
-bash
-Copy
-Edit
 yarn dev
-The application should now be running at:
-http://localhost:3000
+
+The application should now be running at:  http://localhost:3000
+
+```
