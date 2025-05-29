@@ -33,7 +33,7 @@ interoperatibility_pricing: Yes, Additional subscription
 documentation:
   - High-level documentation.
 
-offline_functionality: "Yes, some functionalities are available offline"
+offline_functionality: Yes, some functionalities are available offline
 
 business_type:
   - Mini Grids
