@@ -1,0 +1,41 @@
+id: wps
+name: WPS
+company: WPS
+summary: AI-Powered Office Suite for Everyone Smarter, Faster, Easier, Free with Seamless MS Office Compatibility
+logo: /path/to/wps-logo.png
+link: http://www.wps.com/
+
+categories:
+  - Company Set Up
+  - Market Analysis
+  - Portfolio Analysis and Management
+
+license:
+
+user_type:
+  - Basic digital literacy
+
+pricing:
+  title:
+    - By user number
+    - By time based license
+  description: "More information here: https://www.wps.com/buy/"
+
+free_demo_available: true
+
+interoperatibility:
+  - Data export is possible via file download (CSV/XLSX/...)
+  - We provide bi-directional data exchange via API. It is possible to export data via API and import data via API
+  - Our tool offers automatic data exchange with selected tools
+
+interoperatibility_pricing: Yes, Additional subscription
+
+documentation:
+  - High-level documentation.
+
+offline_functionality: "Yes, some functionalities are available offline"
+
+business_type:
+  - Mini Grids
+  - SHS
+  - Clean Cooking
