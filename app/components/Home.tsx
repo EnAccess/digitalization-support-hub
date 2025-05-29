@@ -197,6 +197,12 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
           "/tools/angaza.yaml",
           "/tools/prospect.yaml",
           "/tools/universus.yaml",
+          "/tools/market-Map.yaml",
+          "/tools/qgis.yaml",
+          "/tools/development-maps.yaml",
+          "/tools/energy-access-explorer.yaml",
+          "/tools/wps.yaml",
+          "/tools/zoho.yaml",
         ]
 
         const loadedTools = await Promise.all(
@@ -301,9 +307,59 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
   return (
     <div className="bg-[#F9FBFA] text-gray-800">
       {/* Main heading */}
-      <h2 className="text-2xl font-bold mb-6 text-[#0D261A]">
-        Tool Categories
-      </h2>
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-16">
+          <h2 className="text-2xl font-bold mb-6 text-[#0D261A]">
+            Tool Categories
+          </h2>
+          <div className="text-lg text-[#0D261A] font-bold mb-4">
+            {localSelectedCategories.length > 0
+              ? `${localSelectedCategories.length} categories selected`
+              : "Select categories"}
+          </div>
+        </div>
+
+        {localSelectedCategories.length > 0 && (
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              className="border-[#17412C] text-[#0D261A] font-bold rounded-full w-auto text-md"
+              onClick={() => {
+                setLocalSelectedCategories([])
+                setActiveCategory(null)
+              }}
+            >
+              Reset
+            </Button>
+            <Button
+              variant="outline"
+              className="border-[#17412C] text-[#0D261A] font-bold rounded-full w-auto text-md flex items-center"
+              onClick={() => {
+                // Open the questionnaire modal
+                // setIsModalOpen(true)
+              }}
+            >
+              {/* New SVG icon for All Filters */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="4em"
+                height="4em"
+              >
+                <path
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeMiterlimit="10"
+                  strokeWidth="1.5"
+                  d="M21.25 12H8.895m-4.361 0H2.75m18.5 6.607h-5.748m-4.361 0H2.75m18.5-13.214h-3.105m-4.361 0H2.75m13.214 2.18a2.18 2.18 0 1 0 0-4.36a2.18 2.18 0 0 0 0 4.36Zm-9.25 6.607a2.18 2.18 0 1 0 0-4.36a2.18 2.18 0 0 0 0 4.36Zm6.607 6.608a2.18 2.18 0 1 0 0-4.361a2.18 2.18 0 0 0 0 4.36Z"
+                ></path>
+              </svg>
+              All Filters
+            </Button>
+          </div>
+        )}
+      </div>
 
       {/* Category navigation */}
       <ToolCategories
@@ -314,11 +370,6 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
       {/* Subcategory options when a category is selected */}
       {activeCategory && (
         <div className="my-6">
-          <div className="text-lg text-[#0D261A] font-bold mb-4">
-            {localSelectedCategories.length > 0
-              ? `0${localSelectedCategories.length} categories`
-              : "Select categories"}
-          </div>
           <div className="flex flex-wrap gap-2">
             {categoryMap[activeCategory].subcategories.map((subcategory) => (
               <Button

@@ -41,6 +41,12 @@ const getToolCountForCategories = async (
       "/tools/angaza.yaml",
       "/tools/prospect.yaml",
       "/tools/universus.yaml",
+      "/tools/market-Map.yaml",
+      "/tools/qgis.yaml",
+      "/tools/development-maps.yaml",
+      "/tools/energy-access-explorer.yaml",
+      "/tools/wps.yaml",
+      "/tools/zoho.yaml",
     ]
 
     // Load all tool data

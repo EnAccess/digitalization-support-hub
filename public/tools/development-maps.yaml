@@ -1,0 +1,37 @@
+id: development-maps
+name: Development Maps
+company: Village Infrastructure Angels
+summary: An initiative to offer useful GIS, business intelligence and software services and tools to the global industry, particularly those interested in poverty alleviation and international development.
+logo: /path/to/development-maps-logo.png
+link: http://www.developmentmaps.org/
+
+categories:
+  - Market Analysis
+  - Portfolio Analysis and Management
+  - Tech Response
+
+license:
+user_type:
+  - Basic digital literacy
+
+pricing:
+  title:
+    - By user number
+    - By time based license
+
+  description: Different license
+
+free_demo_available: false
+
+interoperatibility:
+
+interoperatibility_pricing:
+
+documentation:
+
+offline_functionality: Yes, some functionalities are available offline
+
+business_type:
+  - SHS
+  - Mini Grids
+  - Clean Cooking

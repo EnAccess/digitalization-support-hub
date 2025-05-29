@@ -58,12 +58,13 @@ export default function Landing() {
 
   return (
     <div className="flex flex-col min-h-screen ">
-      <div className="bg-[#F9FBFA]">
-        <header className=" py-8 px-8">
-          <div className="max-w-6xl mx-auto flex items-start justify-start">
+      <div className="">
+        {/* Hero Section */}
+        <section className="bg-[#E2F6DF] mt-8  px-8  max-w-6xl py-8 rounded-lg mx-auto font-raleway ">
+          <div className=" flex justify-end items-end  ">
             <Link href="/">
               <Image
-                src="/Digital Support Hub-approved logo-02.svg"
+                src="/logo.png"
                 alt="Logo"
                 width={150}
                 height={48}
@@ -71,9 +72,6 @@ export default function Landing() {
               />
             </Link>
           </div>
-        </header>
-        {/* Hero Section */}
-        <section className="bg-[#E2F6DF] px-8 md:py-24 max-w-6xl py-8 rounded-lg mx-auto font-raleway ">
           <div className="uppercase font-raleway text-[#0D261A] text-sm font-bold mb-4">
             DIGITALIZATION SUPPORT HUB
           </div>

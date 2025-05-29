@@ -1,0 +1,40 @@
+id: zoho
+name: Zoho Books
+company: Zoho
+summary: Comprehensive accounting software for growing businesses Send invoices, generate 1099 reports, and manage expenses, projects, & inventory. Simplify sales tax management with Zoho Books.
+logo: /path/to/zoho-logo.png
+link: https://www.zoho.com/de-de/books/
+
+categories:
+  - Bookkeeping & Accounting
+  - Market Analysis
+  - Portfolio Analysis and Management
+
+license:
+user_type:
+  - Basic digital literacy
+
+pricing:
+  title:
+    - By user number
+
+  description: "More information here: https://www.zoho.com/us/books/pricing/"
+
+free_demo_available: true
+is_free: true
+
+interoperatibility:
+  - Data export is possible via file download (CSV/XLSX/...)
+  - We provide bi-directional data exchange via API. It is possible to export data via API and import data via API
+
+interoperatibility_pricing: Yes, Additional subscription
+
+documentation:
+  - High-level documentation.
+
+offline_functionality: Yes, some functionalities are available offline
+
+business_type:
+  - Mini Grids
+  - SHS
+  - Clean Cooking
