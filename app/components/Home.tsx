@@ -3,13 +3,7 @@ import { useState, useMemo, useEffect } from "react"
 import { Checkbox } from "@/components/ui/checkbox"
 import yaml from "js-yaml"
 
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 // import { FilterDrawer } from "./FilterDrawer"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -125,7 +119,6 @@ interface ToolCategoriesProps {
 
 function ToolCategories({
   activeCategory,
-  onCategoryChange,
   localSelectedCategories,
   setLocalSelectedCategories,
 }: ToolCategoriesProps) {
@@ -618,14 +611,6 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
   }
 
   // Add toggleSubcategory function
-  const toggleSubcategory = (subcategory: string) => {
-    setLocalSelectedCategories((prev) => {
-      if (prev.includes(subcategory)) {
-        return prev.filter((cat) => cat !== subcategory)
-      }
-      return [...prev, subcategory]
-    })
-  }
 
   // Update the filtered tools logic
   const filteredToolsMemo = useMemo(() => {
@@ -991,7 +976,7 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
       {localSelectedCategories.length > 0 && filteredToolsMemo.length === 0 && (
         <div className="text-center py-12">
           <h3 className="text-2xl font-bold mb-2">
-            We don't currently have any tools matching these filters.
+            We don&apos;t currently have any tools matching these filters.
           </h3>
           <p className="text-gray-600 mb-8">
             Try changing your filters or check out the Tool Finder for tailored
@@ -1015,8 +1000,9 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
                 let us know!
               </p>
               <p className="text-gray-600">
-                Just drop us a message at support@dsh.org—we'd love to check
-                them out and see if they're a good fit for our database.
+                Just drop us a message at support@dsh.org—we&apos;d love to
+                check them out and see if they&apos;re a good fit for our
+                database.
               </p>
             </div>
           </div>
