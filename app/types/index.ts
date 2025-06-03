@@ -14,7 +14,7 @@ export interface Tool {
   } | null
   free_demo_available?: boolean
   is_free?: boolean
-  interoperability?: string[]
+  interoperatibility?: string[]
   interoperability_pricing?: string
   documentation?: string
   offline_functionality?: string

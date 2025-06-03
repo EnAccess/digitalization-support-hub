@@ -250,10 +250,22 @@ export function ToolDetailModal({
             </div>
           </div>
         </div>
-
+        <div className="mt-6 border rounded-md p-4">
+          <h3 className="text-lg font-semibold mb-2">Categories</h3>
+          <div className="flex flex-wrap gap-2">
+            {tool.categories.map((category, index) => (
+              <Badge
+                key={index}
+                className={`bg-[#fff] hover:bg-[#E6E6E6] rounded-full border-[#526F61] text-[#526F61] font-bold text-sm`}
+              >
+                {category}
+              </Badge>
+            ))}
+          </div>
+        </div>
         <div className="flex justify-end mt-6">
           <Button
-            className="bg-[#17412C] hover:bg-[#143728]"
+            className="bg-[#17412C] hover:bg-[#143728] w-full rounded-full"
             onClick={() => window.open(tool.link || "#", "_blank")}
           >
             Visit website
