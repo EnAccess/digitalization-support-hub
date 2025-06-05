@@ -122,7 +122,7 @@ export function ToolDetailModal({
                     backgroundColor: "#43BC80",
                   }}
                 >
-                  100% Free
+                  Free
                 </Badge>
               )}
               {tool.free_demo_available && (
