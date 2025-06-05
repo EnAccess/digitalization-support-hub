@@ -1,0 +1,39 @@
+id: EnergyAccess Explorer
+name: EnergyAccess Explorer
+company: World Resources Institute
+summary: The Energy Access Explorer is an open-source, online, and interactive geospatial platform that enables energy planners, clean energy entrepreneurs, financiers, and development institutions to identify high-priority areas for energy interventions. EAE functions also as a dynamic information system, reducing software engineering and data transaction costs for both data providers and users.
+logo: /path/to/energy-logo.png
+link: https://www.energyaccessexplorer.org/
+
+categories:
+  - Market Analysis
+  - Portfolio Analysis and Management
+
+license: Fully open source
+user_type:
+  - Basic digital literacy
+
+pricing:
+  title:
+    - By user number
+    - By time based license
+
+  description:
+
+free_demo_available: true
+is_free: true
+
+interoperatibility:
+  - Data export is possible via file download (CSV/XLSX/...)
+
+interoperatibility_pricing: No there is no (extra) costs associated with data exchange for cross-platform integrations
+
+documentation:
+  - High-level documentation.
+
+offline_functionality: Yes, most functionalities are available offline
+
+business_type:
+  - Mini Grids
+  - SHS
+  - Clean Cooking

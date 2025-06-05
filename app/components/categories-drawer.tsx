@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { X, ChevronRight, ArrowLeft } from "lucide-react"
+import { ChevronRight, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
@@ -9,18 +9,17 @@ import {
   SheetHeader,
   SheetClose,
 } from "@/components/ui/sheet"
+import CategoryDisplay from "./CategoryDisplay"
 import { Badge } from "@/components/ui/badge"
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-} from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { ToolDetailModal, type ToolDetailModalProps } from "./ToolDetailModel"
 import { Tool } from "../types"
+import yaml from "js-yaml"
+import { Checkbox } from "@/components/ui/checkbox"
+import { FilterDrawer } from "./FilterDrawer"
+import { FilterState } from "../types"
 
 interface CategoryMapItem {
   name: string
@@ -87,20 +86,20 @@ interface ToolCategoriesDrawerProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   onCategorySelect: (categories: string[]) => void
-  tools: Tool[]
-  selectedCategories: string[] // Add this prop to receive selected categories from parent
+  selectedCategories: string[]
+  questionnaireAnswers?: Record<string, string[]> // Add this
 }
 
 export function ToolCategoriesDrawer({
   open,
   onOpenChange,
   onCategorySelect,
-  tools,
-  selectedCategories = [], // Default to empty array
+  selectedCategories = [],
 }: ToolCategoriesDrawerProps) {
-  // Use the selectedCategories prop as initial state
+  // Add localSelectedCategories state
   const [localSelectedCategories, setLocalSelectedCategories] =
     useState<string[]>(selectedCategories)
+  const [tools, setTools] = useState<Tool[]>([])
   const [showResults, setShowResults] = useState(false)
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
   const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>(
@@ -112,6 +111,75 @@ export function ToolCategoriesDrawer({
   const [categorySelectionCounts, setCategorySelectionCounts] = useState<
     Record<string, number>
   >({})
+  // Add to component state
+  const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false)
+  const [filters, setFilters] = useState<FilterState>({
+    pricing: [],
+    businessTypes: [],
+    licensing: [],
+    dataExport: false,
+    unidirectionalAPI: false,
+    bidirectionalAPI: false,
+    automaticDataExchange: false,
+  })
+
+  // Load tools from YAML files
+  useEffect(() => {
+    const loadTools = async () => {
+      try {
+        const toolFiles = [
+          "/tools/paygee.yaml",
+          "/tools/odoo.yaml",
+          "/tools/quickbooks.yaml",
+          "/tools/upya.yaml",
+          "/tools/xero.yaml",
+          "/tools/odyssey.yaml",
+          "/tools/unleashed.yaml",
+          "/tools/3cx.yaml",
+          "/tools/d-rec.yaml",
+          "/tools/ixo.yaml",
+          "/tools/p-rec.yaml",
+          "/tools/challenges.yaml",
+          "/tools/carbon-clear.yaml",
+          "/tools/cavex.yaml",
+          "/tools/bridgin.yaml",
+          "/tools/d-rec-financing-programmes.yaml",
+          "/tools/fieldPro.yaml",
+          "/tools/Learn.ink.yaml",
+          "/tools/micropowerManager.yaml",
+          "/tools/nithio.yaml",
+          "/tools/odyssey-fern.yaml",
+          "/tools/paygops.yaml",
+          "/tools/vida.yaml",
+          "/tools/angaza.yaml",
+          "/tools/prospect.yaml",
+          "/tools/universus.yaml",
+          "/tools/market-Map.yaml",
+          "/tools/qgis.yaml",
+          "/tools/development-maps.yaml",
+          "/tools/energy-access-explorer.yaml",
+          "/tools/wps.yaml",
+          "/tools/zoho.yaml",
+        ]
+
+        const loadedTools = await Promise.all(
+          toolFiles.map(async (file) => {
+            const response = await fetch(file)
+            const text = await response.text()
+            return yaml.load(text) as Tool
+          })
+        )
+
+        setTools(loadedTools)
+      } catch (error) {
+        console.error("Error loading YAML files:", error)
+      }
+    }
+
+    if (open) {
+      loadTools()
+    }
+  }, [open])
 
   // Update local state when prop changes
   useEffect(() => {
@@ -198,14 +266,12 @@ export function ToolCategoriesDrawer({
 
   const handleCategoryChipClick = (categoryId: string) => {
     setActiveCategory(categoryId)
-
-    // Get all subcategories for this category
-    const subcategories = categoryMap[categoryId].subcategories
-
-    // Select the first subcategory by default
-    if (subcategories.length > 0) {
-      setSelectedSubcategories([subcategories[0]])
-    }
+    setShowResults(false) // Hide results view
+    setSelectedSubcategories(
+      localSelectedCategories.filter((subcat) =>
+        categoryMap[categoryId].subcategories.includes(subcat)
+      )
+    ) // Pre-select existing subcategories for this category
   }
 
   // Filter tools based on selected categories
@@ -227,7 +293,7 @@ export function ToolCategoriesDrawer({
           side="left"
           className="w-full sm:max-w-md p-0 flex flex-col"
         >
-          <div className="p-4 flex items-center gap-2 border-b">
+          <div className="p-4 flex justify-start gap-2 mt-2 items-center border-b">
             <Button
               variant="ghost"
               className="p-0 h-auto"
@@ -235,7 +301,7 @@ export function ToolCategoriesDrawer({
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>
-            <h2 className="font-medium">Tool categories</h2>
+            <h2 className="font-medium">Tool Catalogue</h2>
           </div>
 
           <div className="p-4 border-b">
@@ -270,8 +336,36 @@ export function ToolCategoriesDrawer({
           </div>
 
           <div className="flex-1 p-0 overflow-auto bg-[#F9FBFA]">
-            <div className="p-4 text-sm text-[#0D261A]">
-              {filteredTools.length} items
+            <div className="p-4">
+              <div>
+                <Button
+                  variant="outline"
+                  className="border-[#17412C] text-[#0D261A] font-bold rounded-full"
+                  onClick={() => {
+                    setIsFilterDrawerOpen(true)
+                  }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="4em"
+                    height="4em"
+                  >
+                    <path
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeMiterlimit="10"
+                      strokeWidth="1.5"
+                      d="M21.25 12H8.895m-4.361 0H2.75m18.5 6.607h-5.748m-4.361 0H2.75m18.5-13.214h-3.105m-4.361 0H2.75m13.214 2.18a2.18 2.18 0 1 0 0-4.36a2.18 2.18 0 0 0 0 4.36Zm-9.25 6.607a2.18 2.18 0 1 0 0-4.36a2.18 2.18 0 0 0 0 4.36Zm6.607 6.608a2.18 2.18 0 1 0 0-4.361a2.18 2.18 0 0 0 0 4.36Z"
+                    ></path>
+                  </svg>
+                  All Filters
+                </Button>
+              </div>
+              <p className="p-4 text-sm text-[#0D261A]">
+                {filteredTools.length} items
+              </p>
             </div>
 
             <div
@@ -286,7 +380,80 @@ export function ToolCategoriesDrawer({
                     className="border border-gray-200 rounded-md overflow-hidden hover:shadow-md transition-shadow bg-white p-4"
                     onClick={() => handleToolClick(tool)}
                   >
-                    <CardHeader className="pb-2 px-0 pt-0">
+                    <CardHeader className="pb-2">
+                      {/* Business type and license badges */}
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {/* First evaluate the condition, THEN render JSX */}
+                        {((tool.business_type &&
+                          tool.business_type.length > 0) ||
+                          tool.license) && (
+                          <div className="flex flex-wrap gap-2 w-full">
+                            {[
+                              ...(tool.business_type || []),
+                              ...(Array.isArray(tool.license)
+                                ? tool.license
+                                : tool.license
+                                  ? [`${tool.license}`]
+                                  : []),
+                            ].map((category, index) => {
+                              const colors = [
+                                "bg-[#43BC80]",
+                                "bg-[#8BDC7F]",
+                                "bg-[#5AC9C5]",
+                                "bg-[#67C6AB]",
+                              ]
+                              const colorIndex = index % colors.length
+                              const colorClass = colors[colorIndex]
+                              return (
+                                <Badge
+                                  key={`${category}-${index}`}
+                                  className={`${colorClass} rounded-full text-[#161D1A] font-bold text-sm`}
+                                  style={{
+                                    minWidth: "auto",
+                                    display: "inline-flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    backgroundColor: colorClass
+                                      .replace("bg-[", "")
+                                      .replace("]", ""),
+                                  }}
+                                >
+                                  {category}
+                                </Badge>
+                              )
+                            })}
+                            {tool.is_free && (
+                              <Badge
+                                className="bg-[#43BC80] rounded-full text-[#161D1A] font-bold text-sm"
+                                style={{
+                                  minWidth: "auto",
+                                  display: "inline-flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  backgroundColor: "#43BC80",
+                                }}
+                              >
+                                Free
+                              </Badge>
+                            )}
+                            {tool.free_demo_available && (
+                              <Badge
+                                className="bg-[#8BDC7F] rounded-full text-[#161D1A] font-bold text-sm"
+                                style={{
+                                  minWidth: "auto",
+                                  display: "inline-flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  backgroundColor: "#8BDC7F",
+                                }}
+                              >
+                                Free Demo
+                              </Badge>
+                            )}
+                          </div>
+                        )}
+                      </div>
+
                       <div className="text-base font-light text-[#1E1F1E]">
                         {tool.company}
                       </div>
@@ -294,55 +461,22 @@ export function ToolCategoriesDrawer({
                         {tool.name}
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="pb-2 px-0">
+                    <CardContent className="pb-2">
                       <p className="font-normal text-[#1E1F1E] text-base">
                         {tool.summary}
                       </p>
-                    </CardContent>
-
-                    {((tool.business_type?.length ?? 0) > 0 ||
-                      tool.license) && (
-                      <CardFooter className="mt-4">
-                        <div className="flex flex-wrap gap-2 w-full">
-                          {/* Convert license to array if it's a string */}
-                          {[
-                            ...(tool.business_type || []),
-                            ...(Array.isArray(tool.license)
-                              ? tool.license
-                              : tool.license
-                                ? [tool.license]
-                                : []),
-                          ].map((category, index) => {
-                            const colors = [
-                              "bg-[#43BC80]",
-                              "bg-[#8BDC7F]",
-                              "bg-[#5AC9C5]",
-                              "bg-[#67C6AB]",
-                            ]
-                            const colorIndex = index % colors.length
-                            const colorClass = colors[colorIndex]
-
-                            return (
-                              <Badge
-                                key={`${category}-${index}`}
-                                className={`${colorClass} rounded-full text-[#161D1A] font-bold text-sm`}
-                                style={{
-                                  minWidth: "auto",
-                                  display: "inline-flex",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                  backgroundColor: colorClass
-                                    .replace("bg-[", "")
-                                    .replace("]", ""),
-                                }}
-                              >
-                                {category}
-                              </Badge>
-                            )
-                          })}
+                      <div className="p-4">
+                        <hr />
+                      </div>
+                      <div className="pb-4">
+                        <p className="text-[#1E1F1E] pb-2 text-sm">
+                          Categories
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          <CategoryDisplay categories={tool.categories} />
                         </div>
-                      </CardFooter>
-                    )}
+                      </div>
+                    </CardContent>
                   </Card>
                 ))
               ) : (
@@ -362,6 +496,42 @@ export function ToolCategoriesDrawer({
               </div>
             )}
           </div>
+
+          <FilterDrawer
+            isOpen={isFilterDrawerOpen}
+            onClose={() => setIsFilterDrawerOpen(false)}
+            filters={filters}
+            onFiltersChange={(newFilters) => {
+              setFilters(newFilters)
+              // Apply the filters to the tools
+              const filteredTools = tools.filter((tool) => {
+                // Add your filtering logic here based on newFilters
+                const matchesBusinessType =
+                  newFilters.businessTypes.length === 0 ||
+                  newFilters.businessTypes.some((type) =>
+                    tool.business_type?.includes(type)
+                  )
+
+                const matchesLicense =
+                  newFilters.licensing.length === 0 ||
+                  (Array.isArray(tool.license)
+                    ? tool.license.some((lic) =>
+                        newFilters.licensing.includes(lic)
+                      )
+                    : newFilters.licensing.includes(tool.license ?? ""))
+
+                const matchesPricing =
+                  newFilters.pricing.length === 0 ||
+                  (newFilters.pricing.includes("100% Free") && tool.is_free) ||
+                  (newFilters.pricing.includes("Free Version or Free Demo") &&
+                    tool.free_demo_available)
+
+                return matchesBusinessType && matchesLicense && matchesPricing
+              })
+              // Update the filtered results
+              setTools(filteredTools)
+            }}
+          />
         </SheetContent>
 
         {selectedTool && (
@@ -387,15 +557,21 @@ export function ToolCategoriesDrawer({
           side="left"
           className="w-full sm:max-w-md p-0 flex flex-col"
         >
-          <div className="p-4 flex items-center gap-2 border-b">
-            <Button
-              variant="ghost"
-              className="p-0 h-auto"
-              onClick={() => setActiveCategory(null)}
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-            <h2 className="font-medium">{categoryMap[activeCategory].name}</h2>
+          <div className="p-4 flex items-center justify-between border-b">
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                className="p-0 h-auto"
+                onClick={() => setActiveCategory(null)}
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+              <h2 className="font-medium">
+                {categoryMap[activeCategory].name}
+              </h2>
+            </div>
+
+            {/* Add filter button */}
           </div>
 
           <div className="flex-1 overflow-auto p-4">
@@ -403,15 +579,22 @@ export function ToolCategoriesDrawer({
               <div className="space-y-2">
                 {categoryMap[activeCategory].subcategories.map(
                   (subcategory) => (
-                    <div key={subcategory} className="flex items-center">
-                      <input
-                        type="checkbox"
+                    <div
+                      key={subcategory}
+                      className="flex items-center space-x-2"
+                    >
+                      <Checkbox
                         id={subcategory}
                         checked={selectedSubcategories.includes(subcategory)}
-                        onChange={() => handleSubcategoryToggle(subcategory)}
-                        className="mr-2 h-4 w-4"
+                        onCheckedChange={() =>
+                          handleSubcategoryToggle(subcategory)
+                        }
+                        className="border-[#2D6A4F] text-[#2D6A4F]"
                       />
-                      <label htmlFor={subcategory} className="text-sm">
+                      <label
+                        htmlFor={subcategory}
+                        className="text-sm font-medium leading-none cursor-pointer"
+                      >
                         {subcategory}
                       </label>
                     </div>
@@ -421,14 +604,28 @@ export function ToolCategoriesDrawer({
             </div>
           </div>
 
+          {/* Update the footer with two buttons */}
           <div className="p-4 border-t">
-            <Button
-              className="w-full bg-[#2D6A4F] hover:bg-[#1B4332] text-white"
-              onClick={handleApplyFilter}
-              disabled={selectedSubcategories.length === 0}
-            >
-              Apply filter
-            </Button>
+            <div className="flex gap-3">
+              <Button
+                className="flex-1 bg-[#2D6A4F] hover:bg-[#1B4332] text-white"
+                onClick={handleApplyFilter}
+                disabled={selectedSubcategories.length === 0}
+              >
+                Apply filter
+              </Button>
+              <Button
+                variant="outline"
+                className="flex-1"
+                onClick={() => {
+                  setSelectedSubcategories([])
+                  setLocalSelectedCategories([])
+                  // close the drawer
+                }}
+              >
+                Clear all
+              </Button>
+            </div>
           </div>
         </SheetContent>
       </Sheet>
@@ -448,7 +645,6 @@ export function ToolCategoriesDrawer({
               Tool categories
             </h2>
             <SheetClose className="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
-              <X className="h-5 w-5" />
               <span className="sr-only">Close</span>
             </SheetClose>
           </div>
@@ -471,6 +667,40 @@ export function ToolCategoriesDrawer({
           </div>
         </div>
       </SheetContent>
+
+      <FilterDrawer
+        isOpen={isFilterDrawerOpen}
+        onClose={() => setIsFilterDrawerOpen(false)}
+        filters={filters}
+        onFiltersChange={(newFilters) => {
+          setFilters(newFilters)
+          // Apply the filters to the tools
+          const filteredTools = tools.filter((tool) => {
+            // Add your filtering logic here based on newFilters
+            const matchesBusinessType =
+              newFilters.businessTypes.length === 0 ||
+              newFilters.businessTypes.some((type) =>
+                tool.business_type?.includes(type)
+              )
+
+            const matchesLicense =
+              newFilters.licensing.length === 0 ||
+              (Array.isArray(tool.license)
+                ? tool.license.some((lic) => newFilters.licensing.includes(lic))
+                : newFilters.licensing.includes(tool.license ?? ""))
+
+            const matchesPricing =
+              newFilters.pricing.length === 0 ||
+              (newFilters.pricing.includes("100% Free") && tool.is_free) ||
+              (newFilters.pricing.includes("Free Version or Free Demo") &&
+                tool.free_demo_available)
+
+            return matchesBusinessType && matchesLicense && matchesPricing
+          })
+          // Update the filtered results
+          setTools(filteredTools)
+        }}
+      />
     </Sheet>
   )
 }

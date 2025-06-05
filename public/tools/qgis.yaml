@@ -1,0 +1,40 @@
+id: QGIS
+name: QGIS
+company: QGIS
+summary: Spatial visualization and decision-making tools for everyone
+logo: /path/to/qgis-logo.png
+link: https://qgis.org/
+
+categories:
+  - Impact and Performance Measurement
+  - Market Analysis
+  - Portfolio Analysis and Management
+
+license: Fully open source
+user_type:
+  - Basic digital literacy
+
+pricing:
+  title:
+    - Basic Iot know-how
+
+  description: "More information here: https://www.wps.com/buy/"
+
+free_demo_available: true
+is_free: true
+
+interoperatibility:
+  - Data export is possible via file download (CSV/XLSX/...)
+  - We provide bi-directional data exchange via API. It is possible to export data via API and import data via API
+
+interoperatibility_pricing: No, there are no (extra) costs associated with data exchange for cross-platform integrations
+
+documentation:
+  - High-level documentation.
+
+offline_functionality: Yes, some functionalities are available offline
+
+business_type:
+  - Mini Grids
+  - SHS
+  - Clean Cooking

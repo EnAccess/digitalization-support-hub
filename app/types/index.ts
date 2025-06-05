@@ -14,7 +14,7 @@ export interface Tool {
   } | null
   free_demo_available?: boolean
   is_free?: boolean
-  interoperability?: string[]
+  interoperatibility?: string[]
   interoperability_pricing?: string
   documentation?: string
   offline_functionality?: string
@@ -37,4 +37,14 @@ export interface QuestionnaireAnswers {
   toolsCost?: string[]
   internalExpertise?: string[]
   toolSource?: string[]
+}
+
+export interface FilterState {
+  pricing: string[]
+  businessTypes: string[]
+  licensing: string[]
+  dataExport: boolean
+  unidirectionalAPI: boolean
+  bidirectionalAPI: boolean
+  automaticDataExchange: boolean
 }

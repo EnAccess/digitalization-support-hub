@@ -1,0 +1,41 @@
+id: market-map
+name: Market Map
+company: Market Map
+summary: MarketMap is a transformative initiative aimed at improving women's opportunities to access microfinance for solar-powered agro-processing equipment. Our program focuses on accelerating inclusive green growth through agri-based digital innovation.
+logo: /path/to/3market-map-logo.png
+link: http://www.marketmapproject.org
+
+categories:
+  - Fundraising
+  - Market Analysis
+  - Portfolio Analysis and Management
+
+license:
+user_type:
+  - Basic digital literacy
+
+pricing:
+  title:
+    - By user number
+    - By time based license
+
+  description: Different license
+
+free_demo_available: true
+is_free: true
+
+interoperatibility:
+  - Data export is possible via file download (CSV/XLSX/...)
+  - We provide bi-directional data exchange via API. It is possible to export data via API and import data via API
+  - our tool offers automatic data exchange with selected tools
+
+interoperatibility_pricing:
+
+documentation:
+  - Technical documentation (like OpenAPI)
+
+offline_functionality: Yes, some functionalities are available offline
+
+business_type:
+  - SHS
+  - Clean Cooking

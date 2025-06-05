@@ -1,24 +1,37 @@
 "use client"
 import { useState, useMemo, useEffect } from "react"
+import { Checkbox } from "@/components/ui/checkbox"
 import yaml from "js-yaml"
-
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import CategoryDisplay from "./CategoryDisplay"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+// import { FilterDrawer } from "./FilterDrawer"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { X, ChevronDown } from "lucide-react"
+import { X, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
   ToolDetailModal,
   type ToolDetailModalProps,
 } from "../components/ToolDetailModel"
 
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu"
+
 import { Tool } from "../types"
+interface FilterState {
+  pricing: string[]
+  businessTypes: string[]
+  licensing: string[]
+  dataExport: boolean
+  unidirectionalAPI: boolean
+  bidirectionalAPI: boolean
+  automaticDataExchange: boolean
+}
 
 interface HomeProps {
   setIsModalOpen: (isOpen: boolean) => void
@@ -100,41 +113,372 @@ const categories = [
 interface ToolCategoriesProps {
   activeCategory: string | null
   onCategoryChange: (category: string) => void
+  localSelectedCategories: string[]
+  setLocalSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>
 }
 
 function ToolCategories({
   activeCategory,
-  onCategoryChange,
+  localSelectedCategories,
+  setLocalSelectedCategories,
 }: ToolCategoriesProps) {
+  // Get count of selected subcategories for each category
+  const getCategoryCount = (categoryId: string) => {
+    return categoryMap[categoryId].subcategories.filter((subcategory) =>
+      localSelectedCategories.includes(subcategory)
+    ).length
+  }
+
+  const toggleSubcategory = (subcategory: string) => {
+    if (localSelectedCategories.includes(subcategory)) {
+      setLocalSelectedCategories(
+        localSelectedCategories.filter((cat) => cat !== subcategory)
+      )
+    } else {
+      setLocalSelectedCategories([...localSelectedCategories, subcategory])
+    }
+  }
+
   return (
-    <div className="border-b border-gray-200">
-      <div className="flex overflow-x-auto pb-2 gap-4">
+    <NavigationMenu>
+      <NavigationMenuList className="flex gap-4">
         {categories.map((category) => (
-          <Button
-            key={category.id}
-            variant="ghost"
-            className={cn(
-              "flex items-center gap-1 whitespace-nowrap px-2 py-1 h-auto rounded-none border-b-2",
-              activeCategory === category.id
-                ? "border-[#2D6A4F] text-[#2D6A4F]"
-                : "border-transparent hover:border-gray-300"
-            )}
-            onClick={() => onCategoryChange(category.id)}
-          >
-            {category.name}
-            {category.count !== null && (
-              <span className="ml-1 text-xs rounded-full bg-gray-100 px-2 py-0.5">
-                {category.count}
-              </span>
-            )}
-            <ChevronDown size={16} />
-          </Button>
+          <NavigationMenuItem key={category.id}>
+            <NavigationMenuTrigger
+              className={cn(
+                "px-4 py-2 rounded-full",
+                activeCategory === category.id
+                  ? "bg-[#2D6A4F] text-white"
+                  : "bg-[#DCE5E0] text-[#0D261A] font-bold border "
+              )}
+            >
+              {category.name}
+              {getCategoryCount(category.id) > 0 && (
+                <span className="ml-2 text-xs rounded-full bg-gray-100 px-2 py-0.5">
+                  {getCategoryCount(category.id)}
+                </span>
+              )}
+            </NavigationMenuTrigger>
+
+            <NavigationMenuContent className="p-4 bg-white rounded-lg shadow-lg min-w-[400px]">
+              <div className="grid grid-cols-2 gap-4">
+                {categoryMap[category.id].subcategories.map((subcategory) => (
+                  <div
+                    key={subcategory}
+                    className="flex items-center space-x-2"
+                  >
+                    <Checkbox
+                      id={subcategory}
+                      checked={localSelectedCategories.includes(subcategory)}
+                      onCheckedChange={() => toggleSubcategory(subcategory)}
+                      className="border-[#2D6A4F] text-[#2D6A4F]"
+                    />
+                    <label
+                      htmlFor={subcategory}
+                      className="text-sm font-medium leading-none cursor-pointer"
+                    >
+                      {subcategory}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
         ))}
-      </div>
-    </div>
+      </NavigationMenuList>
+    </NavigationMenu>
   )
 }
+function FilterDrawer({
+  isOpen,
+  onClose,
+  filters,
+  onFiltersChange,
+}: {
+  isOpen: boolean
+  onClose: () => void
+  filters: FilterState
+  onFiltersChange: (filters: FilterState) => void
+}) {
+  // Add a new state for temporary filters
+  const [tempFilters, setTempFilters] = useState<FilterState>({
+    pricing: [],
+    businessTypes: [],
+    licensing: [],
+    dataExport: false,
+    unidirectionalAPI: false,
+    bidirectionalAPI: false,
+    automaticDataExchange: false,
+  })
 
+  // Initialize temporary filters when drawer opens
+  useEffect(() => {
+    if (isOpen) {
+      setTempFilters(filters)
+    }
+  }, [isOpen, filters])
+
+  const togglePricing = (value: string) => {
+    const newPricing = tempFilters.pricing.includes(value)
+      ? tempFilters.pricing.filter((p) => p !== value)
+      : [...tempFilters.pricing, value]
+    setTempFilters({ ...tempFilters, pricing: newPricing })
+  }
+
+  const toggleBusinessType = (value: string) => {
+    const newTypes = tempFilters.businessTypes.includes(value)
+      ? tempFilters.businessTypes.filter((t) => t !== value)
+      : [...tempFilters.businessTypes, value]
+    setTempFilters({ ...tempFilters, businessTypes: newTypes })
+  }
+
+  const toggleLicensing = (value: string) => {
+    const newLicensing = tempFilters.licensing.includes(value)
+      ? tempFilters.licensing.filter((l) => l !== value)
+      : [...tempFilters.licensing, value]
+    setTempFilters({ ...tempFilters, licensing: newLicensing })
+  }
+
+  // Update the clearAllFilters function in FilterDrawer component
+  const clearAllFilters = () => {
+    const emptyFilters = {
+      pricing: [],
+      businessTypes: [],
+      licensing: [],
+      dataExport: false,
+      unidirectionalAPI: false,
+      bidirectionalAPI: false,
+      automaticDataExchange: false,
+    }
+
+    // Clear both temporary and main filters
+    setTempFilters(emptyFilters)
+    onFiltersChange(emptyFilters)
+    onClose()
+  }
+
+  const handleApplyFilters = () => {
+    onFiltersChange(tempFilters)
+    onClose()
+  }
+
+  if (!isOpen) return null
+
+  return (
+    <>
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 bg-black bg-opacity-50 z-40"
+        onClick={onClose}
+      />
+
+      <div className="fixed right-0 top-0 h-full w-80 bg-white z-50 shadow-lg overflow-y-auto ">
+        <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+          <h3 className="text-lg font-semibold">Filter</h3>
+          <Button variant="ghost" size="sm" onClick={onClose}>
+            <X size={20} />
+          </Button>
+        </div>
+
+        <div className="p-4 space-y-6">
+          {/* Pricing Section */}
+          <div>
+            <h4 className="font-medium mb-3">Pricing </h4>
+            <div className="space-y-2">
+              <Button
+                variant={
+                  tempFilters.pricing.includes("Free Version or Free Demo")
+                    ? "default"
+                    : "outline"
+                }
+                size="sm"
+                className={cn(
+                  "rounded-md text-sm font-normal justify-start h-auto px-3 py-2",
+                  tempFilters.pricing.includes("Free Version or Free Demo")
+                    ? "bg-[#17412C] text-white "
+                    : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+                )}
+                onClick={() => togglePricing("Free Version or Free Demo")}
+              >
+                Free Version or Free Demo
+              </Button>
+              <Button
+                variant={
+                  tempFilters.pricing.includes("100% Free")
+                    ? "default"
+                    : "outline"
+                }
+                size="sm"
+                className={cn(
+                  "rounded-md text-sm font-normal justify-start h-auto px-3 py-2",
+                  tempFilters.pricing.includes("100% Free")
+                    ? "bg-[#17412C] text-white "
+                    : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+                )}
+                onClick={() => togglePricing("100% Free")}
+              >
+                Free
+              </Button>
+            </div>
+          </div>
+
+          {/* Business Types Section */}
+          <div>
+            <h4 className="font-medium mb-3">Business Types</h4>
+            <div className="space-y-2 space-x-2">
+              {["Mini Grids", "SHS", "Clean Cooking"].map((type) => (
+                <Button
+                  key={type}
+                  variant={
+                    tempFilters.businessTypes.includes(type)
+                      ? "default"
+                      : "outline"
+                  }
+                  size="sm"
+                  className={cn(
+                    "rounded-md text-sm font-normal justify-start h-auto px-3 py-2",
+                    tempFilters.businessTypes.includes(type)
+                      ? "bg-[#17412C] text-white "
+                      : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+                  )}
+                  onClick={() => toggleBusinessType(type)}
+                >
+                  {type}
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          {/* Licensing Section */}
+          <div>
+            <h4 className="font-medium mb-3">Licensing</h4>
+            <div className="space-y-2">
+              {["Fully Open Source", "Some Open Source Parts"].map(
+                (license) => (
+                  <Button
+                    key={license}
+                    variant={
+                      tempFilters.licensing.includes(license)
+                        ? "default"
+                        : "outline"
+                    }
+                    size="sm"
+                    className={cn(
+                      "rounded-md text-sm font-normal justify-start h-auto px-3 py-2",
+                      tempFilters.licensing.includes(license)
+                        ? "bg-[#17412C] text-white "
+                        : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+                    )}
+                    onClick={() => toggleLicensing(license)}
+                  >
+                    {license}
+                  </Button>
+                )
+              )}
+            </div>
+          </div>
+
+          {/* Interoperability Section */}
+          <div>
+            <h4 className="font-medium mb-3">
+              Interoperability & Data Exchange
+            </h4>
+            <div className="space-y-3">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="data-export"
+                  checked={tempFilters.dataExport}
+                  onCheckedChange={(checked) =>
+                    setTempFilters({
+                      ...tempFilters,
+                      dataExport: checked as boolean,
+                    })
+                  }
+                />
+                <label htmlFor="data-export" className="text-sm">
+                  Data Export (CSV, XLSX, or similar)
+                </label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="unidirectional-api"
+                  checked={tempFilters.unidirectionalAPI}
+                  onCheckedChange={(checked) =>
+                    setTempFilters({
+                      ...tempFilters,
+                      unidirectionalAPI: checked as boolean,
+                    })
+                  }
+                />
+                <label htmlFor="unidirectional-api" className="text-sm">
+                  Unidirectional data exchange via API
+                </label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="bidirectional-api"
+                  checked={tempFilters.bidirectionalAPI}
+                  onCheckedChange={(checked) =>
+                    setTempFilters({
+                      ...tempFilters,
+                      bidirectionalAPI: checked as boolean,
+                    })
+                  }
+                />
+                <label htmlFor="bidirectional-api" className="text-sm">
+                  Bidirectional data exchange via API
+                </label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="automatic-exchange"
+                  checked={tempFilters.automaticDataExchange}
+                  onCheckedChange={(checked) =>
+                    setTempFilters({
+                      ...tempFilters,
+                      automaticDataExchange: checked as boolean,
+                    })
+                  }
+                />
+                <label htmlFor="automatic-exchange" className="text-sm">
+                  Has automatic data exchange with selected tools
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer Buttons */}
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 bg-white">
+          <div className="flex gap-3">
+            <Button
+              className="flex-1 bg-[#2D6A4F] hover:bg-[#2D6A4F]/90 text-white rounded-full"
+              onClick={handleApplyFilters}
+              disabled={
+                tempFilters.pricing.length === 0 &&
+                tempFilters.businessTypes.length === 0 &&
+                tempFilters.licensing.length === 0 &&
+                !tempFilters.dataExport &&
+                !tempFilters.unidirectionalAPI &&
+                !tempFilters.bidirectionalAPI &&
+                !tempFilters.automaticDataExchange
+              }
+            >
+              Apply filters
+            </Button>
+            <Button
+              variant="outline"
+              className="flex-1 rounded-full"
+              onClick={clearAllFilters}
+            >
+              Clear all
+            </Button>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
 export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
   const [localSelectedCategories, setLocalSelectedCategories] = useState<
     string[]
@@ -147,6 +491,16 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
     null as Tool | null
   )
   const [questionnaireAnswers] = useState<Record<string, string[]> | null>(null)
+  const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false)
+  const [filters, setFilters] = useState<FilterState>({
+    pricing: [],
+    businessTypes: [],
+    licensing: [],
+    dataExport: false,
+    unidirectionalAPI: false,
+    bidirectionalAPI: false,
+    automaticDataExchange: false,
+  })
 
   // Update local categories when prop changes
   useEffect(() => {
@@ -197,6 +551,12 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
           "/tools/angaza.yaml",
           "/tools/prospect.yaml",
           "/tools/universus.yaml",
+          "/tools/market-Map.yaml",
+          "/tools/qgis.yaml",
+          "/tools/development-maps.yaml",
+          "/tools/energy-access-explorer.yaml",
+          "/tools/wps.yaml",
+          "/tools/zoho.yaml",
         ]
 
         const loadedTools = await Promise.all(
@@ -256,105 +616,199 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
     setActiveCategory(activeCategory === categoryId ? null : categoryId)
   }
 
-  const toggleSubcategory = (subcategory: string) => {
-    if (localSelectedCategories.includes(subcategory)) {
-      setLocalSelectedCategories(
-        localSelectedCategories.filter((cat) => cat !== subcategory)
-      )
-    } else {
-      setLocalSelectedCategories([...localSelectedCategories, subcategory])
-    }
-  }
+  // Add toggleSubcategory function
 
+  // Update the filtered tools logic
   const filteredToolsMemo = useMemo(() => {
     if (localSelectedCategories.length === 0) {
       return []
     }
 
     return tools.filter((tool) => {
-      // Add safety check for categories
+      // Category filter
+      const matchesCategory = tool.categories?.some((category) =>
+        localSelectedCategories.includes(category)
+      )
+
+      // Pricing filter
+      const matchesPricing =
+        filters.pricing.length === 0 ||
+        (filters.pricing.includes("100% Free") && tool.is_free) ||
+        (filters.pricing.includes("Free Version or Free Demo") &&
+          tool.free_demo_available)
+
+      // Business type filter
+      const matchesBusinessType =
+        filters.businessTypes.length === 0 ||
+        filters.businessTypes.some((type) => tool.business_type?.includes(type))
+
+      // License filter
+      const matchesLicense =
+        filters.licensing.length === 0 ||
+        (Array.isArray(tool.license)
+          ? tool.license.some((lic) => filters.licensing.includes(lic))
+          : typeof tool.license === "string"
+            ? filters.licensing.includes(tool.license)
+            : false)
+
+      // Interoperability filters
+      const matchesInteroperability =
+        (!filters.dataExport ||
+          tool.interoperatibility?.includes(
+            "Data export is possible via file download (CSV/XLSX/...)"
+          )) &&
+        (!filters.unidirectionalAPI ||
+          tool.interoperatibility?.includes(
+            "We provide uni-directional data export via API"
+          )) &&
+        (!filters.bidirectionalAPI ||
+          tool.interoperatibility?.includes(
+            "We provide bi-directional data exchange via API"
+          )) &&
+        (!filters.automaticDataExchange ||
+          tool.interoperatibility?.includes("We have automatic data exchange"))
+
       return (
-        Array.isArray(tool.categories) &&
-        tool.categories.some((category) =>
-          localSelectedCategories.includes(category)
-        )
+        matchesCategory &&
+        matchesPricing &&
+        matchesBusinessType &&
+        matchesLicense &&
+        matchesInteroperability
       )
     })
-  }, [localSelectedCategories, tools])
-
-  // Handle questionnaire completion
-  // const handleQuestionnaireComplete = (answers: Record<string, string[]>) => {
-  //   const categories = mapAnswersToCategories(answers)
-  //   setLocalSelectedCategories(categories)
-
-  //   // Find and set active category based on first matching category
-  //   const firstCategory = Object.keys(categoryMap).find((key) =>
-  //     categoryMap[key].some((cat) => categories.includes(cat))
-  //   )
-
-  //   if (firstCategory) {
-  //     setActiveCategory(firstCategory)
-  //   }
-  //   setIsModalOpen(false)
-  // }
-
+  }, [tools, localSelectedCategories, filters])
+  //export this componet
   return (
     <div className="bg-[#F9FBFA] text-gray-800">
       {/* Main heading */}
-      <h2 className="text-2xl font-bold mb-6 text-[#0D261A]">
-        Tool Categories
-      </h2>
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-16">
+          <h2 className="text-2xl font-bold mb-6 text-[#0D261A]">
+            Tool Categories
+          </h2>
+        </div>
+
+        {localSelectedCategories.length > 0 && (
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              className="border-[#17412C] text-[#0D261A] font-bold rounded-full w-auto text-md flex items-center"
+              onClick={() => {
+                setIsFilterDrawerOpen(true)
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="4em"
+                height="4em"
+              >
+                <path
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeMiterlimit="10"
+                  strokeWidth="1.5"
+                  d="M21.25 12H8.895m-4.361 0H2.75m18.5 6.607h-5.748m-4.361 0H2.75m18.5-13.214h-3.105m-4.361 0H2.75m13.214 2.18a2.18 2.18 0 1 0 0-4.36a2.18 2.18 0 0 0 0 4.36Zm-9.25 6.607a2.18 2.18 0 1 0 0-4.36a2.18 2.18 0 0 0 0 4.36Zm6.607 6.608a2.18 2.18 0 1 0 0-4.361a2.18 2.18 0 0 0 0 4.36Z"
+                ></path>
+              </svg>
+              All Filters
+            </Button>
+          </div>
+        )}
+      </div>
 
       {/* Category navigation */}
       <ToolCategories
         activeCategory={activeCategory}
         onCategoryChange={handleCategoryChange}
+        localSelectedCategories={localSelectedCategories}
+        setLocalSelectedCategories={setLocalSelectedCategories}
       />
 
-      {/* Subcategory options when a category is selected */}
-      {activeCategory && (
-        <div className="my-6">
-          <div className="text-lg text-[#0D261A] font-bold mb-4">
-            {localSelectedCategories.length > 0
-              ? `0${localSelectedCategories.length} categories`
-              : "Select categories"}
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {categoryMap[activeCategory].subcategories.map((subcategory) => (
-              <Button
-                key={subcategory}
-                variant={
-                  localSelectedCategories.includes(subcategory)
-                    ? "default"
-                    : "outline"
-                }
-                size="default"
-                className={cn(
-                  "rounded-lg flex items-center gap-1",
-                  localSelectedCategories.includes(subcategory)
-                    ? "bg-white text-[#0D261A] border border-[#0D261A] hover:bg-gray-100 hover:text-[#0D261A] text-base"
-                    : "border-gray-300 hover:bg-gray-50"
-                )}
-                onClick={() => toggleSubcategory(subcategory)}
+      {/* Update the filter badges section */}
+      <div className="flex flex-wrap gap-2 mt-4">
+        {Object.entries(filters).map(([key, value]) => {
+          if (Array.isArray(value) && value.length > 0) {
+            return value.map((item) => (
+              <Badge
+                key={`${key}-${item}`}
+                className="inline-flex items-center gap-2 bg-white text-[#17412C] font-bold text-sm rounded-md px-3 py-1.5 border border-[#17412C] hover:bg-white "
               >
-                {subcategory}
-                {localSelectedCategories.includes(subcategory) && (
-                  <X size={14} className="ml-1" />
-                )}
-              </Button>
-            ))}
-          </div>
-        </div>
-      )}
+                {item}
+                <X
+                  size={14}
+                  className="cursor-pointer hover:text-red-500"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setFilters({
+                      ...filters,
+                      [key]: value.filter((v) => v !== item),
+                    })
+                  }}
+                />
+              </Badge>
+            ))
+          } else if (typeof value === "boolean" && value) {
+            return (
+              <Badge
+                key={key}
+                className="inline-flex items-center gap-2 bg-white hover:bg-white text-[#17412C] font-bold text-sm rounded-md px-3 py-1.5 border border-[#17412C]"
+              >
+                {key.replace(/([A-Z])/g, " $1").trim()}
+                <X
+                  size={14}
+                  className="cursor-pointer hover:text-red-500"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setFilters({
+                      ...filters,
+                      [key]: false,
+                    })
+                  }}
+                />
+              </Badge>
+            )
+          }
+          return null
+        })}
+      </div>
 
       {/* Tools count */}
-      {filteredToolsMemo.length > 0 && (
-        <div className="my-4 text-sm text-[#0D261A] ">
-          {filteredToolsMemo.length} items
-        </div>
+
+      {localSelectedCategories.length > 0 && filteredToolsMemo.length > 0 && (
+        <>
+          <div className="mt-2">
+            <Button
+              variant="outline"
+              className="border-[#17412C] text-[#0D261A] font-bold rounded-full w-auto text-md"
+              onClick={() => {
+                setLocalSelectedCategories([])
+                setActiveCategory(null)
+                // setFilters({
+                //   pricing: [],
+                //   businessTypes: [],
+                //   licensing: [],
+                //   dataExport: false,
+                //   unidirectionalAPI: false,
+                //   bidirectionalAPI: false,
+                //   automaticDataExchange: false,
+                // })
+              }}
+            >
+              Reset
+            </Button>
+          </div>
+
+          <div className=" flex flex-col ">
+            <p className="my-4 text-sm">{filteredToolsMemo.length} items</p>
+          </div>
+        </>
       )}
+
+      {/* Tools grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredToolsMemo.length > 0 &&
+        {localSelectedCategories.length > 0 &&
           filteredToolsMemo.map((tool) => (
             <Card
               key={tool.name}
@@ -362,6 +816,76 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
               onClick={() => handleToolClick(tool.name)}
             >
               <CardHeader className="pb-2">
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {/* First evaluate the condition, THEN render JSX */}
+                  {((tool.business_type && tool.business_type.length > 0) ||
+                    tool.license) && (
+                    <div className="flex flex-wrap gap-2 w-full">
+                      {[
+                        ...(tool.business_type || []),
+                        ...(Array.isArray(tool.license)
+                          ? tool.license
+                          : tool.license
+                            ? [`${tool.license}`]
+                            : []),
+                      ].map((category, index) => {
+                        const colors = [
+                          "bg-[#43BC80]",
+                          "bg-[#8BDC7F]",
+                          "bg-[#5AC9C5]",
+                          "bg-[#67C6AB]",
+                        ]
+                        const colorIndex = index % colors.length
+                        const colorClass = colors[colorIndex]
+                        return (
+                          <Badge
+                            key={`${category}-${index}`}
+                            className={`${colorClass} rounded-full text-[#161D1A] font-bold text-sm`}
+                            style={{
+                              minWidth: "auto",
+                              display: "inline-flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              backgroundColor: colorClass
+                                .replace("bg-[", "")
+                                .replace("]", ""),
+                            }}
+                          >
+                            {category}
+                          </Badge>
+                        )
+                      })}
+                      {tool.is_free && (
+                        <Badge
+                          className="bg-[#43BC80] rounded-full text-[#161D1A] font-bold text-sm"
+                          style={{
+                            minWidth: "auto",
+                            display: "inline-flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            backgroundColor: "#43BC80",
+                          }}
+                        >
+                          Free
+                        </Badge>
+                      )}
+                      {tool.free_demo_available && (
+                        <Badge
+                          className="bg-[#8BDC7F] rounded-full text-[#161D1A] font-bold text-sm"
+                          style={{
+                            minWidth: "auto",
+                            display: "inline-flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            backgroundColor: "#8BDC7F",
+                          }}
+                        >
+                          Free Demo
+                        </Badge>
+                      )}
+                    </div>
+                  )}
+                </div>
                 <div className="text-base font-light text-[#1E1F1E]">
                   {tool.company}
                 </div>
@@ -373,79 +897,14 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
                 <p className="font-normal text-[#1E1F1E] text-base">
                   {tool.summary}
                 </p>
+                <div className="p-4">
+                  <hr />
+                </div>
+                <div className="pb-4">
+                  <p className="text-[#1E1F1E] pb-2 text-sm">Categories</p>
+                  <CategoryDisplay categories={tool.categories} />
+                </div>
               </CardContent>
-
-              {/* Tool categories as badges */}
-              {((tool.business_type?.length ?? 0) > 0 || tool.license) && (
-                <CardFooter className="mt-4">
-                  <div className="flex flex-wrap gap-2 w-full">
-                    {/* Convert license to array if it's a string */}
-                    {[
-                      ...(tool.business_type || []),
-                      ...(Array.isArray(tool.license)
-                        ? tool.license
-                        : tool.license
-                          ? [tool.license]
-                          : []),
-                    ].map((category, index) => {
-                      const colors = [
-                        "bg-[#43BC80]",
-                        "bg-[#8BDC7F]",
-                        "bg-[#5AC9C5]",
-                        "bg-[#67C6AB]",
-                      ]
-                      const colorIndex = index % colors.length
-                      const colorClass = colors[colorIndex]
-
-                      return (
-                        <Badge
-                          key={`${category}-${index}`}
-                          className={`${colorClass} rounded-full text-[#161D1A] font-bold text-sm`}
-                          style={{
-                            minWidth: "auto",
-                            display: "inline-flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            backgroundColor: colorClass
-                              .replace("bg-[", "")
-                              .replace("]", ""),
-                          }}
-                        >
-                          {category}
-                        </Badge>
-                      )
-                    })}
-                    {tool.is_free && (
-                      <Badge
-                        className="bg-[#43BC80] rounded-full text-[#161D1A] font-bold text-sm"
-                        style={{
-                          minWidth: "auto",
-                          display: "inline-flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          backgroundColor: "#43BC80",
-                        }}
-                      >
-                        100% Free
-                      </Badge>
-                    )}
-                    {tool.free_demo_available && (
-                      <Badge
-                        className="bg-[#8BDC7F] rounded-full text-[#161D1A] font-bold text-sm"
-                        style={{
-                          minWidth: "auto",
-                          display: "inline-flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          backgroundColor: "#8BDC7F",
-                        }}
-                      >
-                        Free demo
-                      </Badge>
-                    )}
-                  </div>
-                </CardFooter>
-              )}
             </Card>
           ))}
       </div>
@@ -457,6 +916,60 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
           isOpen={isToolModalOpen}
           onClose={() => setIsToolModalOpen(false)}
         />
+      )}
+      <FilterDrawer
+        isOpen={isFilterDrawerOpen}
+        onClose={() => {
+          setIsFilterDrawerOpen(false)
+        }}
+        filters={filters}
+        onFiltersChange={(newFilters) => {
+          setFilters(newFilters)
+        }}
+      />
+      {filteredToolsMemo.length > 0 && (
+        <div className="flex justify-center items-center my-4">
+          <div className="text-sm text-[#0D261A]"></div>
+          <div className="text-sm text-[#0D261A]">
+            {Math.min(12, filteredToolsMemo.length)} of{" "}
+            {filteredToolsMemo.length} tools
+          </div>
+        </div>
+      )}
+      {localSelectedCategories.length > 0 && filteredToolsMemo.length === 0 && (
+        <div className="text-center py-12">
+          <h3 className="text-2xl font-bold mb-2">
+            We don&apos;t currently have any tools matching these filters.
+          </h3>
+          <p className="text-gray-600 mb-8">
+            Try changing your filters or check out the Tool Finder for tailored
+            suggestions.
+          </p>
+          <div className="flex flex-col items-center gap-8">
+            <Button
+              className="bg-[#2D6A4F] text-white rounded-full px-6 py-2 font-medium"
+              //   onClick={() => {
+              //   // Open the tool finder wizard
+              //  '
+              //   }}
+            >
+              Open Tool Finder Wizard
+              <ChevronRight className="ml-2 h-4 w-4" />
+            </Button>
+
+            <div className="bg-white p-6 rounded-lg max-w-2xl">
+              <p className="font-bold mb-2">
+                If you know of any digital tools that belong in this category,
+                let us know!
+              </p>
+              <p className="text-gray-600">
+                Just drop us a message at support@dsh.org—we&apos;d love to
+                check them out and see if they&apos;re a good fit for our
+                database.
+              </p>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )
