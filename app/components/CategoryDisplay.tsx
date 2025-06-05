@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { Badge } from "@/components/ui/badge"
 
 const CategoryDisplay = ({ categories = [] }: { categories?: string[] }) => {
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isExpanded] = useState(false)
   // Add null check with default empty array
   const displayCategories = isExpanded
     ? categories
