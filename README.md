@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="public/Digital Support Hub-approved logo-02.svg" alt="DSH Logo" height="200"/>
+  <img src="public/logo.png" alt="DSH Logo" height="200"/>
 </div>
 
 # Digitalization Support Hub
