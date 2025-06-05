@@ -1,8 +1,6 @@
-import React, { useState, useMemo } from "react"
+import React, { useState } from "react"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { X } from "lucide-react"
+
 const CategoryDisplay = ({ categories = [] }: { categories?: string[] }) => {
   const [isExpanded, setIsExpanded] = useState(false)
   // Add null check with default empty array
