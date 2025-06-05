@@ -353,28 +353,26 @@ function FilterDrawer({
           <div>
             <h4 className="font-medium mb-3">Licensing</h4>
             <div className="space-y-2">
-              {["Fully Open Source", "Some Open Source Parts"].map(
-                (license) => (
-                  <Button
-                    key={license}
-                    variant={
-                      tempFilters.licensing.includes(license)
-                        ? "default"
-                        : "outline"
-                    }
-                    size="sm"
-                    className={cn(
-                      "rounded-md text-sm font-normal justify-start h-auto px-3 py-2",
-                      tempFilters.licensing.includes(license)
-                        ? "bg-[#17412C] text-white "
-                        : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
-                    )}
-                    onClick={() => toggleLicensing(license)}
-                  >
-                    {license}
-                  </Button>
-                )
-              )}
+              {["Fully Open Source", "Partially Open Source"].map((license) => (
+                <Button
+                  key={license}
+                  variant={
+                    tempFilters.licensing.includes(license)
+                      ? "default"
+                      : "outline"
+                  }
+                  size="sm"
+                  className={cn(
+                    "rounded-md text-sm font-normal justify-start h-auto px-3 py-2",
+                    tempFilters.licensing.includes(license)
+                      ? "bg-[#17412C] text-white "
+                      : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+                  )}
+                  onClick={() => toggleLicensing(license)}
+                >
+                  {license}
+                </Button>
+              ))}
             </div>
           </div>
 
@@ -625,33 +623,36 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
     }
 
     return tools.filter((tool) => {
-      // Category filter
+      // Category filter - ANY match (OR condition)
       const matchesCategory = tool.categories?.some((category) =>
         localSelectedCategories.includes(category)
       )
 
-      // Pricing filter
+      if (!matchesCategory) return false
+
+      // Filters - ALL must match (AND condition)
       const matchesPricing =
         filters.pricing.length === 0 ||
         (filters.pricing.includes("100% Free") && tool.is_free) ||
         (filters.pricing.includes("Free Version or Free Demo") &&
           tool.free_demo_available)
 
-      // Business type filter
       const matchesBusinessType =
         filters.businessTypes.length === 0 ||
-        filters.businessTypes.some((type) => tool.business_type?.includes(type))
+        filters.businessTypes.every((type) =>
+          tool.business_type?.includes(type)
+        )
 
-      // License filter
       const matchesLicense =
         filters.licensing.length === 0 ||
-        (Array.isArray(tool.license)
-          ? tool.license.some((lic) => filters.licensing.includes(lic))
-          : typeof tool.license === "string"
-            ? filters.licensing.includes(tool.license)
-            : false)
+        filters.licensing.every((license) => {
+          if (Array.isArray(tool.license)) {
+            return tool.license.includes(license)
+          }
+          return tool.license === license
+        })
 
-      // Interoperability filters
+      // Interoperability filters - ALL must match
       const matchesInteroperability =
         (!filters.dataExport ||
           tool.interoperatibility?.includes(
@@ -668,8 +669,8 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
         (!filters.automaticDataExchange ||
           tool.interoperatibility?.includes("We have automatic data exchange"))
 
+      // All filters must match (AND condition)
       return (
-        matchesCategory &&
         matchesPricing &&
         matchesBusinessType &&
         matchesLicense &&

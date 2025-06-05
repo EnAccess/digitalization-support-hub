@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { ChevronRight, ArrowLeft } from "lucide-react"
+import { useState, useEffect, useMemo } from "react"
+import { ChevronRight, ArrowLeft, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
@@ -59,6 +59,9 @@ const categoryMap: CategoryMap = {
       "Service Calls",
       "Tech Response",
       "Upselling",
+      "customer finance Management",
+      "CRM",
+      "HR Management",
     ],
   },
   optimize: {
@@ -66,11 +69,18 @@ const categoryMap: CategoryMap = {
     subcategories: [
       "Portfolio Analysis & Management",
       "Impact Measurements & Performance",
+      "Remote Team Management",
+      "API Integration & connection",
+      "Data Download",
     ],
   },
   endoflife: {
     name: "Product End-of-Life",
-    subcategories: ["Repossession & Reverse logistics", "E-Waste Management"],
+    subcategories: [
+      "Repossession & Reverse logistics",
+      "E-Waste Management",
+      "Repair, Refurbishment Facilitation",
+    ],
   },
 }
 
@@ -124,58 +134,58 @@ export function ToolCategoriesDrawer({
   })
 
   // Load tools from YAML files
-  useEffect(() => {
-    const loadTools = async () => {
-      try {
-        const toolFiles = [
-          "/tools/paygee.yaml",
-          "/tools/odoo.yaml",
-          "/tools/quickbooks.yaml",
-          "/tools/upya.yaml",
-          "/tools/xero.yaml",
-          "/tools/odyssey.yaml",
-          "/tools/unleashed.yaml",
-          "/tools/3cx.yaml",
-          "/tools/d-rec.yaml",
-          "/tools/ixo.yaml",
-          "/tools/p-rec.yaml",
-          "/tools/challenges.yaml",
-          "/tools/carbon-clear.yaml",
-          "/tools/cavex.yaml",
-          "/tools/bridgin.yaml",
-          "/tools/d-rec-financing-programmes.yaml",
-          "/tools/fieldPro.yaml",
-          "/tools/Learn.ink.yaml",
-          "/tools/micropowerManager.yaml",
-          "/tools/nithio.yaml",
-          "/tools/odyssey-fern.yaml",
-          "/tools/paygops.yaml",
-          "/tools/vida.yaml",
-          "/tools/angaza.yaml",
-          "/tools/prospect.yaml",
-          "/tools/universus.yaml",
-          "/tools/market-Map.yaml",
-          "/tools/qgis.yaml",
-          "/tools/development-maps.yaml",
-          "/tools/energy-access-explorer.yaml",
-          "/tools/wps.yaml",
-          "/tools/zoho.yaml",
-        ]
+  const loadTools = async () => {
+    try {
+      const toolFiles = [
+        "/tools/paygee.yaml",
+        "/tools/odoo.yaml",
+        "/tools/quickbooks.yaml",
+        "/tools/upya.yaml",
+        "/tools/xero.yaml",
+        "/tools/odyssey.yaml",
+        "/tools/unleashed.yaml",
+        "/tools/3cx.yaml",
+        "/tools/d-rec.yaml",
+        "/tools/ixo.yaml",
+        "/tools/p-rec.yaml",
+        "/tools/challenges.yaml",
+        "/tools/carbon-clear.yaml",
+        "/tools/cavex.yaml",
+        "/tools/bridgin.yaml",
+        "/tools/d-rec-financing-programmes.yaml",
+        "/tools/fieldPro.yaml",
+        "/tools/Learn.ink.yaml",
+        "/tools/micropowerManager.yaml",
+        "/tools/nithio.yaml",
+        "/tools/odyssey-fern.yaml",
+        "/tools/paygops.yaml",
+        "/tools/vida.yaml",
+        "/tools/angaza.yaml",
+        "/tools/prospect.yaml",
+        "/tools/universus.yaml",
+        "/tools/market-Map.yaml",
+        "/tools/qgis.yaml",
+        "/tools/development-maps.yaml",
+        "/tools/energy-access-explorer.yaml",
+        "/tools/wps.yaml",
+        "/tools/zoho.yaml",
+      ]
 
-        const loadedTools = await Promise.all(
-          toolFiles.map(async (file) => {
-            const response = await fetch(file)
-            const text = await response.text()
-            return yaml.load(text) as Tool
-          })
-        )
+      const loadedTools = await Promise.all(
+        toolFiles.map(async (file) => {
+          const response = await fetch(file)
+          const text = await response.text()
+          return yaml.load(text) as Tool
+        })
+      )
 
-        setTools(loadedTools)
-      } catch (error) {
-        console.error("Error loading YAML files:", error)
-      }
+      setTools(loadedTools)
+    } catch (error) {
+      console.error("Error loading YAML files:", error)
     }
+  }
 
+  useEffect(() => {
     if (open) {
       loadTools()
     }
@@ -231,26 +241,51 @@ export function ToolCategoriesDrawer({
     setCategorySelectionCounts(counts)
   }, [localSelectedCategories])
 
-  const handleCategorySelect = (categoryId: string) => {
-    setActiveCategory(categoryId)
-    // Clear previously selected subcategories when changing categories
-    setSelectedSubcategories([])
+  const hasCategorySelections = (categoryId: string) => {
+    const subcategories = categoryMap[categoryId].subcategories
+    return localSelectedCategories.some((selected) =>
+      subcategories.includes(selected)
+    )
   }
 
-  const handleSubcategoryToggle = (subcategory: string) => {
-    setSelectedSubcategories((prev) =>
-      prev.includes(subcategory)
-        ? prev.filter((item) => item !== subcategory)
-        : [...prev, subcategory]
+  const handleCategorySelect = (categoryId: string) => {
+    setActiveCategory(categoryId)
+    // Pre-select any existing subcategories for this category
+    const existingSelectionsForCategory = localSelectedCategories.filter(
+      (subcat) => categoryMap[categoryId].subcategories.includes(subcat)
     )
+    setSelectedSubcategories(existingSelectionsForCategory)
+  }
+  const handleSubcategoryToggle = (subcategory: string) => {
+    setSelectedSubcategories((prev) => {
+      const isSelected = prev.includes(subcategory)
+      if (isSelected) {
+        // Remove the subcategory
+        return prev.filter((item) => item !== subcategory)
+      } else {
+        // Add the subcategory while keeping other selections
+        return [...prev, subcategory]
+      }
+    })
   }
 
   const handleApplyFilter = () => {
     if (selectedSubcategories.length > 0) {
+      // Get existing subcategories from other categories
+      const otherCategoriesSelections = localSelectedCategories.filter(
+        (subcat) => !categoryMap[activeCategory!].subcategories.includes(subcat)
+      )
+
+      // Combine existing selections with new ones
+      const updatedSelections = [
+        ...otherCategoriesSelections,
+        ...selectedSubcategories,
+      ]
+
       // Update local state
-      setLocalSelectedCategories(selectedSubcategories)
+      setLocalSelectedCategories(updatedSelections)
       // Notify parent component
-      onCategorySelect(selectedSubcategories)
+      onCategorySelect(updatedSelections)
       setShowResults(true)
     }
   }
@@ -274,16 +309,64 @@ export function ToolCategoriesDrawer({
     ) // Pre-select existing subcategories for this category
   }
 
-  // Filter tools based on selected categories
-  const filteredTools = tools.filter((tool) => {
-    return (
-      localSelectedCategories.length === 0 ||
-      (tool.categories &&
-        localSelectedCategories.some((category) =>
-          tool.categories!.includes(category)
-        ))
+  // First, update the main filtering function for categories (OR logic)
+  const filteredTools = useMemo(() => {
+    // First filter by categories (OR logic)
+    const categoryFiltered = tools.filter(
+      (tool) =>
+        localSelectedCategories.length === 0 ||
+        (tool.categories &&
+          localSelectedCategories.some((category) =>
+            tool.categories.includes(category)
+          ))
     )
-  })
+
+    // Then apply other filters (AND logic)
+    return categoryFiltered.filter((tool) => {
+      const matchesBusinessType =
+        filters.businessTypes.length === 0 ||
+        filters.businessTypes.every((type) =>
+          tool.business_type?.includes(type)
+        )
+
+      const matchesLicense =
+        filters.licensing.length === 0 ||
+        (tool.license
+          ? Array.isArray(tool.license)
+            ? // Check if tool has ALL selected licenses
+              filters.licensing.every((filterLic) =>
+                tool.license?.includes(filterLic)
+              )
+            : // Single license can't match multiple different licenses
+              filters.licensing.length === 1 &&
+              filters.licensing[0] === tool.license
+          : false)
+
+      const matchesPricing =
+        filters.pricing.length === 0 ||
+        (filters.pricing.includes("100% Free") && tool.is_free) ||
+        (filters.pricing.includes("Free Version or Free Demo") &&
+          tool.free_demo_available)
+
+      const matchesInteroperability =
+        (!filters.dataExport ||
+          tool.interoperatibility?.includes("Data export")) &&
+        (!filters.unidirectionalAPI ||
+          tool.interoperatibility?.includes("uni-directional")) &&
+        (!filters.bidirectionalAPI ||
+          tool.interoperatibility?.includes("bi-directional")) &&
+        (!filters.automaticDataExchange ||
+          tool.interoperatibility?.includes("automatic"))
+
+      // All filter conditions must be true (AND logic)
+      return (
+        matchesBusinessType &&
+        matchesLicense &&
+        matchesPricing &&
+        matchesInteroperability
+      )
+    })
+  }, [tools, localSelectedCategories, filters])
 
   // Results view
   if (showResults) {
@@ -316,12 +399,12 @@ export function ToolCategoriesDrawer({
                 <Button
                   key={category.id}
                   variant={
-                    activeCategory === category.id ? "default" : "outline"
+                    hasCategorySelections(category.id) ? "default" : "outline"
                   }
                   size="sm"
                   className={cn(
                     "rounded-full text-xs whitespace-nowrap",
-                    activeCategory === category.id
+                    hasCategorySelections(category.id)
                       ? "bg-[#2D6A4F] text-white border-[#2D6A4F] hover:bg-[#1B4332]"
                       : "border-gray-300"
                   )}
@@ -363,6 +446,57 @@ export function ToolCategoriesDrawer({
                   All Filters
                 </Button>
               </div>
+
+              {/* Add the filter chips here */}
+              <div className="mt-4">
+                <div className="flex flex-wrap gap-2">
+                  {Object.entries(filters).map(([key, value]) => {
+                    if (Array.isArray(value) && value.length > 0) {
+                      return value.map((item) => (
+                        <Badge
+                          key={`${key}-${item}`}
+                          className="inline-flex items-center gap-2 bg-white text-[#17412C] font-bold text-sm rounded-md px-3 py-1.5 border border-[#17412C]"
+                        >
+                          {item}
+                          <X
+                            size={14}
+                            className="cursor-pointer hover:text-red-500"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setFilters({
+                                ...filters,
+                                [key]: value.filter((v) => v !== item),
+                              })
+                            }}
+                          />
+                        </Badge>
+                      ))
+                    } else if (typeof value === "boolean" && value) {
+                      return (
+                        <Badge
+                          key={key}
+                          className="inline-flex items-center gap-2 bg-white text-[#17412C] font-bold text-sm rounded-md px-3 py-1.5 border border-[#17412C]"
+                        >
+                          {key.replace(/([A-Z])/g, " $1").trim()}
+                          <X
+                            size={14}
+                            className="cursor-pointer hover:text-red-500"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setFilters({
+                                ...filters,
+                                [key]: false,
+                              })
+                            }}
+                          />
+                        </Badge>
+                      )
+                    }
+                    return null
+                  })}
+                </div>
+              </div>
+
               <p className="p-4 text-sm text-[#0D261A]">
                 {filteredTools.length} items
               </p>
@@ -503,33 +637,6 @@ export function ToolCategoriesDrawer({
             filters={filters}
             onFiltersChange={(newFilters) => {
               setFilters(newFilters)
-              // Apply the filters to the tools
-              const filteredTools = tools.filter((tool) => {
-                // Add your filtering logic here based on newFilters
-                const matchesBusinessType =
-                  newFilters.businessTypes.length === 0 ||
-                  newFilters.businessTypes.some((type) =>
-                    tool.business_type?.includes(type)
-                  )
-
-                const matchesLicense =
-                  newFilters.licensing.length === 0 ||
-                  (Array.isArray(tool.license)
-                    ? tool.license.some((lic) =>
-                        newFilters.licensing.includes(lic)
-                      )
-                    : newFilters.licensing.includes(tool.license ?? ""))
-
-                const matchesPricing =
-                  newFilters.pricing.length === 0 ||
-                  (newFilters.pricing.includes("100% Free") && tool.is_free) ||
-                  (newFilters.pricing.includes("Free Version or Free Demo") &&
-                    tool.free_demo_available)
-
-                return matchesBusinessType && matchesLicense && matchesPricing
-              })
-              // Update the filtered results
-              setTools(filteredTools)
             }}
           />
         </SheetContent>
@@ -612,7 +719,7 @@ export function ToolCategoriesDrawer({
                 onClick={handleApplyFilter}
                 disabled={selectedSubcategories.length === 0}
               >
-                Apply filter
+                Apply
               </Button>
               <Button
                 variant="outline"
@@ -674,31 +781,6 @@ export function ToolCategoriesDrawer({
         filters={filters}
         onFiltersChange={(newFilters) => {
           setFilters(newFilters)
-          // Apply the filters to the tools
-          const filteredTools = tools.filter((tool) => {
-            // Add your filtering logic here based on newFilters
-            const matchesBusinessType =
-              newFilters.businessTypes.length === 0 ||
-              newFilters.businessTypes.some((type) =>
-                tool.business_type?.includes(type)
-              )
-
-            const matchesLicense =
-              newFilters.licensing.length === 0 ||
-              (Array.isArray(tool.license)
-                ? tool.license.some((lic) => newFilters.licensing.includes(lic))
-                : newFilters.licensing.includes(tool.license ?? ""))
-
-            const matchesPricing =
-              newFilters.pricing.length === 0 ||
-              (newFilters.pricing.includes("100% Free") && tool.is_free) ||
-              (newFilters.pricing.includes("Free Version or Free Demo") &&
-                tool.free_demo_available)
-
-            return matchesBusinessType && matchesLicense && matchesPricing
-          })
-          // Update the filtered results
-          setTools(filteredTools)
         }}
       />
     </Sheet>

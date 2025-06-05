@@ -130,7 +130,7 @@ export function FilterDrawer({
         <div className="mb-6">
           <h4 className="font-medium mb-3">Licensing</h4>
           <div className="space-y-2">
-            {["Fully Open Source", "Some Open Source Parts"].map((license) => (
+            {["Fully Open Source", "Partially Open Source"].map((license) => (
               <Button
                 key={license}
                 variant={
