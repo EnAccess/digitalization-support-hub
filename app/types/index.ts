@@ -38,3 +38,13 @@ export interface QuestionnaireAnswers {
   internalExpertise?: string[]
   toolSource?: string[]
 }
+
+export interface FilterState {
+  pricing: string[]
+  businessTypes: string[]
+  licensing: string[]
+  dataExport: boolean
+  unidirectionalAPI: boolean
+  bidirectionalAPI: boolean
+  automaticDataExchange: boolean
+}

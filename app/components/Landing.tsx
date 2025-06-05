@@ -21,10 +21,13 @@ export default function Landing() {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
-  const [tools, setTools] = useState<Tool[]>([]) // Explicitly type the state
+  const [, setTools] = useState<Tool[]>([]) // Explicitly type the state
   const { isDesktop } = useMobile()
 
   const [, setAnswers] = useState<Record<string, string[]>>({})
+  const [questionnaireAnswers, setQuestionnaireAnswers] = useState<
+    Record<string, string[]>
+  >({})
 
   const handleModalOpen = (value: boolean) => {
     setIsModalOpen(value)
@@ -47,60 +50,65 @@ export default function Landing() {
     questionnaireAnswers: Record<string, string[]>
   ) => {
     setSelectedCategories(categories)
-    setAnswers(questionnaireAnswers) // Save the answers
+    setAnswers(questionnaireAnswers)
+    setQuestionnaireAnswers(questionnaireAnswers)
     setIsModalOpen(false)
 
-    // Scroll to tools section
-    document.getElementById("tool-map-section")?.scrollIntoView({
-      behavior: "smooth",
-    })
+    // Open drawer on mobile, scroll on desktop
+    if (!isDesktop) {
+      setIsDrawerOpen(true) // Open the mobile drawer
+    } else {
+      document.getElementById("tool-map-section")?.scrollIntoView({
+        behavior: "smooth",
+      })
+    }
   }
 
   return (
     <div className="flex flex-col min-h-screen ">
       <div className="">
         {/* Hero Section */}
-        <section className="bg-[#E2F6DF] mt-8  px-8  max-w-6xl py-8 rounded-lg mx-auto font-raleway ">
-          <div className=" flex justify-end items-end  ">
-            <Link href="/">
+        <section className="bg-[#E2F6DF] mt-8 px-4 sm:px-8 max-w-6xl py-8 lg:rounded-lg mx-auto font-raleway">
+          <div className="flex flex-col-reverse sm:flex-row justify-between items-center sm:items-start gap-8 sm:gap-0">
+            <div className="flex-1 text-center sm:text-left">
+              <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-[#161D1A] mb-4 max-w-4xl">
+                Digital Solutions for Distributed Renewable Energy Businesses
+              </h1>
+              <p className="text-[#1E1F1E] text-sm sm:text-md lg:text-lg font-normal mb-8">
+                Explore the tools that can support you.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 items-center sm:items-start">
+                <Button
+                  className="bg-[#17412C] font-bold text-white rounded-full 
+            w-full max-w-[328px] min-w-[200px] h-[44px] 
+            px-4 py-2 hover:opacity-90 text-md"
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  Tool Finder Wizard
+                </Button>
+                {/* Only show this button on mobile or tablet */}
+                {!isDesktop && (
+                  <Button
+                    variant="outline"
+                    className="border-[#17412C] text-[#0D261A] font-bold rounded-full 
+              w-full max-w-[328px] min-w-[200px] h-[44px] 
+              px-4 py-2 text-md"
+                    onClick={() => setIsDrawerOpen(true)}
+                  >
+                    View tool categories
+                  </Button>
+                )}
+              </div>
+            </div>
+            <Link href="/" className="sm:ml-8">
               <Image
                 src="/logo.png"
                 alt="Logo"
-                width={150}
-                height={48}
-                className="object-contain"
+                width={120}
+                height={38}
+                className="object-contain w-[100px] sm:w-[150px]"
               />
             </Link>
-          </div>
-          <div className="uppercase font-raleway text-[#0D261A] text-sm font-bold mb-4">
-            DIGITALIZATION SUPPORT HUB
-          </div>
-          <h1 className="text-3xl md:text-5xl font-bold text-[#161D1A] mb-4 max-w-4xl">
-            Digital Solutions for Distributed Renewable Energy Businesses
-          </h1>
-          <p className="text-[#1E1F1E] text-md lg:text-lg font-normal mb-8">
-            Explore the tools that can support you.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Button
-              className="bg-[#17412C] font-bold text-white rounded-full 
-          w-full max-w-[328px] min-w-[200px] h-[44px] 
-          px-4 py-2 hover:opacity-90 text-md"
-              onClick={() => setIsModalOpen(true)}
-            >
-              Tool Finder Wizard
-            </Button>
-            {/* Only show this button on mobile or tablet */}
-            {!isDesktop && (
-              <Button
-                variant="outline"
-                className="border-[#17412C] text-[#0D261A] font-bold rounded-full w-full max-w-[328px] min-w-[200px] h-[44px] 
-            px-4 py-2 text-md"
-                onClick={() => setIsDrawerOpen(true)}
-              >
-                View tool categories
-              </Button>
-            )}
           </div>
         </section>
       </div>
@@ -136,8 +144,8 @@ export default function Landing() {
         open={isDrawerOpen}
         onOpenChange={setIsDrawerOpen}
         onCategorySelect={handleCategorySelect}
-        tools={tools}
-        selectedCategories={selectedCategories} // Pass the selected categories to the drawer
+        selectedCategories={selectedCategories}
+        questionnaireAnswers={questionnaireAnswers} // Add this
       />
 
       {/* Empowering SMEs Section */}
@@ -210,8 +218,22 @@ export default function Landing() {
                 <Image
                   src="/supporter1.png"
                   alt="ENACCESS Logo"
-                  width={150}
-                  height={48}
+                  width={120}
+                  height={40}
+                  className="object-contain"
+                />
+              </div>
+            </div>
+            <div className="">
+              <p className="text-base text-[#0D261A] font-bold pb-8">
+                Supported by
+              </p>
+              <div className="h-12 relative">
+                <Image
+                  src="/get.png"
+                  alt="Open Energies Logo"
+                  width={180}
+                  height={58}
                   className="object-contain"
                 />
               </div>

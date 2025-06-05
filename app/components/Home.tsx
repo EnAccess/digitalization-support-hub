@@ -2,12 +2,12 @@
 import { useState, useMemo, useEffect } from "react"
 import { Checkbox } from "@/components/ui/checkbox"
 import yaml from "js-yaml"
-
+import CategoryDisplay from "./CategoryDisplay"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 // import { FilterDrawer } from "./FilterDrawer"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { X, ChevronDown, ChevronRight } from "lucide-react"
+import { X, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
   ToolDetailModal,
@@ -239,8 +239,9 @@ function FilterDrawer({
     setTempFilters({ ...tempFilters, licensing: newLicensing })
   }
 
+  // Update the clearAllFilters function in FilterDrawer component
   const clearAllFilters = () => {
-    setTempFilters({
+    const emptyFilters = {
       pricing: [],
       businessTypes: [],
       licensing: [],
@@ -248,7 +249,12 @@ function FilterDrawer({
       unidirectionalAPI: false,
       bidirectionalAPI: false,
       automaticDataExchange: false,
-    })
+    }
+
+    // Clear both temporary and main filters
+    setTempFilters(emptyFilters)
+    onFiltersChange(emptyFilters)
+    onClose()
   }
 
   const handleApplyFilters = () => {
@@ -266,7 +272,7 @@ function FilterDrawer({
         onClick={onClose}
       />
 
-      <div className="fixed left-0 top-0 h-full w-80 bg-white z-50 shadow-lg overflow-y-auto ">
+      <div className="fixed right-0 top-0 h-full w-80 bg-white z-50 shadow-lg overflow-y-auto ">
         <div className="p-4 border-b border-gray-200 flex justify-between items-center">
           <h3 className="text-lg font-semibold">Filter</h3>
           <Button variant="ghost" size="sm" onClick={onClose}>
@@ -311,7 +317,7 @@ function FilterDrawer({
                 )}
                 onClick={() => togglePricing("100% Free")}
               >
-                100% Free
+                Free
               </Button>
             </div>
           </div>
@@ -649,7 +655,7 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
       const matchesInteroperability =
         (!filters.dataExport ||
           tool.interoperatibility?.includes(
-            "Data export is possible via file download"
+            "Data export is possible via file download (CSV/XLSX/...)"
           )) &&
         (!filters.unidirectionalAPI ||
           tool.interoperatibility?.includes(
@@ -671,95 +677,19 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
       )
     })
   }, [tools, localSelectedCategories, filters])
-
-  const CategoryDisplay = ({ categories = [] }: { categories?: string[] }) => {
-    const [isExpanded, setIsExpanded] = useState(false)
-    // Add null check with default empty array
-    const displayCategories = isExpanded
-      ? categories
-      : categories?.slice(0, 3) || []
-    const hasMore = (categories?.length || 0) > 3
-
-    return (
-      <div className="flex flex-wrap gap-2 w-full flex-col sm:flex-row">
-        {displayCategories.map((category, index) => {
-          const colors = ["bg-[#fff]"]
-          const colorIndex = index % colors.length
-          const colorClass = colors[colorIndex]
-
-          return (
-            <div key={`${category}-${index}`} className="">
-              <Badge
-                className={`${colorClass} rounded-full border-[#526F61] text-[#526F61] font-bold text-sm`}
-                style={{
-                  minWidth: "auto",
-                  display: "inline-flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  backgroundColor: colorClass
-                    .replace("bg-[", "")
-                    .replace("]", ""),
-                }}
-              >
-                {category}
-              </Badge>
-            </div>
-          )
-        })}
-        {hasMore && (
-          <div>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-[#0D261A] bg-[#fff] border-[#526F61] font-bold text-sm p-1 h-auto rounded-md"
-              onClick={() => setIsExpanded(!isExpanded)}
-            >
-              {isExpanded ? "View less" : "..."}
-            </Button>
-          </div>
-        )}
-        {hasMore && !isExpanded && (
-          <div>
-            <span
-              className="flex items-center gap-1 text-[#1E1F1ECC] text-sm pt-4 cursor-pointer"
-              onClick={() => setIsExpanded(!isExpanded)}
-            >
-              <ChevronDown size={16} className="text-[#1E1F1ECC]" />
-              {`Show All ${categories?.length - 3} categories`}
-            </span>
-          </div>
-        )}
-      </div>
-    )
-  }
-
+  //export this componet
   return (
     <div className="bg-[#F9FBFA] text-gray-800">
       {/* Main heading */}
-      <div className="flex gap-20 items-center">
+      <div className="flex justify-between items-center">
         <div className="flex items-center gap-16">
           <h2 className="text-2xl font-bold mb-6 text-[#0D261A]">
             Tool Categories
           </h2>
-          <div className="text-lg text-[#0D261A] font-bold mb-4">
-            {localSelectedCategories.length > 0
-              ? `${localSelectedCategories.length} categories selected`
-              : "Select categories"}
-          </div>
         </div>
 
         {localSelectedCategories.length > 0 && (
           <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              className="border-[#17412C] text-[#0D261A] font-bold rounded-full w-auto text-md"
-              onClick={() => {
-                setLocalSelectedCategories([])
-                setActiveCategory(null)
-              }}
-            >
-              Reset
-            </Button>
             <Button
               variant="outline"
               className="border-[#17412C] text-[#0D261A] font-bold rounded-full w-auto text-md flex items-center"
@@ -823,7 +753,7 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
             return (
               <Badge
                 key={key}
-                className="inline-flex items-center gap-2 bg-white text-[#17412C] font-bold text-sm rounded-md px-3 py-1.5 border border-[#17412C]"
+                className="inline-flex items-center gap-2 bg-white hover:bg-white text-[#17412C] font-bold text-sm rounded-md px-3 py-1.5 border border-[#17412C]"
               >
                 {key.replace(/([A-Z])/g, " $1").trim()}
                 <X
@@ -845,10 +775,35 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
       </div>
 
       {/* Tools count */}
+
       {localSelectedCategories.length > 0 && filteredToolsMemo.length > 0 && (
-        <div className="my-4 text-sm text-[#0D261A] ">
-          {filteredToolsMemo.length} items
-        </div>
+        <>
+          <div className="mt-2">
+            <Button
+              variant="outline"
+              className="border-[#17412C] text-[#0D261A] font-bold rounded-full w-auto text-md"
+              onClick={() => {
+                setLocalSelectedCategories([])
+                setActiveCategory(null)
+                // setFilters({
+                //   pricing: [],
+                //   businessTypes: [],
+                //   licensing: [],
+                //   dataExport: false,
+                //   unidirectionalAPI: false,
+                //   bidirectionalAPI: false,
+                //   automaticDataExchange: false,
+                // })
+              }}
+            >
+              Reset
+            </Button>
+          </div>
+
+          <div className=" flex flex-col ">
+            <p className="my-4 text-sm">{filteredToolsMemo.length} items</p>
+          </div>
+        </>
       )}
 
       {/* Tools grid */}
@@ -861,72 +816,76 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
               onClick={() => handleToolClick(tool.name)}
             >
               <CardHeader className="pb-2">
-                {tool.license && (
-                  <div className="flex flex-wrap gap-2 w-full pb-4">
-                    {[
-                      ...(Array.isArray(tool.license)
-                        ? tool.license
-                        : tool.license
-                          ? [tool.license]
-                          : []),
-                    ].map((category, index) => {
-                      const colors = [
-                        "bg-[#43BC80]",
-                        "bg-[#8BDC7F]",
-                        "bg-[#5AC9C5]",
-                        "bg-[#67C6AB]",
-                      ]
-                      const colorIndex = index % colors.length
-                      const colorClass = colors[colorIndex]
-
-                      return (
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {/* First evaluate the condition, THEN render JSX */}
+                  {((tool.business_type && tool.business_type.length > 0) ||
+                    tool.license) && (
+                    <div className="flex flex-wrap gap-2 w-full">
+                      {[
+                        ...(tool.business_type || []),
+                        ...(Array.isArray(tool.license)
+                          ? tool.license
+                          : tool.license
+                            ? [`${tool.license}`]
+                            : []),
+                      ].map((category, index) => {
+                        const colors = [
+                          "bg-[#43BC80]",
+                          "bg-[#8BDC7F]",
+                          "bg-[#5AC9C5]",
+                          "bg-[#67C6AB]",
+                        ]
+                        const colorIndex = index % colors.length
+                        const colorClass = colors[colorIndex]
+                        return (
+                          <Badge
+                            key={`${category}-${index}`}
+                            className={`${colorClass} rounded-full text-[#161D1A] font-bold text-sm`}
+                            style={{
+                              minWidth: "auto",
+                              display: "inline-flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              backgroundColor: colorClass
+                                .replace("bg-[", "")
+                                .replace("]", ""),
+                            }}
+                          >
+                            {category}
+                          </Badge>
+                        )
+                      })}
+                      {tool.is_free && (
                         <Badge
-                          key={`${category}-${index}`}
-                          className={`${colorClass} rounded-full text-[#161D1A] font-bold text-sm`}
+                          className="bg-[#43BC80] rounded-full text-[#161D1A] font-bold text-sm"
                           style={{
                             minWidth: "auto",
                             display: "inline-flex",
                             justifyContent: "center",
                             alignItems: "center",
-                            backgroundColor: colorClass
-                              .replace("bg-[", "")
-                              .replace("]", ""),
+                            backgroundColor: "#43BC80",
                           }}
                         >
-                          {category}
+                          Free
                         </Badge>
-                      )
-                    })}
-                    {tool.is_free && (
-                      <Badge
-                        className="bg-[#67C6AB] rounded-full text-[#161D1A] font-bold text-sm"
-                        style={{
-                          minWidth: "auto",
-                          display: "inline-flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          backgroundColor: "#67C6AB",
-                        }}
-                      >
-                        100% Free
-                      </Badge>
-                    )}
-                    {tool.free_demo_available && (
-                      <Badge
-                        className="bg-[#8BDC7F] rounded-full text-[#161D1A] font-bold text-sm"
-                        style={{
-                          minWidth: "auto",
-                          display: "inline-flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          backgroundColor: "#8BDC7F",
-                        }}
-                      >
-                        Free demo
-                      </Badge>
-                    )}
-                  </div>
-                )}
+                      )}
+                      {tool.free_demo_available && (
+                        <Badge
+                          className="bg-[#8BDC7F] rounded-full text-[#161D1A] font-bold text-sm"
+                          style={{
+                            minWidth: "auto",
+                            display: "inline-flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            backgroundColor: "#8BDC7F",
+                          }}
+                        >
+                          Free Demo
+                        </Badge>
+                      )}
+                    </div>
+                  )}
+                </div>
                 <div className="text-base font-light text-[#1E1F1E]">
                   {tool.company}
                 </div>
@@ -960,9 +919,13 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
       )}
       <FilterDrawer
         isOpen={isFilterDrawerOpen}
-        onClose={() => setIsFilterDrawerOpen(false)}
+        onClose={() => {
+          setIsFilterDrawerOpen(false)
+        }}
         filters={filters}
-        onFiltersChange={setFilters}
+        onFiltersChange={(newFilters) => {
+          setFilters(newFilters)
+        }}
       />
       {filteredToolsMemo.length > 0 && (
         <div className="flex justify-center items-center my-4">
