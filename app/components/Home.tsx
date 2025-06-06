@@ -673,7 +673,9 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
             "We provide bi-directional data exchange via API. It is possible to export data via API and import data via API"
           )) &&
         (!filters.automatedDataExchange ||
-          tool.interoperatibility?.includes("Our tool offers automatic data exchange with selected tools"))
+          tool.interoperatibility?.includes(
+            "Our tool offers automatic data exchange with selected tools"
+          ))
 
       // All filters must match (AND condition)
       return (

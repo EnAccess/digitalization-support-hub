@@ -7,7 +7,6 @@ import { Switch } from "@/components/ui/switch"
 import { cn } from "@/lib/utils"
 import { FilterState } from "../types"
 
-
 interface FilterDrawerProps {
   isOpen: boolean
   onClose: () => void
@@ -47,8 +46,6 @@ export function FilterDrawer({
       : [...tempFilters.licensing, value]
     setTempFilters({ ...tempFilters, licensing: newLicensing })
   }
-
-
 
   const clearAllFilters = () => {
     const emptyFilters = {
