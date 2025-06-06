@@ -127,11 +127,21 @@ export function ToolCategoriesDrawer({
     pricing: [],
     businessTypes: [],
     licensing: [],
-    dataExport: false,
+    DataExport: false,
     unidirectionalAPI: false,
     bidirectionalAPI: false,
-    automaticDataExchange: false,
+    automatedDataExchange: false,
   })
+
+  // Add the displayNames mapping
+  const displayNames: Record<string, string> = {
+    DataExport: "Data Export available",
+    unidirectionalAPI: "Unidirectional data exchange via API",
+    bidirectionalAPI: "Bidirectional data exchange via API",
+    automatedDataExchange: "Automated data exchange with selected tools",
+    "100% Free": "Free",
+    "Free Version or Free Demo": "Free Demo",
+  }
 
   // Load tools from YAML files
   const loadTools = async () => {
@@ -331,34 +341,36 @@ export function ToolCategoriesDrawer({
 
       const matchesLicense =
         filters.licensing.length === 0 ||
-        (tool.license
-          ? Array.isArray(tool.license)
-            ? // Check if tool has ALL selected licenses
-              filters.licensing.every((filterLic) =>
-                tool.license?.includes(filterLic)
-              )
-            : // Single license can't match multiple different licenses
-              filters.licensing.length === 1 &&
-              filters.licensing[0] === tool.license
-          : false)
+        filters.licensing.every((license) => {
+          if (Array.isArray(tool.license)) {
+            return tool.license.includes(license)
+          }
+          return tool.license === license
+        })
 
       const matchesPricing =
         filters.pricing.length === 0 ||
-        (filters.pricing.includes("100% Free") && tool.is_free) ||
-        (filters.pricing.includes("Free Version or Free Demo") &&
-          tool.free_demo_available)
+        (filters.pricing.includes("Free") && tool.is_free) ||
+        (filters.pricing.includes("Free Demo") && tool.free_demo_available)
 
       const matchesInteroperability =
-        (!filters.dataExport ||
-          tool.interoperatibility?.includes("Data export")) &&
+        (!filters.DataExport ||
+          tool.interoperatibility?.includes(
+            "Data export is possible via file download (CSV/XLSX/...)"
+          )) &&
         (!filters.unidirectionalAPI ||
-          tool.interoperatibility?.includes("uni-directional")) &&
+          tool.interoperatibility?.includes(
+            "We provide uni-directional data export via API"
+          )) &&
         (!filters.bidirectionalAPI ||
-          tool.interoperatibility?.includes("bi-directional")) &&
-        (!filters.automaticDataExchange ||
-          tool.interoperatibility?.includes("automatic"))
+          tool.interoperatibility?.includes(
+            "We provide bi-directional data exchange via API. It is possible to export data via API and import data via API"
+          )) &&
+        (!filters.automatedDataExchange ||
+          tool.interoperatibility?.includes(
+            "Our tool offers automatic data exchange with selected tools"
+          ))
 
-      // All filter conditions must be true (AND logic)
       return (
         matchesBusinessType &&
         matchesLicense &&
@@ -457,7 +469,7 @@ export function ToolCategoriesDrawer({
                           key={`${key}-${item}`}
                           className="inline-flex items-center gap-2 bg-white text-[#17412C] font-bold text-sm rounded-md px-3 py-1.5 border border-[#17412C]"
                         >
-                          {item}
+                          {displayNames[item] || item}
                           <X
                             size={14}
                             className="cursor-pointer hover:text-red-500"
@@ -477,7 +489,7 @@ export function ToolCategoriesDrawer({
                           key={key}
                           className="inline-flex items-center gap-2 bg-white text-[#17412C] font-bold text-sm rounded-md px-3 py-1.5 border border-[#17412C]"
                         >
-                          {key.replace(/([A-Z])/g, " $1").trim()}
+                          {displayNames[key] || key}
                           <X
                             size={14}
                             className="cursor-pointer hover:text-red-500"
