@@ -27,10 +27,16 @@ interface FilterState {
   pricing: string[]
   businessTypes: string[]
   licensing: string[]
-  dataExport: boolean
+  DataExport: boolean
   unidirectionalAPI: boolean
   bidirectionalAPI: boolean
-  automaticDataExchange: boolean
+  automatedDataExchange: boolean
+}
+const displayNames: Record<string, string> = {
+  DataExport: "Data Export available",
+  unidirectionalAPI: "Unidirectional data exchange via API",
+  bidirectionalAPI: "Bidirectional data exchange via API",
+  automatedDataExchange: "Automated data exchange with selected tools",
 }
 
 interface HomeProps {
@@ -205,10 +211,10 @@ function FilterDrawer({
     pricing: [],
     businessTypes: [],
     licensing: [],
-    dataExport: false,
+    DataExport: false,
     unidirectionalAPI: false,
     bidirectionalAPI: false,
-    automaticDataExchange: false,
+    automatedDataExchange: false,
   })
 
   // Initialize temporary filters when drawer opens
@@ -245,10 +251,10 @@ function FilterDrawer({
       pricing: [],
       businessTypes: [],
       licensing: [],
-      dataExport: false,
+      DataExport: false,
       unidirectionalAPI: false,
       bidirectionalAPI: false,
-      automaticDataExchange: false,
+      automatedDataExchange: false,
     }
 
     // Clear both temporary and main filters
@@ -385,16 +391,16 @@ function FilterDrawer({
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="data-export"
-                  checked={tempFilters.dataExport}
+                  checked={tempFilters.DataExport}
                   onCheckedChange={(checked) =>
                     setTempFilters({
                       ...tempFilters,
-                      dataExport: checked as boolean,
+                      DataExport: checked as boolean,
                     })
                   }
                 />
                 <label htmlFor="data-export" className="text-sm">
-                  Data Export (CSV, XLSX, or similar)
+                  Data Export Available
                 </label>
               </div>
               <div className="flex items-center space-x-2">
@@ -430,11 +436,11 @@ function FilterDrawer({
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="automatic-exchange"
-                  checked={tempFilters.automaticDataExchange}
+                  checked={tempFilters.automatedDataExchange}
                   onCheckedChange={(checked) =>
                     setTempFilters({
                       ...tempFilters,
-                      automaticDataExchange: checked as boolean,
+                      automatedDataExchange: checked as boolean,
                     })
                   }
                 />
@@ -456,10 +462,10 @@ function FilterDrawer({
                 tempFilters.pricing.length === 0 &&
                 tempFilters.businessTypes.length === 0 &&
                 tempFilters.licensing.length === 0 &&
-                !tempFilters.dataExport &&
+                !tempFilters.DataExport &&
                 !tempFilters.unidirectionalAPI &&
                 !tempFilters.bidirectionalAPI &&
-                !tempFilters.automaticDataExchange
+                !tempFilters.automatedDataExchange
               }
             >
               Apply filters
@@ -494,10 +500,10 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
     pricing: [],
     businessTypes: [],
     licensing: [],
-    dataExport: false,
+    DataExport: false,
     unidirectionalAPI: false,
     bidirectionalAPI: false,
-    automaticDataExchange: false,
+    automatedDataExchange: false,
   })
 
   // Update local categories when prop changes
@@ -654,7 +660,7 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
 
       // Interoperability filters - ALL must match
       const matchesInteroperability =
-        (!filters.dataExport ||
+        (!filters.DataExport ||
           tool.interoperatibility?.includes(
             "Data export is possible via file download (CSV/XLSX/...)"
           )) &&
@@ -664,10 +670,10 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
           )) &&
         (!filters.bidirectionalAPI ||
           tool.interoperatibility?.includes(
-            "We provide bi-directional data exchange via API"
+            "We provide bi-directional data exchange via API. It is possible to export data via API and import data via API"
           )) &&
-        (!filters.automaticDataExchange ||
-          tool.interoperatibility?.includes("We have automatic data exchange"))
+        (!filters.automatedDataExchange ||
+          tool.interoperatibility?.includes("Our tool offers automatic data exchange with selected tools"))
 
       // All filters must match (AND condition)
       return (
@@ -680,7 +686,7 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
   }, [tools, localSelectedCategories, filters])
   //export this componet
   return (
-    <div className="bg-[#F9FBFA] text-gray-800">
+    <div className="bg-[#F9FBFA] text-gray-800 ml-8">
       {/* Main heading */}
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-16">
@@ -756,7 +762,12 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
                 key={key}
                 className="inline-flex items-center gap-2 bg-white hover:bg-white text-[#17412C] font-bold text-sm rounded-md px-3 py-1.5 border border-[#17412C]"
               >
-                {key.replace(/([A-Z])/g, " $1").trim()}
+                {displayNames[key] ||
+                  key
+                    .replace(/([A-Z])|API/g, (match, letter) =>
+                      letter ? ` ${letter}` : "API"
+                    )
+                    .trim()}
                 <X
                   size={14}
                   className="cursor-pointer hover:text-red-500"
@@ -790,14 +801,14 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
                 //   pricing: [],
                 //   businessTypes: [],
                 //   licensing: [],
-                //   dataExport: false,
-                //   unidirectionalAPI: false,
+                //   data export available: false,
+                //   unidirectional data exchange via API: false,
                 //   bidirectionalAPI: false,
                 //   automaticDataExchange: false,
                 // })
               }}
             >
-              Reset
+              Reset Categories
             </Button>
           </div>
 

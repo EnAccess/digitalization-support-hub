@@ -28,8 +28,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${raleway.variable} ${merriweather.variable}`}>
-      <body className={merriweather.className}>
+    <html lang="en" className={`${raleway.variable} `}>
+      <body className={raleway.className}>
         <SupportBubbleProvider>{children}</SupportBubbleProvider>
       </body>
     </html>

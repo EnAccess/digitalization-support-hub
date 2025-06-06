@@ -43,8 +43,8 @@ export interface FilterState {
   pricing: string[]
   businessTypes: string[]
   licensing: string[]
-  dataExport: boolean
+  DataExport: boolean
   unidirectionalAPI: boolean
   bidirectionalAPI: boolean
-  automaticDataExchange: boolean
+  automatedDataExchange: boolean
 }

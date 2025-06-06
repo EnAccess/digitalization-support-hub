@@ -7,6 +7,7 @@ import { Switch } from "@/components/ui/switch"
 import { cn } from "@/lib/utils"
 import { FilterState } from "../types"
 
+
 interface FilterDrawerProps {
   isOpen: boolean
   onClose: () => void
@@ -47,15 +48,17 @@ export function FilterDrawer({
     setTempFilters({ ...tempFilters, licensing: newLicensing })
   }
 
+
+
   const clearAllFilters = () => {
     const emptyFilters = {
       pricing: [],
       businessTypes: [],
       licensing: [],
-      dataExport: false,
+      DataExport: false,
       unidirectionalAPI: false,
       bidirectionalAPI: false,
-      automaticDataExchange: false,
+      automatedDataExchange: false,
     }
     setTempFilters(emptyFilters)
     onFiltersChange(emptyFilters)
@@ -105,7 +108,7 @@ export function FilterDrawer({
         <div className="mb-6">
           <h4 className="font-medium mb-3">Pricing</h4>
           <div className="space-y-2 space-x-2">
-            {["100% Free", "Free Version or Free Demo"].map((price) => (
+            {["Free", "Free Demo"].map((price) => (
               <Button
                 key={price}
                 variant={
@@ -158,16 +161,18 @@ export function FilterDrawer({
           <h4 className="font-medium mb-3">Interoperability</h4>
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <label className="text-sm">Data export</label>
+              <label className="text-sm">Data Export available</label>
               <Switch
-                checked={tempFilters.dataExport}
+                checked={tempFilters.DataExport}
                 onCheckedChange={(checked) =>
-                  setTempFilters({ ...tempFilters, dataExport: checked })
+                  setTempFilters({ ...tempFilters, DataExport: checked })
                 }
               />
             </div>
             <div className="flex items-center justify-between">
-              <label className="text-sm">Unidirectional API</label>
+              <label className="text-sm">
+                Unidirectional data exchange via API
+              </label>
               <Switch
                 checked={tempFilters.unidirectionalAPI}
                 onCheckedChange={(checked) =>
@@ -176,7 +181,9 @@ export function FilterDrawer({
               />
             </div>
             <div className="flex items-center justify-between">
-              <label className="text-sm">Bidirectional API</label>
+              <label className="text-sm">
+                Bidirectional data exchange via API
+              </label>
               <Switch
                 checked={tempFilters.bidirectionalAPI}
                 onCheckedChange={(checked) =>
@@ -185,13 +192,15 @@ export function FilterDrawer({
               />
             </div>
             <div className="flex items-center justify-between">
-              <label className="text-sm">Automatic data exchange</label>
+              <label className="text-sm">
+                Automated data exchange with selected tools
+              </label>
               <Switch
-                checked={tempFilters.automaticDataExchange}
+                checked={tempFilters.automatedDataExchange}
                 onCheckedChange={(checked) =>
                   setTempFilters({
                     ...tempFilters,
-                    automaticDataExchange: checked,
+                    automatedDataExchange: checked,
                   })
                 }
               />
