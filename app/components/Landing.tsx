@@ -29,10 +29,6 @@ export default function Landing() {
     Record<string, string[]>
   >({})
 
-  const handleModalOpen = (value: boolean) => {
-    setIsModalOpen(value)
-  }
-
   const handleCategorySelect = (categories: string[]) => {
     // Update the selected categories state
     setSelectedCategories(categories)
@@ -118,7 +114,7 @@ export default function Landing() {
         <section id="tool-map-section" className="py-8 mt-auto bg-[#F9FBFA]">
           <div className="max-w-6xl mx-auto">
             <Home
-              setIsModalOpen={handleModalOpen}
+              setIsModalOpen={setIsModalOpen} // Pass the modal control function
               selectedCategories={selectedCategories}
               onToolsLoaded={handleToolsLoaded}
             />

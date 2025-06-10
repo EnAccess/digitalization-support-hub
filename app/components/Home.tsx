@@ -13,6 +13,7 @@ import {
   ToolDetailModal,
   type ToolDetailModalProps,
 } from "../components/ToolDetailModel"
+import { SuggestionBanner } from "./suggestion-banner"
 
 import {
   NavigationMenu,
@@ -40,7 +41,7 @@ const displayNames: Record<string, string> = {
 }
 
 interface HomeProps {
-  setIsModalOpen: (isOpen: boolean) => void
+  setIsModalOpen: (isOpen: boolean) => void // Add this prop
   selectedCategories: string[]
   onToolsLoaded: (tools: Tool[]) => void
 }
@@ -483,7 +484,11 @@ function FilterDrawer({
     </>
   )
 }
-export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
+export default function Home({
+  setIsModalOpen, // Add this prop
+  selectedCategories,
+  onToolsLoaded,
+}: HomeProps) {
   const [localSelectedCategories, setLocalSelectedCategories] = useState<
     string[]
   >([])
@@ -959,29 +964,27 @@ export default function Home({ selectedCategories, onToolsLoaded }: HomeProps) {
             Try changing your filters or check out the Tool Finder for tailored
             suggestions.
           </p>
-          <div className="flex flex-col items-center gap-8">
-            <Button
-              className="bg-[#2D6A4F] text-white rounded-full px-6 py-2 font-medium"
-              //   onClick={() => {
-              //   // Open the tool finder wizard
-              //  '
-              //   }}
-            >
-              Open Tool Finder Wizard
-              <ChevronRight className="ml-2 h-4 w-4" />
-            </Button>
+          <div className="flex flex-col items-center gap-8"></div>
+          <Button
+            className="bg-[#2D6A4F] text-white rounded-full px-6 py-2 font-medium"
+            onClick={() => setIsModalOpen(true)}
+          >
+            Open Tool Finder Wizard
+            <ChevronRight className="ml-2 h-4 w-4" />
+          </Button>
 
-            <div className="bg-white p-6 rounded-lg max-w-2xl">
-              <p className="font-bold mb-2">
-                If you know of any digital tools that belong in this category,
-                let us know!
-              </p>
-              <p className="text-gray-600">
-                Just drop us a message at support@dsh.org—we&apos;d love to
-                check them out and see if they&apos;re a good fit for our
-                database.
-              </p>
-            </div>
+          <div className="bg-white pt-6  text-center">
+            <p className="font-bold mb-2">
+              If you know of any digital tools that belong in this category, let
+              us know!
+            </p>
+            <p className="text-gray-600">
+              Just drop us a message at support@dsh.org—we&apos;d love to check
+              them out and see if they&apos;re a good fit for our database.
+            </p>
+          </div>
+          <div>
+            {localSelectedCategories.length > 0 && <SuggestionBanner />}
           </div>
         </div>
       )}
