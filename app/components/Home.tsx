@@ -965,25 +965,24 @@ export default function Home({
             suggestions.
           </p>
           <div className="flex flex-col items-center gap-8"></div>
-            <Button
-              className="bg-[#2D6A4F] text-white rounded-full px-6 py-2 font-medium"
-              onClick={() => setIsModalOpen(true)} 
-            >
-              Open Tool Finder Wizard
-              <ChevronRight className="ml-2 h-4 w-4" />
-            </Button>
+          <Button
+            className="bg-[#2D6A4F] text-white rounded-full px-6 py-2 font-medium"
+            onClick={() => setIsModalOpen(true)}
+          >
+            Open Tool Finder Wizard
+            <ChevronRight className="ml-2 h-4 w-4" />
+          </Button>
 
-            <div className="bg-white pt-6  text-center">
-              <p className="font-bold mb-2">
-                If you know of any digital tools that belong in this category,
-                let us know!
-              </p>
-              <p className="text-gray-600">
-                Just drop us a message at support@dsh.org—we&apos;d love to
-                check them out and see if they&apos;re a good fit for our
-                database.
-              </p>
-            </div>
+          <div className="bg-white pt-6  text-center">
+            <p className="font-bold mb-2">
+              If you know of any digital tools that belong in this category, let
+              us know!
+            </p>
+            <p className="text-gray-600">
+              Just drop us a message at support@dsh.org—we&apos;d love to check
+              them out and see if they&apos;re a good fit for our database.
+            </p>
+          </div>
           <div>
             {localSelectedCategories.length > 0 && <SuggestionBanner />}
           </div>

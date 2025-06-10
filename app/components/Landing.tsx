@@ -118,7 +118,7 @@ export default function Landing() {
         <section id="tool-map-section" className="py-8 mt-auto bg-[#F9FBFA]">
           <div className="max-w-6xl mx-auto">
             <Home
-              setIsModalOpen={setIsModalOpen}  // Pass the modal control function
+              setIsModalOpen={setIsModalOpen} // Pass the modal control function
               selectedCategories={selectedCategories}
               onToolsLoaded={handleToolsLoaded}
             />
