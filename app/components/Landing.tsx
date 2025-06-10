@@ -29,10 +29,6 @@ export default function Landing() {
     Record<string, string[]>
   >({})
 
-  const handleModalOpen = (value: boolean) => {
-    setIsModalOpen(value)
-  }
-
   const handleCategorySelect = (categories: string[]) => {
     // Update the selected categories state
     setSelectedCategories(categories)
