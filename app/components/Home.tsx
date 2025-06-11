@@ -246,7 +246,6 @@ function FilterDrawer({
     setTempFilters({ ...tempFilters, licensing: newLicensing })
   }
 
-
   const clearAllFilters = () => {
     const emptyFilters = {
       pricing: [],
@@ -270,7 +269,6 @@ function FilterDrawer({
 
   if (!isOpen) return null
 
-
   return (
     <>
       <div
@@ -279,14 +277,12 @@ function FilterDrawer({
       />
 
       <div className="fixed right-0 top-0 h-[100dvh] w-full sm:w-[380px] bg-white z-50 flex flex-col">
-
         <div className="sticky top-0 p-4 border-b border-gray-200 flex justify-between items-center bg-white">
           <h3 className="text-lg font-semibold">Filter</h3>
           <Button variant="ghost" size="sm" onClick={onClose}>
             <X size={20} />
           </Button>
         </div>
-
 
         <div className="flex-1 overflow-y-auto p-4 space-y-6 pb-[80px]">
           {/* Existing filter sections ... */}
