@@ -246,7 +246,7 @@ function FilterDrawer({
     setTempFilters({ ...tempFilters, licensing: newLicensing })
   }
 
-  // Update the clearAllFilters function in FilterDrawer component
+
   const clearAllFilters = () => {
     const emptyFilters = {
       pricing: [],
@@ -258,7 +258,6 @@ function FilterDrawer({
       automatedDataExchange: false,
     }
 
-    // Clear both temporary and main filters
     setTempFilters(emptyFilters)
     onFiltersChange(emptyFilters)
     onClose()
@@ -271,190 +270,197 @@ function FilterDrawer({
 
   if (!isOpen) return null
 
+
   return (
     <>
-      {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black bg-opacity-50 z-40"
         onClick={onClose}
       />
 
-      <div className="fixed right-0 top-0 h-full w-80 bg-white z-50 shadow-lg overflow-y-auto ">
-        <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+      <div className="fixed right-0 top-0 h-[100dvh] w-full sm:w-[380px] bg-white z-50 flex flex-col">
+
+        <div className="sticky top-0 p-4 border-b border-gray-200 flex justify-between items-center bg-white">
           <h3 className="text-lg font-semibold">Filter</h3>
           <Button variant="ghost" size="sm" onClick={onClose}>
             <X size={20} />
           </Button>
         </div>
 
-        <div className="p-4 space-y-6">
-          {/* Pricing Section */}
-          <div>
-            <h4 className="font-medium mb-3">Pricing </h4>
-            <div className="space-y-2">
-              <Button
-                variant={
-                  tempFilters.pricing.includes("Free Version or Free Demo")
-                    ? "default"
-                    : "outline"
-                }
-                size="sm"
-                className={cn(
-                  "rounded-md text-sm font-normal justify-start h-auto px-3 py-2",
-                  tempFilters.pricing.includes("Free Version or Free Demo")
-                    ? "bg-[#17412C] text-white "
-                    : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
-                )}
-                onClick={() => togglePricing("Free Version or Free Demo")}
-              >
-                Free Version or Free Demo
-              </Button>
-              <Button
-                variant={
-                  tempFilters.pricing.includes("100% Free")
-                    ? "default"
-                    : "outline"
-                }
-                size="sm"
-                className={cn(
-                  "rounded-md text-sm font-normal justify-start h-auto px-3 py-2",
-                  tempFilters.pricing.includes("100% Free")
-                    ? "bg-[#17412C] text-white "
-                    : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
-                )}
-                onClick={() => togglePricing("100% Free")}
-              >
-                Free
-              </Button>
-            </div>
-          </div>
 
-          {/* Business Types Section */}
-          <div>
-            <h4 className="font-medium mb-3">Business Types</h4>
-            <div className="space-y-2 space-x-2">
-              {["Mini Grids", "SHS", "Clean Cooking"].map((type) => (
+        <div className="flex-1 overflow-y-auto p-4 space-y-6 pb-[80px]">
+          {/* Existing filter sections ... */}
+          <div className="space-y-6">
+            {/* Pricing Section */}
+            <div>
+              <h4 className="font-medium mb-3">Pricing</h4>
+              <div className="space-y-2">
                 <Button
-                  key={type}
                   variant={
-                    tempFilters.businessTypes.includes(type)
+                    tempFilters.pricing.includes("Free Version or Free Demo")
                       ? "default"
                       : "outline"
                   }
                   size="sm"
                   className={cn(
                     "rounded-md text-sm font-normal justify-start h-auto px-3 py-2",
-                    tempFilters.businessTypes.includes(type)
+                    tempFilters.pricing.includes("Free Version or Free Demo")
                       ? "bg-[#17412C] text-white "
                       : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
                   )}
-                  onClick={() => toggleBusinessType(type)}
+                  onClick={() => togglePricing("Free Version or Free Demo")}
                 >
-                  {type}
+                  Free Version or Free Demo
                 </Button>
-              ))}
-            </div>
-          </div>
-
-          {/* Licensing Section */}
-          <div>
-            <h4 className="font-medium mb-3">Licensing</h4>
-            <div className="space-y-2">
-              {["Fully Open Source", "Partially Open Source"].map((license) => (
                 <Button
-                  key={license}
                   variant={
-                    tempFilters.licensing.includes(license)
+                    tempFilters.pricing.includes("100% Free")
                       ? "default"
                       : "outline"
                   }
                   size="sm"
                   className={cn(
                     "rounded-md text-sm font-normal justify-start h-auto px-3 py-2",
-                    tempFilters.licensing.includes(license)
+                    tempFilters.pricing.includes("100% Free")
                       ? "bg-[#17412C] text-white "
                       : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
                   )}
-                  onClick={() => toggleLicensing(license)}
+                  onClick={() => togglePricing("100% Free")}
                 >
-                  {license}
+                  Free
                 </Button>
-              ))}
+              </div>
             </div>
-          </div>
 
-          {/* Interoperability Section */}
-          <div>
-            <h4 className="font-medium mb-3">
-              Interoperability & Data Exchange
-            </h4>
-            <div className="space-y-3">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="data-export"
-                  checked={tempFilters.DataExport}
-                  onCheckedChange={(checked) =>
-                    setTempFilters({
-                      ...tempFilters,
-                      DataExport: checked as boolean,
-                    })
-                  }
-                />
-                <label htmlFor="data-export" className="text-sm">
-                  Data Export Available
-                </label>
+            {/* Business Types Section */}
+            <div>
+              <h4 className="font-medium mb-3">Business Types</h4>
+              <div className="space-y-2 space-x-2">
+                {["Mini Grids", "SHS", "Clean Cooking"].map((type) => (
+                  <Button
+                    key={type}
+                    variant={
+                      tempFilters.businessTypes.includes(type)
+                        ? "default"
+                        : "outline"
+                    }
+                    size="sm"
+                    className={cn(
+                      "rounded-md text-sm font-normal justify-start h-auto px-3 py-2",
+                      tempFilters.businessTypes.includes(type)
+                        ? "bg-[#17412C] text-white "
+                        : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+                    )}
+                    onClick={() => toggleBusinessType(type)}
+                  >
+                    {type}
+                  </Button>
+                ))}
               </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="unidirectional-api"
-                  checked={tempFilters.unidirectionalAPI}
-                  onCheckedChange={(checked) =>
-                    setTempFilters({
-                      ...tempFilters,
-                      unidirectionalAPI: checked as boolean,
-                    })
-                  }
-                />
-                <label htmlFor="unidirectional-api" className="text-sm">
-                  Unidirectional data exchange via API
-                </label>
+            </div>
+
+            {/* Licensing Section */}
+            <div>
+              <h4 className="font-medium mb-3">Licensing</h4>
+              <div className="space-y-2">
+                {["Fully Open Source", "Partially Open Source"].map(
+                  (license) => (
+                    <Button
+                      key={license}
+                      variant={
+                        tempFilters.licensing.includes(license)
+                          ? "default"
+                          : "outline"
+                      }
+                      size="sm"
+                      className={cn(
+                        "rounded-md text-sm font-normal justify-start h-auto px-3 py-2",
+                        tempFilters.licensing.includes(license)
+                          ? "bg-[#17412C] text-white "
+                          : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+                      )}
+                      onClick={() => toggleLicensing(license)}
+                    >
+                      {license}
+                    </Button>
+                  )
+                )}
               </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="bidirectional-api"
-                  checked={tempFilters.bidirectionalAPI}
-                  onCheckedChange={(checked) =>
-                    setTempFilters({
-                      ...tempFilters,
-                      bidirectionalAPI: checked as boolean,
-                    })
-                  }
-                />
-                <label htmlFor="bidirectional-api" className="text-sm">
-                  Bidirectional data exchange via API
-                </label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="automatic-exchange"
-                  checked={tempFilters.automatedDataExchange}
-                  onCheckedChange={(checked) =>
-                    setTempFilters({
-                      ...tempFilters,
-                      automatedDataExchange: checked as boolean,
-                    })
-                  }
-                />
-                <label htmlFor="automatic-exchange" className="text-sm">
-                  Has automatic data exchange with selected tools
-                </label>
+            </div>
+
+            {/* Interoperability Section */}
+            <div>
+              <h4 className="font-medium mb-3">
+                Interoperability & Data Exchange
+              </h4>
+              <div className="space-y-3">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="data-export"
+                    checked={tempFilters.DataExport}
+                    onCheckedChange={(checked) =>
+                      setTempFilters({
+                        ...tempFilters,
+                        DataExport: checked as boolean,
+                      })
+                    }
+                  />
+                  <label htmlFor="data-export" className="text-sm">
+                    Data Export Available
+                  </label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="unidirectional-api"
+                    checked={tempFilters.unidirectionalAPI}
+                    onCheckedChange={(checked) =>
+                      setTempFilters({
+                        ...tempFilters,
+                        unidirectionalAPI: checked as boolean,
+                      })
+                    }
+                  />
+                  <label htmlFor="unidirectional-api" className="text-sm">
+                    Unidirectional data exchange via API
+                  </label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="bidirectional-api"
+                    checked={tempFilters.bidirectionalAPI}
+                    onCheckedChange={(checked) =>
+                      setTempFilters({
+                        ...tempFilters,
+                        bidirectionalAPI: checked as boolean,
+                      })
+                    }
+                  />
+                  <label htmlFor="bidirectional-api" className="text-sm">
+                    Bidirectional data exchange via API
+                  </label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="automatic-exchange"
+                    checked={tempFilters.automatedDataExchange}
+                    onCheckedChange={(checked) =>
+                      setTempFilters({
+                        ...tempFilters,
+                        automatedDataExchange: checked as boolean,
+                      })
+                    }
+                  />
+                  <label htmlFor="automatic-exchange" className="text-sm">
+                    Has automatic data exchange with selected tools
+                  </label>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Footer Buttons */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 bg-white">
+        {/* Footer - Fixed at bottom */}
+        <div className="sticky bottom-0 p-4 border-t border-gray-200 bg-white">
           <div className="flex gap-3">
             <Button
               className="flex-1 bg-[#2D6A4F] hover:bg-[#2D6A4F]/90 text-white rounded-full"
