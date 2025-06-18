@@ -938,9 +938,8 @@ export default function Home({
           onClose={() => setIsToolModalOpen(false)}
         />
       )}
-      
-      {localSelectedCategories.length > 0 && <SuggestionBanner />}
 
+      {localSelectedCategories.length > 0 && <SuggestionBanner />}
 
       <FilterDrawer
         isOpen={isFilterDrawerOpen}
