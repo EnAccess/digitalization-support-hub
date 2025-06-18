@@ -20,6 +20,7 @@ import yaml from "js-yaml"
 import { Checkbox } from "@/components/ui/checkbox"
 import { FilterDrawer } from "./FilterDrawer"
 import { FilterState } from "../types"
+import { SuggestionBanner } from "./suggestion-banner"
 
 interface CategoryMapItem {
   name: string
@@ -642,6 +643,7 @@ export function ToolCategoriesDrawer({
               </div>
             )}
           </div>
+          {localSelectedCategories.length > 0 && <SuggestionBanner />}
 
           <FilterDrawer
             isOpen={isFilterDrawerOpen}
