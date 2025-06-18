@@ -938,11 +938,13 @@ export default function Home({
           onClose={() => setIsToolModalOpen(false)}
         />
       )}
+      
+      {localSelectedCategories.length > 0 && <SuggestionBanner />}
+
+
       <FilterDrawer
         isOpen={isFilterDrawerOpen}
-        onClose={() => {
-          setIsFilterDrawerOpen(false)
-        }}
+        onClose={() => setIsFilterDrawerOpen(false)}
         filters={filters}
         onFiltersChange={(newFilters) => {
           setFilters(newFilters)
@@ -984,9 +986,6 @@ export default function Home({
               Just drop us a message at support@dsh.org—we&apos;d love to check
               them out and see if they&apos;re a good fit for our database.
             </p>
-          </div>
-          <div>
-            {localSelectedCategories.length > 0 && <SuggestionBanner />}
           </div>
         </div>
       )}

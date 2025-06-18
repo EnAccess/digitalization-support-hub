@@ -11,7 +11,7 @@ export function SuggestionBanner() {
     <div className="fixed bottom-0 left-0 right-0 bg-[#0D261A] text-white p-4 flex justify-between items-center">
       <div className="flex items-center gap-2">
         <span>Know of a relevant tool that&apos;s not listed?</span>
-        <Link href="/suggestions" className="underline hover:text-[#8BDC7F]">
+        <Link target="_blank" href="https://enaccess.typeform.com/to/J04nu9Pq" className="underline hover:text-[#8BDC7F]">
           Send us your suggestions
         </Link>
       </div>
