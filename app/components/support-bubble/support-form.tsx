@@ -5,10 +5,6 @@ import type React from "react"
 import { useState } from "react"
 import { X } from "lucide-react"
 
-interface SupportFormProps {
-  onSubmitSuccess: () => void
-}
-
 export function SupportForm() {
   const [showBanner, setShowBanner] = useState(true)
 
