@@ -17,7 +17,7 @@ export function SupportBubble({ initialState = "closed" }: SupportBubbleProps) {
 
   if (state === "closed") {
     return (
-      <div className="fixed bottom-6 left-6 z-50">
+      <div style={{ bottom: "64px" }} className="fixed   left-6 z-50">
         <button
           onClick={() => setState("prompt")}
           className="flex h-14 w-14 items-center justify-center rounded-full bg-[#004d2c] text-white shadow-lg hover:bg-[#00613a] transition-all"
