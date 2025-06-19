@@ -3,12 +3,6 @@
 import type React from "react"
 
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Textarea } from "@/components/ui/textarea"
-import { cn } from "@/lib/utils"
 import { X } from "lucide-react"
 
 interface SupportFormProps {
@@ -16,40 +10,9 @@ interface SupportFormProps {
 }
 
 export function SupportForm({ onSubmitSuccess }: SupportFormProps) {
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isFormValid, setIsFormValid] = useState(false)
   const [showBanner, setShowBanner] = useState(true)
 
-  // Add form validation check
-  const checkFormValidity = (form: HTMLFormElement) => {
-    const requiredFields = [
-      form.company.value,
-      form.email.value,
-      form.country.value,
-      form.application.value,
-    ]
-    return requiredFields.every((field) => field.trim().length > 0)
-  }
-
   // Update form validity on input change
-  const handleFormChange = (event: React.FormEvent<HTMLFormElement>) => {
-    const form = event.currentTarget
-    setIsFormValid(checkFormValidity(form))
-  }
-
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    setIsSubmitting(true)
-
-    try {
-      onSubmitSuccess()
-    } catch (error) {
-      console.error("Error submitting form:", error)
-      // Handle error state here
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
 
   return (
     <div className="">
