@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
 import { mapAnswersToCategories } from "../utils/questionnaire-utils"
 import yaml from "js-yaml"
-import { Tool } from "../types"
+import { FilterState, Tool } from "../types"
 const getToolCountForCategories = async (
   categories: string[]
 ): Promise<number> => {
@@ -205,7 +205,10 @@ const Stepper = ({ steps, currentStep }: StepperProps) => {
 }
 
 interface QuestionaireFilterProps {
-  onComplete: (categories: string[], answers: Record<string, string[]>) => void
+  onComplete: (
+    result: { categories: string[]; filters: FilterState },
+    answers: Record<string, string[]>
+  ) => void
   onClose: () => void
   toolCount?: number
 }
@@ -311,20 +314,20 @@ const QuestionaireFilter = ({
   }
 
   const handleComplete = () => {
-    const relevantCategories = mapAnswersToCategories(answers)
-    onComplete(relevantCategories, answers) // Pass both categories and answers
+    const result = mapAnswersToCategories(answers)
+    onComplete(result, answers) // Pass both the result (categories + filters) and raw answers
     onClose()
   }
-  const test = mapAnswersToCategories(answers)
 
-  // Update tool count when test categories change
+  // Update useEffect to use the new result structure
   useEffect(() => {
-    if (test.length > 0) {
-      getToolCountForCategories(test).then((count) => {
+    const result = mapAnswersToCategories(answers)
+    if (result.categories.length > 0) {
+      getToolCountForCategories(result.categories).then((count) => {
         setMatchingToolCount(count)
       })
     }
-  }, [test])
+  }, [answers])
 
   useEffect(() => {
     if (isQuestionnaireComplete) {

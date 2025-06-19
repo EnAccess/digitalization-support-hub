@@ -25,10 +25,34 @@ export const categoryMap = {
   ],
 } as const
 
+// First add an interface for the return type
+interface QuestionnaireResult {
+  categories: string[]
+  filters: {
+    pricing: string[]
+    businessTypes: string[]
+    licensing: string[]
+    DataExport: boolean
+    unidirectionalAPI: boolean
+    bidirectionalAPI: boolean
+    automatedDataExchange: boolean
+  }
+}
+
+// Update the function to return both categories and filters
 export function mapAnswersToCategories(
   answers: Record<string, string[]>
-): string[] {
+): QuestionnaireResult {
   const categories = new Set<string>()
+  const filters = {
+    pricing: [] as string[],
+    businessTypes: [] as string[],
+    licensing: [] as string[],
+    DataExport: false,
+    unidirectionalAPI: false,
+    bidirectionalAPI: false,
+    automatedDataExchange: false,
+  }
 
   // Q3: Number of Clients mapping (moved first as per QUESTIONNAIRE_ORDER)
   if (answers.numberOfClients?.[0]) {
@@ -154,57 +178,51 @@ export function mapAnswersToCategories(
   }
 
   // Q2: Company Focus mapping
-  // if (answers.companyFocus) {
-  //   answers.companyFocus.forEach((focus) => {
-  //     if (focus.includes("SHS")) {
-  //       categories.add("Stock Management")
-  //       categories.add("Payment Collections")
-  //       categories.add("Sales & Contract Management")
-  //     }
-  //     if (focus.includes("Mini-Grids")) {
-  //       categories.add("Service Calls")
-  //       categories.add("Tech Response")
-  //       categories.add("Impact Measurements & Performance")
-  //     }
-  //     if (focus.includes("Clean Cooking")) {
-  //       categories.add("Product Logistics & Procurement")
-  //       categories.add("Marketing")
-  //       categories.add("Customer Finance Management")
-  //     }
-  //   })
-  // }
-
-  // Q4: Internal Expertise mapping
-  // if (answers.internalExpertise?.[0]) {
-  //   if (answers.internalExpertise[0].includes("No, not at all")) {
-  //     categories.add("Personal Training")
-  //     categories.add("Tech Response")
-  //   }
-  //   if (answers.internalExpertise[0].includes("some knowledge")) {
-  //     categories.add("Service Calls")
-  //     categories.add("CRM")
-  //   }
-  //   if (answers.internalExpertise[0].includes("full IT")) {
-  //     categories.add("Tech Response")
-  //     categories.add("Impact Measurements & Performance")
-  //   }
-  // }
+  if (answers.companyFocus) {
+    answers.companyFocus.forEach((focus) => {
+      if (focus.includes("SHS")) {
+        categories.add("Stock Management")
+        categories.add("Payment Collections")
+        categories.add("Sales & Contract Management")
+        filters.businessTypes.push("SHS")
+      }
+      if (focus.includes("Mini-Grids")) {
+        categories.add("Service Calls")
+        categories.add("Tech Response")
+        categories.add("Impact Measurements & Performance")
+        filters.businessTypes.push("Mini Grids")
+      }
+      if (focus.includes("Clean Cooking")) {
+        categories.add("Product Logistics & Procurement")
+        categories.add("Marketing")
+        categories.add("Customer Finance Management")
+        filters.businessTypes.push("Clean Cooking")
+      }
+    })
+  }
 
   // Q5: Tools Cost mapping
-  // if (answers.toolsCost?.[0]) {
-  //   if (answers.toolsCost[0].includes("free-to-use")) {
-  //     categories.add("Market Analysis")
-  //     categories.add("Personal Training")
-  //   }
-  // }
+  if (answers.toolsCost?.[0]) {
+    if (answers.toolsCost[0].includes("free-to-use")) {
+      categories.add("Market Analysis")
+      categories.add("Personal Training")
+      filters.pricing.push("Free")
+      filters.pricing.push("Free Demo")
+    }
+  }
 
   // Q6: Tool Source mapping (Open Source preference)
-  // if (answers.toolSource?.[0]) {
-  //   if (answers.toolSource[0].includes("Yes please")) {
-  //     categories.add("Tech Response")
-  //     categories.add("Impact Measurements & Performance")
-  //   }
-  // }
+  if (answers.toolSource?.[0]) {
+    if (answers.toolSource[0].includes("Yes please")) {
+      categories.add("Tech Response")
+      categories.add("Impact Measurements & Performance")
+      filters.licensing.push("Fully Open Source")
+      filters.licensing.push("Partially Open Source")
+    }
+  }
 
-  return Array.from(categories)
+  return {
+    categories: Array.from(categories),
+    filters,
+  }
 }

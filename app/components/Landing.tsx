@@ -13,7 +13,7 @@ import { Modal } from "antd"
 import QuestionaireFilter from "../components/Questionairefilter"
 import { ToolCategoriesDrawer } from "../components/categories-drawer"
 import { useMobile } from "../hooks/use-mobile"
-import { Tool } from "../types"
+import { FilterState, Tool } from "../types"
 
 // Remove the local Tool interface since we're now importing it
 
@@ -29,6 +29,22 @@ export default function Landing() {
     Record<string, string[]>
   >({})
 
+  interface QuestionnaireResult {
+    categories: string[]
+    filters: FilterState
+  }
+
+  // Add new state for filters
+  const [filters, setFilters] = useState<FilterState>({
+    pricing: [],
+    businessTypes: [],
+    licensing: [],
+    DataExport: false,
+    unidirectionalAPI: false,
+    bidirectionalAPI: false,
+    automatedDataExchange: false,
+  })
+
   const handleCategorySelect = (categories: string[]) => {
     // Update the selected categories state
     setSelectedCategories(categories)
@@ -42,12 +58,20 @@ export default function Landing() {
   const handleModalClose = () => setIsModalOpen(false)
 
   const handleQuestionnaireComplete = (
-    categories: string[],
+    result: QuestionnaireResult,
     questionnaireAnswers: Record<string, string[]>
   ) => {
-    setSelectedCategories(categories)
+    // Update categories
+    setSelectedCategories(result.categories)
+
+    // Update filters from questionnaire
+    setFilters(result.filters)
+
+    // Update answers states
     setAnswers(questionnaireAnswers)
     setQuestionnaireAnswers(questionnaireAnswers)
+
+    // Close modal
     setIsModalOpen(false)
 
     // Open drawer on mobile, scroll on desktop
@@ -117,6 +141,8 @@ export default function Landing() {
               setIsModalOpen={setIsModalOpen} // Pass the modal control function
               selectedCategories={selectedCategories}
               onToolsLoaded={handleToolsLoaded}
+              filters={filters}
+              setFilters={setFilters}
             />
           </div>
         </section>

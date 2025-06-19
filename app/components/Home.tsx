@@ -41,9 +41,11 @@ const displayNames: Record<string, string> = {
 }
 
 interface HomeProps {
-  setIsModalOpen: (isOpen: boolean) => void // Add this prop
+  setIsModalOpen: (isOpen: boolean) => void
   selectedCategories: string[]
   onToolsLoaded: (tools: Tool[]) => void
+  filters: FilterState
+  setFilters: (filters: FilterState) => void
 }
 
 interface CategoryMapItem {
@@ -490,6 +492,8 @@ export default function Home({
   setIsModalOpen, // Add this prop
   selectedCategories,
   onToolsLoaded,
+  filters,
+  setFilters,
 }: HomeProps) {
   const [localSelectedCategories, setLocalSelectedCategories] = useState<
     string[]
@@ -503,15 +507,6 @@ export default function Home({
   )
   const [questionnaireAnswers] = useState<Record<string, string[]> | null>(null)
   const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false)
-  const [filters, setFilters] = useState<FilterState>({
-    pricing: [],
-    businessTypes: [],
-    licensing: [],
-    DataExport: false,
-    unidirectionalAPI: false,
-    bidirectionalAPI: false,
-    automatedDataExchange: false,
-  })
 
   // Update local categories when prop changes
   useEffect(() => {
