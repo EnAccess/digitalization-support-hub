@@ -9,7 +9,7 @@ interface SupportFormProps {
   onSubmitSuccess: () => void
 }
 
-export function SupportForm({ onSubmitSuccess }: SupportFormProps) {
+export function SupportForm() {
   const [showBanner, setShowBanner] = useState(true)
 
   // Update form validity on input change

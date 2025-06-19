@@ -84,7 +84,7 @@ export function SupportBubble({ initialState = "closed" }: SupportBubbleProps) {
 
         <div className="max-h-[90vh] overflow-y-auto scrollbar-hide">
           {state === "form" ? (
-            <SupportForm onSubmitSuccess={() => setState("thanks")} />
+            <SupportForm />
           ) : (
             <ThankYouMessage onClose={() => setState("closed")} />
           )}
