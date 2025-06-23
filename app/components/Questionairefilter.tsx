@@ -9,68 +9,68 @@ import { cn } from "@/lib/utils"
 import { mapAnswersToCategories } from "../utils/questionnaire-utils"
 import yaml from "js-yaml"
 import { FilterState, Tool } from "../types"
-const getToolCountForCategories = async (
-  categories: string[]
-): Promise<number> => {
-  try {
-    // Assuming tools data is stored in YAML files in a public directory
-    const toolFiles = [
-      "/tools/paygee.yaml",
-      "/tools/odoo.yaml",
-      "/tools/quickbooks.yaml",
-      "/tools/upya.yaml",
-      "/tools/xero.yaml",
-      "/tools/odyssey.yaml",
-      "/tools/unleashed.yaml",
-      "/tools/3cx.yaml",
-      "/tools/d-rec.yaml",
-      "/tools/ixo.yaml",
-      "/tools/p-rec.yaml",
-      "/tools/challenges.yaml",
-      "/tools/carbon-clear.yaml",
-      "/tools/cavex.yaml",
-      "/tools/bridgin.yaml",
-      "/tools/d-rec-financing-programmes.yaml",
-      "/tools/fieldPro.yaml",
-      "/tools/Learn.ink.yaml",
-      "/tools/micropowerManager.yaml",
-      "/tools/nithio.yaml",
-      "/tools/odyssey-fern.yaml",
-      "/tools/paygops.yaml",
-      "/tools/vida.yaml",
-      "/tools/angaza.yaml",
-      "/tools/prospect.yaml",
-      "/tools/universus.yaml",
-      "/tools/market-Map.yaml",
-      "/tools/qgis.yaml",
-      "/tools/development-maps.yaml",
-      "/tools/energy-access-explorer.yaml",
-      "/tools/wps.yaml",
-      "/tools/zoho.yaml",
-    ]
+// const getToolCountForCategories = async (
+//   categories: string[]
+// ): Promise<number> => {
+//   try {
+//     // Assuming tools data is stored in YAML files in a public directory
+//     const toolFiles = [
+//       "/tools/paygee.yaml",
+//       "/tools/odoo.yaml",
+//       "/tools/quickbooks.yaml",
+//       "/tools/upya.yaml",
+//       "/tools/xero.yaml",
+//       "/tools/odyssey.yaml",
+//       "/tools/unleashed.yaml",
+//       "/tools/3cx.yaml",
+//       "/tools/d-rec.yaml",
+//       "/tools/ixo.yaml",
+//       "/tools/p-rec.yaml",
+//       "/tools/challenges.yaml",
+//       "/tools/carbon-clear.yaml",
+//       "/tools/cavex.yaml",
+//       "/tools/bridgin.yaml",
+//       "/tools/d-rec-financing-programmes.yaml",
+//       "/tools/fieldPro.yaml",
+//       "/tools/Learn.ink.yaml",
+//       "/tools/micropowerManager.yaml",
+//       "/tools/nithio.yaml",
+//       "/tools/odyssey-fern.yaml",
+//       "/tools/paygops.yaml",
+//       "/tools/vida.yaml",
+//       "/tools/angaza.yaml",
+//       "/tools/prospect.yaml",
+//       "/tools/universus.yaml",
+//       "/tools/market-Map.yaml",
+//       "/tools/qgis.yaml",
+//       "/tools/development-maps.yaml",
+//       "/tools/energy-access-explorer.yaml",
+//       "/tools/wps.yaml",
+//       "/tools/zoho.yaml",
+//     ]
 
-    // Load all tool data
-    const loadedTools = await Promise.all(
-      toolFiles.map(async (file) => {
-        const response = await fetch(file)
-        const text = await response.text()
-        return yaml.load(text) as Tool
-      })
-    )
+//     // Load all tool data
+//     const loadedTools = await Promise.all(
+//       toolFiles.map(async (file) => {
+//         const response = await fetch(file)
+//         const text = await response.text()
+//         return yaml.load(text) as Tool
+//       })
+//     )
 
-    // Filter tools based on categories
-    const matchingTools = loadedTools.filter(
-      (tool) =>
-        Array.isArray(tool.categories) &&
-        tool.categories.some((category) => categories.includes(category))
-    )
+//     // Filter tools based on categories
+//     const matchingTools = loadedTools.filter(
+//       (tool) =>
+//         Array.isArray(tool.categories) &&
+//         tool.categories.some((category) => categories.includes(category))
+//     )
 
-    return matchingTools.length
-  } catch (error) {
-    console.error("Error loading tool data:", error)
-    return 0
-  }
-}
+//     return matchingTools.length
+//   } catch (error) {
+//     console.error("Error loading tool data:", error)
+//     return 0
+//   }
+// }
 
 const getToolCountForFilters = async (
   categories: string[],
