@@ -9,8 +9,72 @@ import { cn } from "@/lib/utils"
 import { mapAnswersToCategories } from "../utils/questionnaire-utils"
 import yaml from "js-yaml"
 import { FilterState, Tool } from "../types"
-const getToolCountForCategories = async (
-  categories: string[]
+// const getToolCountForCategories = async (
+//   categories: string[]
+// ): Promise<number> => {
+//   try {
+//     // Assuming tools data is stored in YAML files in a public directory
+//     const toolFiles = [
+//       "/tools/paygee.yaml",
+//       "/tools/odoo.yaml",
+//       "/tools/quickbooks.yaml",
+//       "/tools/upya.yaml",
+//       "/tools/xero.yaml",
+//       "/tools/odyssey.yaml",
+//       "/tools/unleashed.yaml",
+//       "/tools/3cx.yaml",
+//       "/tools/d-rec.yaml",
+//       "/tools/ixo.yaml",
+//       "/tools/p-rec.yaml",
+//       "/tools/challenges.yaml",
+//       "/tools/carbon-clear.yaml",
+//       "/tools/cavex.yaml",
+//       "/tools/bridgin.yaml",
+//       "/tools/d-rec-financing-programmes.yaml",
+//       "/tools/fieldPro.yaml",
+//       "/tools/Learn.ink.yaml",
+//       "/tools/micropowerManager.yaml",
+//       "/tools/nithio.yaml",
+//       "/tools/odyssey-fern.yaml",
+//       "/tools/paygops.yaml",
+//       "/tools/vida.yaml",
+//       "/tools/angaza.yaml",
+//       "/tools/prospect.yaml",
+//       "/tools/universus.yaml",
+//       "/tools/market-Map.yaml",
+//       "/tools/qgis.yaml",
+//       "/tools/development-maps.yaml",
+//       "/tools/energy-access-explorer.yaml",
+//       "/tools/wps.yaml",
+//       "/tools/zoho.yaml",
+//     ]
+
+//     // Load all tool data
+//     const loadedTools = await Promise.all(
+//       toolFiles.map(async (file) => {
+//         const response = await fetch(file)
+//         const text = await response.text()
+//         return yaml.load(text) as Tool
+//       })
+//     )
+
+//     // Filter tools based on categories
+//     const matchingTools = loadedTools.filter(
+//       (tool) =>
+//         Array.isArray(tool.categories) &&
+//         tool.categories.some((category) => categories.includes(category))
+//     )
+
+//     return matchingTools.length
+//   } catch (error) {
+//     console.error("Error loading tool data:", error)
+//     return 0
+//   }
+// }
+
+const getToolCountForFilters = async (
+  categories: string[],
+  filters: FilterState
 ): Promise<number> => {
   try {
     // Assuming tools data is stored in YAML files in a public directory
@@ -58,12 +122,62 @@ const getToolCountForCategories = async (
       })
     )
 
-    // Filter tools based on categories
-    const matchingTools = loadedTools.filter(
-      (tool) =>
+    // Filter tools by categories and filters
+    const matchingTools = loadedTools.filter((tool) => {
+      // Category match
+      const categoryMatch =
         Array.isArray(tool.categories) &&
         tool.categories.some((category) => categories.includes(category))
-    )
+
+      // Pricing match
+      const pricingMatch =
+        !filters.pricing.length ||
+        filters.pricing.some(
+          (p) =>
+            Array.isArray(tool.pricing?.title) && tool.pricing.title.includes(p)
+        )
+
+      // Business Types match
+      const businessTypeMatch =
+        !filters.businessTypes.length ||
+        filters.businessTypes.some((b) => tool.business_type?.includes?.(b))
+
+      // Licensing match
+      const licensingMatch =
+        !filters.licensing.length ||
+        filters.licensing.some((l) => tool.license?.includes?.(l))
+
+      // Interoperability match
+      const dataExportMatch =
+        !filters.DataExport ||
+        tool.interoperatibility?.includes?.("Data Export")
+      const unidirectionalAPIMatch =
+        !filters.unidirectionalAPI ||
+        tool.interoperatibility?.includes?.(
+          "Unidirectional data exchange via API"
+        )
+      const bidirectionalAPIMatch =
+        !filters.bidirectionalAPI ||
+        tool.interoperatibility?.includes?.(
+          "Bidirectional data exchange via API"
+        )
+      const automatedDataExchangeMatch =
+        !filters.automatedDataExchange ||
+        tool.interoperatibility?.includes?.(
+          "Automated data exchange with selected tools"
+        )
+
+      return (
+        categoryMatch &&
+        pricingMatch &&
+        businessTypeMatch &&
+        licensingMatch &&
+        dataExportMatch &&
+        unidirectionalAPIMatch &&
+        bidirectionalAPIMatch &&
+        automatedDataExchangeMatch
+      )
+    })
 
     return matchingTools.length
   } catch (error) {
@@ -323,9 +437,11 @@ const QuestionaireFilter = ({
   useEffect(() => {
     const result = mapAnswersToCategories(answers)
     if (result.categories.length > 0) {
-      getToolCountForCategories(result.categories).then((count) => {
-        setMatchingToolCount(count)
-      })
+      getToolCountForFilters(result.categories, result.filters).then(
+        (count) => {
+          setMatchingToolCount(count)
+        }
+      )
     }
   }, [answers])
 
