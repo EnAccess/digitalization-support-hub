@@ -22,7 +22,7 @@ pricing:
   description:
 
 free_demo_available: true
-is_free: true
+is_free: false
 
 interoperatibility:
   - Data export is possible via file download (CSV/XLSX/...)
