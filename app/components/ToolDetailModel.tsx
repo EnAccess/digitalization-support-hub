@@ -271,6 +271,25 @@ export function ToolDetailModal({
             Visit website
           </Button>
         </div>
+        <div className="flex flex-col items-center mt-4">
+          <a
+            href="https://enaccess.typeform.com/to/J04nu9Pq"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-[#17412C] hover:text-[#0D261A] underline font-medium transition"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              viewBox="0 0 24 24"
+            >
+              <path d="M12 4v16m8-8H4" />
+            </svg>
+            Something Wrong? Let Us Know
+          </a>
+        </div>
       </DialogContent>
     </Dialog>
   )
