@@ -30,7 +30,7 @@ interface SupportBubbleProviderProps {
 export function SupportBubbleProvider({
   children,
 }: SupportBubbleProviderProps) {
-  const [bubbleState, setBubbleState] = useState<BubbleState>("closed")
+  const [, setBubbleState] = useState<BubbleState>("closed")
 
   const openSupportForm = () => {
     setBubbleState("prompt")
