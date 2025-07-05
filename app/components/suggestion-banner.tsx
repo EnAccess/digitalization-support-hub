@@ -13,7 +13,7 @@ export function SuggestionBanner() {
         <span>Know of a relevant tool that&apos;s not listed?</span>
         <Link
           target="_blank"
-          href="https://enaccess.typeform.com/to/J04nu9Pq"
+          href="https://enaccess.typeform.com/new-tool"
           className="underline hover:text-[#8BDC7F]"
         >
           Send us your suggestions

@@ -15,7 +15,7 @@ user_type:
 
 pricing:
   title:
-    - By user Number
+    - By user number
     - By time based license
     - By data volume
   description: Various pricing schemes. Contact vendor for details

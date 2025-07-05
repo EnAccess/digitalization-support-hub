@@ -1,7 +1,8 @@
 "use client"
 
 import { createContext, useContext, useState, type ReactNode } from "react"
-import { SupportBubble, type BubbleState } from "./support-bubble/bubble"
+import { MiniBubble } from "./support-bubble/mini-bubble" // <-- updated import
+import { type BubbleState } from "./support-bubble/bubble"
 
 interface SupportBubbleContextType {
   openSupportForm: () => void
@@ -29,7 +30,7 @@ interface SupportBubbleProviderProps {
 export function SupportBubbleProvider({
   children,
 }: SupportBubbleProviderProps) {
-  const [bubbleState, setBubbleState] = useState<BubbleState>("closed")
+  const [, setBubbleState] = useState<BubbleState>("closed")
 
   const openSupportForm = () => {
     setBubbleState("prompt")
@@ -42,7 +43,7 @@ export function SupportBubbleProvider({
   return (
     <SupportBubbleContext.Provider value={{ openSupportForm, openMiniBubble }}>
       {children}
-      <SupportBubble initialState={bubbleState} />
+      <MiniBubble /> {/* <-- use MiniBubble here */}
     </SupportBubbleContext.Provider>
   )
 }
