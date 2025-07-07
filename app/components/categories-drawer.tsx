@@ -521,111 +521,113 @@ export function ToolCategoriesDrawer({
               } gap-4 px-4 pb-4`}
             >
               {filteredTools.length > 0 ? (
-                filteredTools.map((tool) => (
-                  <Card
-                    key={tool.name}
-                    className="border border-gray-200 rounded-md overflow-hidden hover:shadow-md transition-shadow bg-white p-4"
-                    onClick={() => handleToolClick(tool)}
-                  >
-                    <CardHeader className="pb-2">
-                      {/* Business type and license badges */}
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        {/* First evaluate the condition, THEN render JSX */}
-                        {((tool.business_type &&
-                          tool.business_type.length > 0) ||
-                          tool.license) && (
-                          <div className="flex flex-wrap gap-2 w-full">
-                            {[
-                              ...(tool.business_type || []),
-                              ...(Array.isArray(tool.license)
-                                ? tool.license
-                                : tool.license
-                                  ? [`${tool.license}`]
-                                  : []),
-                            ].map((category, index) => {
-                              const colors = [
-                                "bg-[#43BC80]",
-                                "bg-[#8BDC7F]",
-                                "bg-[#5AC9C5]",
-                                "bg-[#67C6AB]",
-                              ]
-                              const colorIndex = index % colors.length
-                              const colorClass = colors[colorIndex]
-                              return (
+                [...filteredTools]
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .map((tool) => (
+                    <Card
+                      key={tool.name}
+                      className="border border-gray-200 rounded-md overflow-hidden hover:shadow-md transition-shadow bg-white p-4"
+                      onClick={() => handleToolClick(tool)}
+                    >
+                      <CardHeader className="pb-2">
+                        {/* Business type and license badges */}
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {/* First evaluate the condition, THEN render JSX */}
+                          {((tool.business_type &&
+                            tool.business_type.length > 0) ||
+                            tool.license) && (
+                            <div className="flex flex-wrap gap-2 w-full">
+                              {[
+                                ...(tool.business_type || []),
+                                ...(Array.isArray(tool.license)
+                                  ? tool.license
+                                  : tool.license
+                                    ? [`${tool.license}`]
+                                    : []),
+                              ].map((category, index) => {
+                                const colors = [
+                                  "bg-[#43BC80]",
+                                  "bg-[#8BDC7F]",
+                                  "bg-[#5AC9C5]",
+                                  "bg-[#67C6AB]",
+                                ]
+                                const colorIndex = index % colors.length
+                                const colorClass = colors[colorIndex]
+                                return (
+                                  <Badge
+                                    key={`${category}-${index}`}
+                                    className={`${colorClass} rounded-full text-[#161D1A] font-bold text-sm`}
+                                    style={{
+                                      minWidth: "auto",
+                                      display: "inline-flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                      backgroundColor: colorClass
+                                        .replace("bg-[", "")
+                                        .replace("]", ""),
+                                    }}
+                                  >
+                                    {category}
+                                  </Badge>
+                                )
+                              })}
+                              {tool.is_free && (
                                 <Badge
-                                  key={`${category}-${index}`}
-                                  className={`${colorClass} rounded-full text-[#161D1A] font-bold text-sm`}
+                                  className="bg-[#43BC80] rounded-full text-[#161D1A] font-bold text-sm"
                                   style={{
                                     minWidth: "auto",
                                     display: "inline-flex",
                                     justifyContent: "center",
                                     alignItems: "center",
-                                    backgroundColor: colorClass
-                                      .replace("bg-[", "")
-                                      .replace("]", ""),
+                                    backgroundColor: "#43BC80",
                                   }}
                                 >
-                                  {category}
+                                  Free
                                 </Badge>
-                              )
-                            })}
-                            {tool.is_free && (
-                              <Badge
-                                className="bg-[#43BC80] rounded-full text-[#161D1A] font-bold text-sm"
-                                style={{
-                                  minWidth: "auto",
-                                  display: "inline-flex",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                  backgroundColor: "#43BC80",
-                                }}
-                              >
-                                Free
-                              </Badge>
-                            )}
-                            {tool.free_demo_available && (
-                              <Badge
-                                className="bg-[#8BDC7F] rounded-full text-[#161D1A] font-bold text-sm"
-                                style={{
-                                  minWidth: "auto",
-                                  display: "inline-flex",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                  backgroundColor: "#8BDC7F",
-                                }}
-                              >
-                                Free Demo
-                              </Badge>
-                            )}
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="text-base font-light text-[#1E1F1E]">
-                        {tool.company}
-                      </div>
-                      <CardTitle className="text-lg font-bold text-[#0D261A]">
-                        {tool.name}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="pb-2">
-                      <p className="font-normal text-[#1E1F1E] text-base">
-                        {tool.summary}
-                      </p>
-                      <div className="p-4">
-                        <hr />
-                      </div>
-                      <div className="pb-4">
-                        <p className="text-[#1E1F1E] pb-2 text-sm">
-                          Categories
-                        </p>
-                        <div className="flex flex-wrap gap-2">
-                          <CategoryDisplay categories={tool.categories} />
+                              )}
+                              {tool.free_demo_available && (
+                                <Badge
+                                  className="bg-[#8BDC7F] rounded-full text-[#161D1A] font-bold text-sm"
+                                  style={{
+                                    minWidth: "auto",
+                                    display: "inline-flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    backgroundColor: "#8BDC7F",
+                                  }}
+                                >
+                                  Free Demo
+                                </Badge>
+                              )}
+                            </div>
+                          )}
                         </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))
+
+                        <div className="text-base font-light text-[#1E1F1E]">
+                          {tool.company}
+                        </div>
+                        <CardTitle className="text-lg font-bold text-[#0D261A]">
+                          {tool.name}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="pb-2">
+                        <p className="font-normal text-[#1E1F1E] text-base">
+                          {tool.summary}
+                        </p>
+                        <div className="p-4">
+                          <hr />
+                        </div>
+                        <div className="pb-4">
+                          <p className="text-[#1E1F1E] pb-2 text-sm">
+                            Categories
+                          </p>
+                          <div className="flex flex-wrap gap-2">
+                            <CategoryDisplay categories={tool.categories} />
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))
               ) : (
                 <div className="col-span-full flex justify-center items-center py-4">
                   <span className="text-gray-600">
