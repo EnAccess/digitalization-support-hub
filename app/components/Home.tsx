@@ -946,7 +946,7 @@ export default function Home({
           setFilters(newFilters)
         }}
       />
-      {filteredToolsMemo.length > 0 && (
+      {/* {filteredToolsMemo.length > 0 && (
         <div className="flex justify-center items-center my-4">
           <div className="text-sm text-[#0D261A]"></div>
           <div className="text-sm text-[#0D261A]">
@@ -954,7 +954,7 @@ export default function Home({
             {filteredToolsMemo.length} tools
           </div>
         </div>
-      )}
+      )} */}
       {localSelectedCategories.length > 0 && filteredToolsMemo.length === 0 && (
         <div className="text-center py-12">
           <h3 className="text-2xl font-bold mb-2">
