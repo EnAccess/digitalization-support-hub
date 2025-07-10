@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils"
 import { mapAnswersToCategories } from "../utils/questionnaire-utils"
 import yaml from "js-yaml"
 import { FilterState, Tool } from "../types"
+import { toolMatchesFilters } from "../utils/filterTools"
+
 // const getToolCountForCategories = async (
 //   categories: string[]
 // ): Promise<number> => {
@@ -123,61 +125,9 @@ const getToolCountForFilters = async (
     )
 
     // Filter tools by categories and filters
-    const matchingTools = loadedTools.filter((tool) => {
-      // Category match
-      const categoryMatch =
-        Array.isArray(tool.categories) &&
-        tool.categories.some((category) => categories.includes(category))
-
-      // Pricing match
-      const pricingMatch =
-        !filters.pricing.length ||
-        filters.pricing.some(
-          (p) =>
-            Array.isArray(tool.pricing?.title) && tool.pricing.title.includes(p)
-        )
-
-      // Business Types match
-      const businessTypeMatch =
-        !filters.businessTypes.length ||
-        filters.businessTypes.some((b) => tool.business_type?.includes?.(b))
-
-      // Licensing match
-      const licensingMatch =
-        !filters.licensing.length ||
-        filters.licensing.some((l) => tool.license?.includes?.(l))
-
-      // Interoperability match
-      const dataExportMatch =
-        !filters.DataExport ||
-        tool.interoperatibility?.includes?.("Data Export")
-      const unidirectionalAPIMatch =
-        !filters.unidirectionalAPI ||
-        tool.interoperatibility?.includes?.(
-          "Unidirectional data exchange via API"
-        )
-      const bidirectionalAPIMatch =
-        !filters.bidirectionalAPI ||
-        tool.interoperatibility?.includes?.(
-          "Bidirectional data exchange via API"
-        )
-      const automatedDataExchangeMatch =
-        !filters.automatedDataExchange ||
-        tool.interoperatibility?.includes?.(
-          "Automated data exchange with selected tools"
-        )
-
-      return (
-        categoryMatch &&
-        pricingMatch &&
-        businessTypeMatch &&
-        licensingMatch &&
-        dataExportMatch &&
-        unidirectionalAPIMatch &&
-        bidirectionalAPIMatch &&
-        automatedDataExchangeMatch
-      )
-    })
+    const matchingTools = loadedTools.filter((tool) =>
+      toolMatchesFilters(tool, categories, filters)
+    )
 
     return matchingTools.length
   } catch (error) {
