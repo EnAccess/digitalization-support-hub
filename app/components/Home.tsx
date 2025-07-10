@@ -22,6 +22,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
+import { toolMatchesFilters } from "../utils/filterTools"
 
 import { Tool } from "../types"
 interface FilterState {
@@ -625,69 +626,13 @@ export default function Home({
   // Add toggleSubcategory function
 
   // Update the filtered tools logic
-  const filteredToolsMemo = useMemo(() => {
-    if (localSelectedCategories.length === 0) {
-      return []
-    }
-
-    return tools.filter((tool) => {
-      // Category filter - ANY match (OR condition)
-      const matchesCategory = tool.categories?.some((category) =>
-        localSelectedCategories.includes(category)
-      )
-
-      if (!matchesCategory) return false
-
-      // Filters - ALL must match (AND condition)
-      const matchesPricing =
-        filters.pricing.length === 0 ||
-        (filters.pricing.includes("100% Free") && tool.is_free) ||
-        (filters.pricing.includes("Free Version or Free Demo") &&
-          tool.free_demo_available)
-
-      const matchesBusinessType =
-        filters.businessTypes.length === 0 ||
-        filters.businessTypes.every((type) =>
-          tool.business_type?.includes(type)
-        )
-
-      const matchesLicense =
-        filters.licensing.length === 0 ||
-        filters.licensing.every((license) => {
-          if (Array.isArray(tool.license)) {
-            return tool.license.includes(license)
-          }
-          return tool.license === license
-        })
-
-      // Interoperability filters - ALL must match
-      const matchesInteroperability =
-        (!filters.DataExport ||
-          tool.interoperatibility?.includes(
-            "Data export is possible via file download (CSV/XLSX/...)"
-          )) &&
-        (!filters.unidirectionalAPI ||
-          tool.interoperatibility?.includes(
-            "We provide uni-directional data export via API"
-          )) &&
-        (!filters.bidirectionalAPI ||
-          tool.interoperatibility?.includes(
-            "We provide bi-directional data exchange via API. It is possible to export data via API and import data via API"
-          )) &&
-        (!filters.automatedDataExchange ||
-          tool.interoperatibility?.includes(
-            "Our tool offers automatic data exchange with selected tools"
-          ))
-
-      // All filters must match (AND condition)
-      return (
-        matchesPricing &&
-        matchesBusinessType &&
-        matchesLicense &&
-        matchesInteroperability
-      )
-    })
-  }, [tools, localSelectedCategories, filters])
+  const filteredToolsMemo = useMemo(
+    () =>
+      tools.filter((tool) =>
+        toolMatchesFilters(tool, localSelectedCategories, filters)
+      ),
+    [tools, localSelectedCategories, filters]
+  )
   //export this componet
   return (
     <div className="bg-[#F9FBFA] text-gray-800 ml-8">
