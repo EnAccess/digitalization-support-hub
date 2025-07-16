@@ -191,8 +191,8 @@ const FILTER_OPTIONS: Record<
     },
   ],
   companyFocus: [
-    "Solar Home Systems(SHS)",
-    "Mini-Grids(MGs)",
+    "Solar Home Systems (SHS)",
+    "Mini-Grids (MGs)",
     "Clean Cooking",
     "Other",
   ],

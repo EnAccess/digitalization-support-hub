@@ -25,6 +25,7 @@ import {
 import { toolMatchesFilters } from "../utils/filterTools"
 
 import { Tool } from "../types"
+import md5 from "blueimp-md5"
 interface FilterState {
   pricing: string[]
   businessTypes: string[]
@@ -158,7 +159,7 @@ function ToolCategories({
               className={cn(
                 "px-4 py-2 rounded-full",
                 activeCategory === category.id
-                  ? "bg-[#2D6A4F] text-white"
+                  ? "bg-[#DCE5E0] text-[#0D261A] font-bold border"
                   : "bg-[#DCE5E0] text-[#0D261A] font-bold border "
               )}
             >
@@ -771,7 +772,7 @@ export default function Home({
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {localSelectedCategories.length > 0 &&
           [...filteredToolsMemo]
-            .sort((a, b) => a.name.localeCompare(b.name))
+            .sort((a, b) => md5(a.name).localeCompare(md5(b.name)))
             .map((tool) => (
               <Card
                 key={tool.name}
