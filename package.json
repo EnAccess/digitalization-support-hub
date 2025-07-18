@@ -24,6 +24,7 @@
     "blueimp-md5": "^2.19.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dotenv": "^17.2.0",
     "fs-extra": "^11.3.0",
     "googleapis": "^150.0.1",
     "lucide-react": "^0.460.0",
