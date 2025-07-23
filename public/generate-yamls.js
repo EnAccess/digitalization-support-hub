@@ -16,7 +16,7 @@ const CONFIG = {
 
   // Google Service Account credentials file path
   CREDENTIALS_PATH:
-    process.env.CREDENTIALS_FILE || "../service-account-key.json",
+    process.env.CREDENTIALS_FILE || "./service-account-key.json",
 
   // Column mapping - adjust these based on your Google Sheets structure
   COLUMN_MAPPING: {
