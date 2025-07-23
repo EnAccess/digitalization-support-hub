@@ -48,6 +48,7 @@ interface HomeProps {
   onToolsLoaded: (tools: Tool[]) => void
   filters: FilterState
   setFilters: (filters: FilterState) => void
+  onNoToolsFoundChange?: (show: boolean) => void
 }
 
 interface CategoryMapItem {
@@ -491,11 +492,12 @@ function FilterDrawer({
   )
 }
 export default function Home({
-  setIsModalOpen, // Add this prop
+  setIsModalOpen,
   selectedCategories,
   onToolsLoaded,
   filters,
   setFilters,
+  onNoToolsFoundChange,
 }: HomeProps) {
   const [localSelectedCategories, setLocalSelectedCategories] = useState<
     string[]
@@ -635,6 +637,15 @@ export default function Home({
     [tools, localSelectedCategories, filters]
   )
   //export this componet
+  // Track when no tools are found
+  useEffect(() => {
+    if (onNoToolsFoundChange) {
+      onNoToolsFoundChange(
+        localSelectedCategories.length > 0 && filteredToolsMemo.length === 0
+      )
+    }
+  }, [localSelectedCategories, filteredToolsMemo.length, onNoToolsFoundChange])
+
   return (
     <div className="bg-[#F9FBFA] text-gray-800 ml-8">
       {/* Main heading */}
@@ -906,29 +917,27 @@ export default function Home({
           <h3 className="text-2xl font-bold mb-2">
             We don&apos;t currently have any tools matching these filters.
           </h3>
-          <p className="text-gray-600 mb-8">
-            Try changing your filters or check out the Tool Finder for tailored
-            suggestions.
-          </p>
           <div className="flex flex-col items-center gap-8"></div>
           <Button
             className="bg-[#2D6A4F] text-white rounded-full px-6 py-2 font-medium"
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => {
+              setLocalSelectedCategories([])
+              setActiveCategory(null)
+              setFilters({
+                pricing: [],
+                businessTypes: [],
+                licensing: [],
+                DataExport: false,
+                unidirectionalAPI: false,
+                bidirectionalAPI: false,
+                automatedDataExchange: false,
+              })
+              if (onNoToolsFoundChange) onNoToolsFoundChange(false)
+            }}
           >
-            Open Tool Finder Wizard
+            Explore all available tools
             <ChevronRight className="ml-2 h-4 w-4" />
           </Button>
-
-          <div className="bg-white pt-6  text-center">
-            <p className="font-bold mb-2">
-              If you know of any digital tools that belong in this category, let
-              us know!
-            </p>
-            <p className="text-gray-600">
-              Just drop us a message at support@dsh.org—we&apos;d love to check
-              them out and see if they&apos;re a good fit for our database.
-            </p>
-          </div>
         </div>
       )}
     </div>
