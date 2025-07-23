@@ -84,6 +84,8 @@ export default function Landing() {
     }
   }
 
+  const [noToolsFound, setNoToolsFound] = useState(false)
+
   return (
     <div className="flex flex-col min-h-screen ">
       <div className="">
@@ -135,14 +137,17 @@ export default function Landing() {
 
       {/* Only show tool map section on desktop */}
       {isDesktop && (
-        <section id="tool-map-section" className="py-8 mt-auto bg-[#F9FBFA]">
+        <section
+          id="tool-map-section"
+          className={`bg-[#F9FBFA] ${noToolsFound ? "py-0 mt-8" : "py-8 mt-auto"}`}
+        >
           <div className="max-w-6xl mx-auto">
             <Home
-              setIsModalOpen={setIsModalOpen} // Pass the modal control function
               selectedCategories={selectedCategories}
               onToolsLoaded={handleToolsLoaded}
               filters={filters}
               setFilters={setFilters}
+              onNoToolsFoundChange={setNoToolsFound} // <-- pass this prop
             />
           </div>
         </section>
@@ -170,145 +175,150 @@ export default function Landing() {
         questionnaireAnswers={questionnaireAnswers} // Add this
       />
 
-      {/* Empowering SMEs Section */}
-      <section className="pb-4 px-4 bg-[#F9FBFA] py-8 text-center">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-extrabold mb-4">
-            <span className="text-[#43BC80]">Empowering</span>{" "}
-            <span className="text-[#161D1A]">
-              domestic SMEs in the distributed renewable energy sector through
-              digitalization
-            </span>
-          </h2>
-        </div>
-      </section>
-
-      {/* Why Digitalization Matters Section */}
-      <section className="bg-[#1B4332] text-white py-12 px-4 text-center">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6">
-            Why digitalization matters
-          </h2>
-          <p className="text-sm md:text-base">
-            Digital tools are key to operational efficiency, scalability, and
-            access to financing for SMEs in the Distributed Renewable Energy
-            (DRE) sector. However, the current situation shows limited adoption.
-          </p>
-        </div>
-      </section>
-
-      {/* Lack of Adoption Section */}
-      <section className="py-12 px-4">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl font-bold mb-8">Lack of adoption</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            <StatisticCard
-              percentage="60%"
-              description="of SMEs in the sector are dissatisfied with their current level of digitalization"
-            />
-            <StatisticCard
-              percentage="40%"
-              description="of SMEs are not using any digital tool beyond spreadsheets"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Barriers to Adoption Section */}
-      <section className="py-12 px-4">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl font-bold mb-8">Barriers to adoption</h2>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            <BarrierCard icon="connectivity" title="Connectivity Issues" />
-            <BarrierCard icon="awareness" title="Lack of awareness" />
-            <BarrierCard icon="cost" title="Cost Issues" />
-            <BarrierCard icon="staff" title="Lack of staff adoption" />
-            <BarrierCard icon="tool" title="Unsure which is right tool" />
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-[#E2F6DF] py-8 px-4 mt-auto">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between gap-8 mb-8">
-            <div>
-              <p className="text-base text-[#0D261A] font-bold pb-8 ">
-                Made by
+      {/* Only show these sections if noToolsFound is false */}
+      {!noToolsFound && (
+        <>
+          {/* Empowering SMEs Section */}
+          <section className="pb-4 px-4 bg-[#F9FBFA] py-8 text-center">
+            <div className="max-w-6xl mx-auto">
+              <h2 className="text-2xl md:text-3xl font-extrabold mb-4">
+                <span className="text-[#43BC80]">Empowering</span>{" "}
+                <span className="text-[#161D1A]">
+                  domestic SMEs in the distributed renewable energy sector
+                  through digitalization
+                </span>
+              </h2>
+            </div>
+          </section>
+          {/* Why Digitalization Matters Section */}
+          <section className="bg-[#1B4332] text-white py-12 px-4 text-center">
+            <div className="max-w-3xl mx-auto">
+              <h2 className="text-2xl md:text-3xl font-bold mb-6">
+                Why digitalization matters
+              </h2>
+              <p className="text-sm md:text-base">
+                Digital tools are key to operational efficiency, scalability,
+                and access to financing for SMEs in the Distributed Renewable
+                Energy (DRE) sector. However, the current situation shows
+                limited adoption.
               </p>
-              <div className="h-12 relative">
-                <Image
-                  src="/supporter1.png"
-                  alt="ENACCESS Logo"
-                  width={120}
-                  height={40}
-                  className="object-contain"
+            </div>
+          </section>
+
+          {/* Lack of Adoption Section */}
+          <section className="py-12 px-4">
+            <div className="max-w-6xl mx-auto">
+              <h2 className="text-2xl font-bold mb-8">Lack of adoption</h2>
+              <div className="grid md:grid-cols-2 gap-6">
+                <StatisticCard
+                  percentage="60%"
+                  description="of SMEs in the sector are dissatisfied with their current level of digitalization"
+                />
+                <StatisticCard
+                  percentage="40%"
+                  description="of SMEs are not using any digital tool beyond spreadsheets"
                 />
               </div>
             </div>
-            <div className="">
-              <p className="text-base text-[#0D261A] font-bold pb-8">
-                Supported by
-              </p>
-              <div className="h-12 relative">
-                <Image
-                  src="/get.png"
-                  alt="Open Energies Logo"
-                  width={180}
-                  height={58}
-                  className="object-contain"
-                />
+          </section>
+
+          {/* Barriers to Adoption Section */}
+          <section className="py-12 px-4">
+            <div className="max-w-6xl mx-auto">
+              <h2 className="text-2xl font-bold mb-8">Barriers to adoption</h2>
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <BarrierCard icon="connectivity" title="Connectivity Issues" />
+                <BarrierCard icon="awareness" title="Lack of awareness" />
+                <BarrierCard icon="cost" title="Cost Issues" />
+                <BarrierCard icon="staff" title="Lack of staff adoption" />
+                <BarrierCard icon="tool" title="Unsure which is right tool" />
               </div>
             </div>
-            <div className="">
-              <p className="text-base text-[#0D261A] font-bold pb-8">
-                Funded by
-              </p>
-              <div className="h-12 relative">
-                <Image
-                  src="/GoodEnergiesFoundation.png"
-                  alt="Open Energies Logo"
-                  width={150}
-                  height={48}
-                  className="object-contain"
-                />
+          </section>
+
+          {/* Footer */}
+          <footer className="bg-[#E2F6DF] py-8 px-4 mt-auto">
+            <div className="max-w-6xl mx-auto">
+              <div className="flex flex-col md:flex-row justify-between gap-8 mb-8">
+                <div>
+                  <p className="text-base text-[#0D261A] font-bold pb-8 ">
+                    Made by
+                  </p>
+                  <div className="h-12 relative">
+                    <Image
+                      src="/supporter1.png"
+                      alt="ENACCESS Logo"
+                      width={120}
+                      height={40}
+                      className="object-contain"
+                    />
+                  </div>
+                </div>
+                <div className="">
+                  <p className="text-base text-[#0D261A] font-bold pb-8">
+                    Supported by
+                  </p>
+                  <div className="h-12 relative">
+                    <Image
+                      src="/get.png"
+                      alt="Open Energies Logo"
+                      width={180}
+                      height={58}
+                      className="object-contain"
+                    />
+                  </div>
+                </div>
+                <div className="">
+                  <p className="text-base text-[#0D261A] font-bold pb-8">
+                    Funded by
+                  </p>
+                  <div className="h-12 relative">
+                    <Image
+                      src="/GoodEnergiesFoundation.png"
+                      alt="Open Energies Logo"
+                      width={150}
+                      height={48}
+                      className="object-contain"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="mb-8 pt-8">
+                <p className="text-base text-[#0D261A] font-bold mb-8">
+                  Connect with us
+                </p>
+                <div className="flex gap-4">
+                  <Link
+                    href="https://www.youtube.com/@EnAccessFoundation"
+                    className="text-white bg-[#17412C] p-2 rounded-lg"
+                  >
+                    <FaYoutube size={24} />
+                  </Link>
+                  <Link
+                    href="https://www.linkedin.com/company/enaccess/"
+                    className="text-white bg-[#17412C] p-2 rounded-lg"
+                  >
+                    <FaLinkedinIn size={24} />
+                  </Link>
+                  <Link
+                    href="https://github.com/EnAccess"
+                    className="text-white bg-[#17412C] p-2 rounded-lg"
+                  >
+                    <FaGithub size={24} />
+                  </Link>
+                </div>
+              </div>
+
+              <div className="flex justify-center gap-4 text-sm text-[#091A12]  underline font-bold">
+                <Link href="#">Imprint</Link>
+                <Link href="#">Privacy Policy</Link>
+                <Link href="#">Cookies</Link>
               </div>
             </div>
-          </div>
-
-          <div className="mb-8 pt-8">
-            <p className="text-base text-[#0D261A] font-bold mb-8">
-              Connect with us
-            </p>
-            <div className="flex gap-4">
-              <Link
-                href="https://www.youtube.com/@EnAccessFoundation"
-                className="text-white bg-[#17412C] p-2 rounded-lg"
-              >
-                <FaYoutube size={24} />
-              </Link>
-              <Link
-                href="https://www.linkedin.com/company/enaccess/"
-                className="text-white bg-[#17412C] p-2 rounded-lg"
-              >
-                <FaLinkedinIn size={24} />
-              </Link>
-              <Link
-                href="https://github.com/EnAccess"
-                className="text-white bg-[#17412C] p-2 rounded-lg"
-              >
-                <FaGithub size={24} />
-              </Link>
-            </div>
-          </div>
-
-          <div className="flex justify-center gap-4 text-sm text-[#091A12]  underline font-bold">
-            <Link href="#">Imprint</Link>
-            <Link href="#">Privacy Policy</Link>
-            <Link href="#">Cookies</Link>
-          </div>
-        </div>
-      </footer>
+          </footer>
+        </>
+      )}
     </div>
   )
 }
