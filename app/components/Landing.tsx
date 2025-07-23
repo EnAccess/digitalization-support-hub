@@ -143,7 +143,6 @@ export default function Landing() {
         >
           <div className="max-w-6xl mx-auto">
             <Home
-              setIsModalOpen={setIsModalOpen} // Pass the modal control function
               selectedCategories={selectedCategories}
               onToolsLoaded={handleToolsLoaded}
               filters={filters}

@@ -43,7 +43,6 @@ const displayNames: Record<string, string> = {
 }
 
 interface HomeProps {
-  setIsModalOpen: (isOpen: boolean) => void
   selectedCategories: string[]
   onToolsLoaded: (tools: Tool[]) => void
   filters: FilterState
@@ -492,7 +491,6 @@ function FilterDrawer({
   )
 }
 export default function Home({
-  setIsModalOpen,
   selectedCategories,
   onToolsLoaded,
   filters,
