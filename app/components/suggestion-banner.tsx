@@ -8,7 +8,7 @@ export function SuggestionBanner() {
   if (!isVisible) return null
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-orange-500 text-[#0D261A] font-medium text-medium p-4 flex justify-between items-center">
+    <div className="fixed bottom-0 left-0 right-0 bg-[#FFB020] text-[#0D261A] font-medium text-medium p-4 flex justify-between items-center">
       <div className="flex items-center gap-2">
         <span>Know of a relevant tool that&apos;s not listed?</span>
         <Link

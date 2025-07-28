@@ -277,7 +277,7 @@ export function ToolDetailModal({
             href="https://enaccess.typeform.com/update-info"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500 hover:bg-orange-600 text-white font-semibold shadow transition"
+            className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#FFB020] hover:bg-[#FFB020] text-[#0D261A] font-semibold shadow transition"
             style={{ minWidth: 44, minHeight: 44 }}
             aria-label="Update info"
           >
