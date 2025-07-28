@@ -198,7 +198,7 @@ const FILTER_OPTIONS: Record<
   ],
   toolsCost: [
     "Yes, I am only interested in free-to-use tools or tools with freemium versions.",
-    "No, all tools are good. Free and non-free tools are fine.",
+    "No, all tools are good.",
   ],
   toolSource: [
     {
@@ -553,10 +553,11 @@ const QuestionaireFilter = ({
                 <div className="text-sm text-emerald-600 font-medium mb-2">
                   Finished!
                 </div>
-                <h3 className="text-xl font-medium">
-                  Based on your answers, we&apos;ve found{" "}
-                  {matchingToolCount > 0 ? matchingToolCount : 0} tools that
-                  could be a great fit for you.
+                   <h3 className="text-xl font-medium">
+                  {matchingToolCount > 0 
+                    ? `Based on your answers, we've found ${matchingToolCount} tools that could be a great fit for you.`
+                    : "We were unable to find tools that fit all your criteria, but we have other tools that might still be helpful for your needs."
+                  }
                 </h3>
               </div>
 
@@ -608,12 +609,14 @@ const QuestionaireFilter = ({
 
               {/* Action buttons */}
               <div className="mt-6">
-                <Button
+               <Button
                   onClick={handleComplete}
                   className="w-full bg-emerald-700 text-white hover:bg-emerald-800"
                 >
-                  View {matchingToolCount > 0 ? matchingToolCount : 0}{" "}
-                  suggestions
+                  {matchingToolCount > 0 
+                    ? `View ${matchingToolCount} suggestions`
+                    : "Explore other tools"
+                  }
                 </Button>
               </div>
             </div>
