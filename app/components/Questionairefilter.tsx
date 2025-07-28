@@ -553,11 +553,10 @@ const QuestionaireFilter = ({
                 <div className="text-sm text-emerald-600 font-medium mb-2">
                   Finished!
                 </div>
-                   <h3 className="text-xl font-medium">
-                  {matchingToolCount > 0 
+                <h3 className="text-xl font-medium">
+                  {matchingToolCount > 0
                     ? `Based on your answers, we've found ${matchingToolCount} tools that could be a great fit for you.`
-                    : "We were unable to find tools that fit all your criteria, but we have other tools that might still be helpful for your needs."
-                  }
+                    : "We were unable to find tools that fit all your criteria, but we have other tools that might still be helpful for your needs."}
                 </h3>
               </div>
 
@@ -609,14 +608,13 @@ const QuestionaireFilter = ({
 
               {/* Action buttons */}
               <div className="mt-6">
-               <Button
+                <Button
                   onClick={handleComplete}
                   className="w-full bg-emerald-700 text-white hover:bg-emerald-800"
                 >
-                  {matchingToolCount > 0 
+                  {matchingToolCount > 0
                     ? `View ${matchingToolCount} suggestions`
-                    : "Explore other tools"
-                  }
+                    : "Explore other tools"}
                 </Button>
               </div>
             </div>
