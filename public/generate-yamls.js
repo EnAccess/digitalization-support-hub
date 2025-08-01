@@ -16,12 +16,12 @@ const CONFIG = {
 
   // Google Service Account credentials file path
   CREDENTIALS_PATH:
-    process.env.CREDENTIALS_FILE || "./service-account-key.json",
+    process.env.CREDENTIALS_FILE || "service-account-key.json",
 
   // Column mapping - adjust these based on your Google Sheets structure
   COLUMN_MAPPING: {
     id: "A",
-    name: "A",
+    name: "A", 
     company: "B",
     summary: "C",
     link: "D",
@@ -48,16 +48,30 @@ class GoogleSheetsToYAML {
 
   async initialize() {
     try {
+      // Validate credentials file exists
+      if (!fs.existsSync(CONFIG.CREDENTIALS_PATH)) {
+        throw new Error(`Credentials file not found at: ${CONFIG.CREDENTIALS_PATH}`)
+      }
+
       // Load service account credentials
       const credentials = JSON.parse(fs.readFileSync(CONFIG.CREDENTIALS_PATH))
+      
+      // Validate required credential fields
+      if (!credentials.client_email || !credentials.private_key) {
+        throw new Error("Invalid credentials file: missing client_email or private_key")
+      }
 
-      // Create JWT client
-      this.auth = new google.auth.JWT(
-        credentials.client_email,
-        null,
-        credentials.private_key,
-        ["https://www.googleapis.com/auth/spreadsheets.readonly"]
-      )
+      console.log(`📧 Using service account: ${credentials.client_email}`)
+
+      // Use GoogleAuth (this is what worked in the inspector)
+      this.auth = new google.auth.GoogleAuth({
+        credentials: credentials,
+        scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"]
+      })
+
+      // Test authentication
+      await this.auth.getAccessToken()
+      console.log("🔐 GoogleAuth authentication successful")
 
       // Initialize Google Sheets API
       this.sheets = google.sheets({ version: "v4", auth: this.auth })
@@ -71,6 +85,9 @@ class GoogleSheetsToYAML {
 
   async fetchSheetData() {
     try {
+      console.log(`📊 Fetching data from spreadsheet: ${CONFIG.SPREADSHEET_ID}`)
+      console.log(`📄 Range: ${CONFIG.RANGE}`)
+
       const response = await this.sheets.spreadsheets.values.get({
         spreadsheetId: CONFIG.SPREADSHEET_ID,
         range: CONFIG.RANGE,
@@ -184,6 +201,7 @@ class GoogleSheetsToYAML {
       // Ensure output directory exists
       if (!fs.existsSync(CONFIG.OUTPUT_DIR)) {
         fs.mkdirSync(CONFIG.OUTPUT_DIR, { recursive: true })
+        console.log(`📁 Created output directory: ${CONFIG.OUTPUT_DIR}`)
       }
 
       fs.writeFileSync(filepath, yamlContent, "utf8")
