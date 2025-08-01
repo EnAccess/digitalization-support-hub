@@ -913,31 +913,71 @@ export default function Home({
       {localSelectedCategories.length > 0 && filteredToolsMemo.length === 0 && (
         <div className="text-center py-12">
           <h3 className="text-2xl font-bold mb-2">
-            We don&apos;t currently have any tools matching these filters.
+            We were unable to find tools that fit all your criteria.
           </h3>
           <div className="flex flex-col items-center gap-8"></div>
           <Button
             className="bg-[#2D6A4F] text-white rounded-full px-6 py-2 font-medium"
             onClick={() => {
-              setLocalSelectedCategories([])
-              setActiveCategory(null)
-              setFilters({
-                pricing: [],
-                businessTypes: [],
-                licensing: [],
-                DataExport: false,
-                unidirectionalAPI: false,
-                bidirectionalAPI: false,
-                automatedDataExchange: false,
-              })
+              // Relax filters until at least 2 tools match
+              const relaxed = relaxFiltersUntilMatch(
+                tools,
+                localSelectedCategories,
+                filters,
+                2
+              )
+              setFilters(relaxed)
               if (onNoToolsFoundChange) onNoToolsFoundChange(false)
             }}
           >
-            Explore all available tools
+            Explore other tools that might fit your needs
             <ChevronRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
       )}
     </div>
   )
+}
+
+function relaxFiltersUntilMatch(
+  tools: Tool[],
+  categories: string[],
+  filters: FilterState,
+  minCount = 2
+): FilterState {
+  // Start with a copy of the filters
+  let relaxed = { ...filters }
+
+  // Helper to count matches
+  const countMatches = (f: FilterState) =>
+    tools.filter((tool) => toolMatchesFilters(tool, categories, f)).length
+
+  // 1. Remove pricing filter if present
+  if (relaxed.pricing.length > 0) {
+    const testFilters = { ...relaxed, pricing: [] }
+    if (countMatches(testFilters) >= minCount) return testFilters
+    relaxed = testFilters
+  }
+
+  // 2. Remove licensing filter if present
+  if (relaxed.licensing.length > 0) {
+    const testFilters = { ...relaxed, licensing: [] }
+    if (countMatches(testFilters) >= minCount) return testFilters
+    relaxed = testFilters
+  }
+
+  // 3. Remove all filters except categories
+  const testFilters = {
+    pricing: [],
+    businessTypes: [],
+    licensing: [],
+    DataExport: false,
+    unidirectionalAPI: false,
+    bidirectionalAPI: false,
+    automatedDataExchange: false,
+  }
+  if (countMatches(testFilters) >= minCount) return testFilters
+
+  // 4. If still not enough, just return the most relaxed filters
+  return testFilters
 }
