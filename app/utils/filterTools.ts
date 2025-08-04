@@ -15,7 +15,7 @@ export function toolMatchesFilters(
   // Pricing match (same as Home)
   const matchesPricing =
     filters.pricing.length === 0 ||
-    (filters.pricing.includes("100% Free") && tool.is_free) ||
+    (filters.pricing.includes("Free") && tool.is_free) ||
     (filters.pricing.includes("Free Version or Free Demo") &&
       tool.free_demo_available)
 
