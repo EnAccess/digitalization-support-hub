@@ -314,18 +314,16 @@ function FilterDrawer({
                 </Button>
                 <Button
                   variant={
-                    tempFilters.pricing.includes("100% Free")
-                      ? "default"
-                      : "outline"
+                    tempFilters.pricing.includes("Free") ? "default" : "outline"
                   }
                   size="sm"
                   className={cn(
                     "rounded-md text-sm font-normal justify-start h-auto px-3 py-2",
-                    tempFilters.pricing.includes("100% Free")
+                    tempFilters.pricing.includes("Free")
                       ? "bg-[#17412C] text-white "
                       : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
                   )}
-                  onClick={() => togglePricing("100% Free")}
+                  onClick={() => togglePricing("Free")}
                 >
                   Free
                 </Button>

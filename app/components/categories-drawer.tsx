@@ -140,7 +140,7 @@ export function ToolCategoriesDrawer({
     unidirectionalAPI: "Unidirectional data exchange via API",
     bidirectionalAPI: "Bidirectional data exchange via API",
     automatedDataExchange: "Automated data exchange with selected tools",
-    "100% Free": "Free",
+    Free: "Free",
     "Free Version or Free Demo": "Free Demo",
   }
 
