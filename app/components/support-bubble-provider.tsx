@@ -1,7 +1,6 @@
 "use client"
 
 import { createContext, useContext, useState, type ReactNode } from "react"
-import { MiniBubble } from "./support-bubble/mini-bubble" // <-- updated import
 import { type BubbleState } from "./support-bubble/bubble"
 
 interface SupportBubbleContextType {
@@ -43,7 +42,6 @@ export function SupportBubbleProvider({
   return (
     <SupportBubbleContext.Provider value={{ openSupportForm, openMiniBubble }}>
       {children}
-      <MiniBubble /> {/* <-- use MiniBubble here */}
     </SupportBubbleContext.Provider>
   )
 }
