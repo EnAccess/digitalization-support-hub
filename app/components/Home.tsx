@@ -26,6 +26,7 @@ import { toolMatchesFilters } from "../utils/filterTools"
 
 import { Tool } from "../types"
 import md5 from "blueimp-md5"
+import { MiniBubble } from "./support-bubble/mini-bubble"
 interface FilterState {
   pricing: string[]
   businessTypes: string[]
@@ -879,6 +880,7 @@ export default function Home({
               </Card>
             ))}
       </div>
+      <MiniBubble />
       {selectedTool && (
         <ToolDetailModal
           tool={
