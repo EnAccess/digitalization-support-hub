@@ -17,8 +17,8 @@ export function SupportModalInline() {
         </button>
         <h3 className="text-xl font-medium mb-2">Need support?</h3>
         <p className="text-base text-gray-700 mb-6">
-          We offer free technical support to eligible businesses—just fill
-          out a quick form to request help!
+          We offer free technical support to eligible businesses—just fill out a
+          quick form to request help!
         </p>
         <div className="flex justify-center">
           <a
