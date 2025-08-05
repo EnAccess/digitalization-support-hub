@@ -26,7 +26,8 @@ import { toolMatchesFilters } from "../utils/filterTools"
 
 import { Tool } from "../types"
 import md5 from "blueimp-md5"
-import { MiniBubble } from "./support-bubble/mini-bubble"
+import { SupportModalInline } from "./support-bubble/SupportModalInline"
+
 interface FilterState {
   pricing: string[]
   businessTypes: string[]
@@ -880,7 +881,6 @@ export default function Home({
               </Card>
             ))}
       </div>
-      <MiniBubble />
       {selectedTool && (
         <ToolDetailModal
           tool={
@@ -934,6 +934,11 @@ export default function Home({
             <ChevronRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
+      )}
+
+      {/* Inline support modal at the end of results */}
+      {localSelectedCategories.length > 0 && filteredToolsMemo.length > 0 && (
+        <SupportModalInline />
       )}
     </div>
   )
