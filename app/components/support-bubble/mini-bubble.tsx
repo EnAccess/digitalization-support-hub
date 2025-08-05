@@ -8,35 +8,37 @@ export function MiniBubble() {
 
   return (
     <>
-      {/* Floating bubble button */}
-      <div className="fixed bottom-24 left-6 z-50">
-        <button
-          onClick={() => setIsOpen(true)}
-          className="flex h-14 w-14 items-center justify-center rounded-full bg-[#004d2c] text-white shadow-lg hover:bg-[#00613a] transition-all"
-          aria-label="Open support bubble"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="lucide lucide-help-circle"
+      {/* Bubble button (hidden when modal is open) */}
+      {!isOpen && (
+        <div className="fixed bottom-24 left-6 z-50">
+          <button
+            onClick={() => setIsOpen(true)}
+            className="flex h-14 w-14 items-center justify-center rounded-full bg-[#004d2c] text-white shadow-lg hover:bg-[#00613a] transition-all"
+            aria-label="Open support bubble"
           >
-            <circle cx="12" cy="12" r="10" />
-            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-            <path d="M12 17h.01" />
-          </svg>
-        </button>
-      </div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-help-circle"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+              <path d="M12 17h.01" />
+            </svg>
+          </button>
+        </div>
+      )}
 
-      {/* Inline modal below results */}
+      {/* Modal, positioned next to the bubble */}
       {isOpen && (
-        <div className="w-full max-w-md mx-auto my-8">
+        <div className="fixed bottom-40 left-6 z-50 w-[340px] max-w-[90vw]">
           <div className="rounded-lg bg-white p-6 shadow-xl relative">
             <button
               onClick={() => setIsOpen(false)}
@@ -45,11 +47,13 @@ export function MiniBubble() {
             >
               <X size={16} />
             </button>
+
             <h3 className="text-xl font-medium mb-2">Need support?</h3>
             <p className="text-base text-gray-700 mb-6">
               We offer free technical support to eligible businesses—just fill
               out a quick form to request help!
             </p>
+
             <div className="flex justify-center">
               <a
                 href="https://enaccess.typeform.com/tech-assist"
