@@ -105,7 +105,7 @@ export function FilterDrawer({
         <div className="mb-6">
           <h4 className="font-medium mb-3">Pricing</h4>
           <div className="space-y-2 space-x-2">
-            {["Free", "Free Demo"].map((price) => (
+            {["Free version", "Free demo"].map((price) => (
               <Button
                 key={price}
                 variant={

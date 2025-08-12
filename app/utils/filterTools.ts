@@ -15,9 +15,8 @@ export function toolMatchesFilters(
   // Pricing match (same as Home)
   const matchesPricing =
     filters.pricing.length === 0 ||
-    (filters.pricing.includes("Free") && tool.is_free) ||
-    (filters.pricing.includes("Free Version or Free Demo") &&
-      tool.free_demo_available)
+    (filters.pricing.includes("Free version") && tool.is_free) ||
+    (filters.pricing.includes("Free demo") && tool.free_demo_available)
 
   // Business Types match (same as Home)
   const matchesBusinessType =
@@ -35,18 +34,21 @@ export function toolMatchesFilters(
 
   // Interoperability match (same as Home)
   const matchesInteroperability =
-    (!filters.DataExport || tool.interoperatibility?.includes("Data Export")) &&
+    (!filters.DataExport ||
+      tool.interoperatibility?.includes(
+        "Data export is possible via file download (CSV/XLSX/...)"
+      )) &&
     (!filters.unidirectionalAPI ||
       tool.interoperatibility?.includes(
-        "Unidirectional data exchange via API"
+        "We provide uni-directional data export via API"
       )) &&
     (!filters.bidirectionalAPI ||
       tool.interoperatibility?.includes(
-        "Bidirectional data exchange via API"
+        "We provide bi-directional data exchange via API. It is possible to export data via API and import data via API"
       )) &&
     (!filters.automatedDataExchange ||
       tool.interoperatibility?.includes(
-        "Automated data exchange with selected tools"
+        "Our tool offers automatic data exchange with selected tools"
       ))
 
   return (
