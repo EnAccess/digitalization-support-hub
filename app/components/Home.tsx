@@ -515,6 +515,7 @@ export default function Home({
   )
   const [questionnaireAnswers] = useState<Record<string, string[]> | null>(null)
   const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false)
+  const [relaxStep, setRelaxStep] = useState(0)
 
   // Update local categories when prop changes
   useEffect(() => {
@@ -928,7 +929,19 @@ export default function Home({
           <div className="flex flex-col items-center gap-8"></div>
           <Button
             className="bg-[#2D6A4F] text-white rounded-full px-6 py-2 font-medium"
-            onClick={resetAll}
+            onClick={() => {
+              // Relax filters step by step
+              const relaxed = relaxFiltersUntilMatch(
+                tools,
+                localSelectedCategories,
+                filters,
+                2,
+                relaxStep
+              )
+              setFilters(relaxed)
+              setRelaxStep(relaxStep + 1)
+              if (onNoToolsFoundChange) onNoToolsFoundChange(false)
+            }}
           >
             Explore all available tools
             <ChevronRight className="ml-2 h-4 w-4" />
@@ -948,7 +961,8 @@ function relaxFiltersUntilMatch(
   tools: Tool[],
   categories: string[],
   filters: FilterState,
-  minCount = 2
+  minCount = 2,
+  step = 0
 ): FilterState {
   // Start with a copy of the filters
   let relaxed = { ...filters }
@@ -957,32 +971,129 @@ function relaxFiltersUntilMatch(
   const countMatches = (f: FilterState) =>
     tools.filter((tool) => toolMatchesFilters(tool, categories, f)).length
 
-  // 1. Remove pricing filter if present
-  if (relaxed.pricing.length > 0) {
-    const testFilters = { ...relaxed, pricing: [] }
-    if (countMatches(testFilters) >= minCount) return testFilters
-    relaxed = testFilters
+  // Check current matches
+  const currentMatches = countMatches(relaxed)
+  console.log(
+    "Step:",
+    step,
+    "Current matches:",
+    currentMatches,
+    "Target:",
+    minCount
+  )
+
+  // Execute only one step based on the step parameter
+  switch (step) {
+    case 0:
+      // 1. Remove "Free version" first if present
+      if (relaxed.pricing.includes("Free version")) {
+        const testFilters = {
+          ...relaxed,
+          pricing: relaxed.pricing.filter((p) => p !== "Free version"),
+        }
+        const matches = countMatches(testFilters)
+        console.log("Step 0: After removing Free version:", matches)
+        return testFilters
+      }
+      break
+
+    case 1:
+      // 2. Remove "Free demo" if present
+      if (relaxed.pricing.includes("Free demo")) {
+        const testFilters = {
+          ...relaxed,
+          pricing: relaxed.pricing.filter((p) => p !== "Free demo"),
+        }
+        const matches = countMatches(testFilters)
+        console.log("Step 1: After removing Free demo:", matches)
+        return testFilters
+      }
+      break
+
+    case 2:
+      // 3. Remove "Fully Open Source" if present
+      if (relaxed.licensing.includes("Fully Open Source")) {
+        const testFilters = {
+          ...relaxed,
+          licensing: relaxed.licensing.filter((l) => l !== "Fully Open Source"),
+        }
+        const matches = countMatches(testFilters)
+        console.log("Step 2: After removing Fully Open Source:", matches)
+        return testFilters
+      }
+      break
+
+    case 3:
+      // 4. Remove "Partially Open Source" if present
+      if (relaxed.licensing.includes("Partially Open Source")) {
+        const testFilters = {
+          ...relaxed,
+          licensing: relaxed.licensing.filter(
+            (l) => l !== "Partially Open Source"
+          ),
+        }
+        const matches = countMatches(testFilters)
+        console.log("Step 3: After removing Partially Open Source:", matches)
+        return testFilters
+      }
+      break
+
+    case 4:
+      // 5. Remove business type filters if present
+      if (relaxed.businessTypes.length > 0) {
+        const testFilters = { ...relaxed, businessTypes: [] }
+        const matches = countMatches(testFilters)
+        console.log("Step 4: After removing business types:", matches)
+        return testFilters
+      }
+      break
+
+    case 5:
+      // 6. Remove DataExport if present
+      if (relaxed.DataExport) {
+        const testFilters = { ...relaxed, DataExport: false }
+        const matches = countMatches(testFilters)
+        console.log("Step 5: After removing DataExport:", matches)
+        return testFilters
+      }
+      break
+
+    case 6:
+      // 7. Remove unidirectionalAPI if present
+      if (relaxed.unidirectionalAPI) {
+        const testFilters = { ...relaxed, unidirectionalAPI: false }
+        const matches = countMatches(testFilters)
+        console.log("Step 6: After removing unidirectionalAPI:", matches)
+        return testFilters
+      }
+      break
+
+    case 7:
+      // 8. Remove bidirectionalAPI if present
+      if (relaxed.bidirectionalAPI) {
+        const testFilters = { ...relaxed, bidirectionalAPI: false }
+        const matches = countMatches(testFilters)
+        console.log("Step 7: After removing bidirectionalAPI:", matches)
+        return testFilters
+      }
+      break
+
+    case 8:
+      // 9. Remove automatedDataExchange if present
+      if (relaxed.automatedDataExchange) {
+        const testFilters = { ...relaxed, automatedDataExchange: false }
+        const matches = countMatches(testFilters)
+        console.log("Step 8: After removing automatedDataExchange:", matches)
+        return testFilters
+      }
+      break
+
+    default:
+      // If we've gone through all steps, return the current filters
+      console.log("All steps completed, returning current filters")
+      return relaxed
   }
 
-  // 2. Remove licensing filter if present
-  if (relaxed.licensing.length > 0) {
-    const testFilters = { ...relaxed, licensing: [] }
-    if (countMatches(testFilters) >= minCount) return testFilters
-    relaxed = testFilters
-  }
-
-  // 3. Remove all filters except categories
-  const testFilters = {
-    pricing: [],
-    businessTypes: [],
-    licensing: [],
-    DataExport: false,
-    unidirectionalAPI: false,
-    bidirectionalAPI: false,
-    automatedDataExchange: false,
-  }
-  if (countMatches(testFilters) >= minCount) return testFilters
-
-  // 4. If still not enough, just return the most relaxed filters
-  return testFilters
+  // If the current step doesn't apply (filter not present), move to next step
+  return relaxFiltersUntilMatch(tools, categories, relaxed, minCount, step + 1)
 }
