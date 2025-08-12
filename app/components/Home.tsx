@@ -517,6 +517,11 @@ export default function Home({
   const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false)
   const [relaxStep, setRelaxStep] = useState(0)
 
+  // Reset relaxStep when filters change
+  useEffect(() => {
+    setRelaxStep(0)
+  }, [filters])
+
   // Update local categories when prop changes
   useEffect(() => {
     setLocalSelectedCategories(selectedCategories)
@@ -965,7 +970,7 @@ function relaxFiltersUntilMatch(
   step = 0
 ): FilterState {
   // Start with a copy of the filters
-  let relaxed = { ...filters }
+  const relaxed = { ...filters }
 
   // Helper to count matches
   const countMatches = (f: FilterState) =>
