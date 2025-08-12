@@ -50,7 +50,6 @@ interface HomeProps {
   filters: FilterState
   setFilters: (filters: FilterState) => void
   onNoToolsFoundChange?: (show: boolean) => void
-  resetAll: () => void
 }
 
 interface CategoryMapItem {
@@ -501,7 +500,6 @@ export default function Home({
   filters,
   setFilters,
   onNoToolsFoundChange,
-  resetAll,
 }: HomeProps) {
   const [localSelectedCategories, setLocalSelectedCategories] = useState<
     string[]

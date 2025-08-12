@@ -171,7 +171,6 @@ export default function Landing() {
               filters={filters}
               setFilters={setFilters}
               onNoToolsFoundChange={setNoToolsFound} // <-- pass this prop
-              resetAll={resetAll}
             />
           </div>
         </section>
