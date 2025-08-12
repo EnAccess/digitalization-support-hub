@@ -50,6 +50,7 @@ interface HomeProps {
   filters: FilterState
   setFilters: (filters: FilterState) => void
   onNoToolsFoundChange?: (show: boolean) => void
+  resetAll: () => void
 }
 
 interface CategoryMapItem {
@@ -153,53 +154,55 @@ function ToolCategories({
   }
 
   return (
-    <NavigationMenu>
-      <NavigationMenuList className="flex gap-4">
-        {categories.map((category) => (
-          <NavigationMenuItem key={category.id}>
-            <NavigationMenuTrigger
-              className={cn(
-                "px-4 py-2 rounded-full",
-                activeCategory === category.id
-                  ? "bg-[#DCE5E0] text-[#0D261A] font-bold border"
-                  : "bg-[#DCE5E0] text-[#0D261A] font-bold border "
-              )}
-            >
-              {category.name}
-              {getCategoryCount(category.id) > 0 && (
-                <span className="ml-2 text-xs rounded-full bg-gray-100 px-2 py-0.5">
-                  {getCategoryCount(category.id)}
-                </span>
-              )}
-            </NavigationMenuTrigger>
+    <div>
+      <NavigationMenu>
+        <NavigationMenuList className="flex gap-4">
+          {categories.map((category) => (
+            <NavigationMenuItem key={category.id}>
+              <NavigationMenuTrigger
+                className={cn(
+                  "px-4 py-2 rounded-full",
+                  activeCategory === category.id
+                    ? "bg-[#DCE5E0] text-[#0D261A] font-bold border"
+                    : "bg-[#DCE5E0] text-[#0D261A] font-bold border "
+                )}
+              >
+                {category.name}
+                {getCategoryCount(category.id) > 0 && (
+                  <span className="ml-2 text-xs rounded-full bg-gray-100 px-2 py-0.5">
+                    {getCategoryCount(category.id)}
+                  </span>
+                )}
+              </NavigationMenuTrigger>
 
-            <NavigationMenuContent className="p-4 bg-white rounded-lg shadow-lg min-w-[400px]">
-              <div className="grid grid-cols-2 gap-4">
-                {categoryMap[category.id].subcategories.map((subcategory) => (
-                  <div
-                    key={subcategory}
-                    className="flex items-center space-x-2"
-                  >
-                    <Checkbox
-                      id={subcategory}
-                      checked={localSelectedCategories.includes(subcategory)}
-                      onCheckedChange={() => toggleSubcategory(subcategory)}
-                      className="border-[#2D6A4F] text-[#2D6A4F]"
-                    />
-                    <label
-                      htmlFor={subcategory}
-                      className="text-sm font-medium leading-none cursor-pointer"
+              <NavigationMenuContent className="p-4 bg-white rounded-lg shadow-lg min-w-[400px]">
+                <div className="grid grid-cols-2 gap-4">
+                  {categoryMap[category.id].subcategories.map((subcategory) => (
+                    <div
+                      key={subcategory}
+                      className="flex items-center space-x-2"
                     >
-                      {subcategory}
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-        ))}
-      </NavigationMenuList>
-    </NavigationMenu>
+                      <Checkbox
+                        id={subcategory}
+                        checked={localSelectedCategories.includes(subcategory)}
+                        onCheckedChange={() => toggleSubcategory(subcategory)}
+                        className="border-[#2D6A4F] text-[#2D6A4F]"
+                      />
+                      <label
+                        htmlFor={subcategory}
+                        className="text-sm font-medium leading-none cursor-pointer"
+                      >
+                        {subcategory}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          ))}
+        </NavigationMenuList>
+      </NavigationMenu>
+    </div>
   )
 }
 function FilterDrawer({
@@ -299,35 +302,37 @@ function FilterDrawer({
               <div className="space-y-2">
                 <Button
                   variant={
-                    tempFilters.pricing.includes("Free Version or Free Demo")
+                    tempFilters.pricing.includes("Free demo")
                       ? "default"
                       : "outline"
                   }
                   size="sm"
                   className={cn(
                     "rounded-md text-sm font-normal justify-start h-auto px-3 py-2",
-                    tempFilters.pricing.includes("Free Version or Free Demo")
+                    tempFilters.pricing.includes("Free demo")
                       ? "bg-[#17412C] text-white "
                       : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
                   )}
-                  onClick={() => togglePricing("Free Version or Free Demo")}
+                  onClick={() => togglePricing("Free demo")}
                 >
-                  Free Version or Free Demo
+                  Free demo
                 </Button>
                 <Button
                   variant={
-                    tempFilters.pricing.includes("Free") ? "default" : "outline"
+                    tempFilters.pricing.includes("Free version")
+                      ? "default"
+                      : "outline"
                   }
                   size="sm"
                   className={cn(
                     "rounded-md text-sm font-normal justify-start h-auto px-3 py-2",
-                    tempFilters.pricing.includes("Free")
+                    tempFilters.pricing.includes("Free version")
                       ? "bg-[#17412C] text-white "
                       : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
                   )}
-                  onClick={() => togglePricing("Free")}
+                  onClick={() => togglePricing("Free version")}
                 >
-                  Free
+                  Free version
                 </Button>
               </div>
             </div>
@@ -496,6 +501,7 @@ export default function Home({
   filters,
   setFilters,
   onNoToolsFoundChange,
+  resetAll,
 }: HomeProps) {
   const [localSelectedCategories, setLocalSelectedCategories] = useState<
     string[]
@@ -512,9 +518,9 @@ export default function Home({
 
   // Update local categories when prop changes
   useEffect(() => {
-    if (selectedCategories.length > 0) {
-      setLocalSelectedCategories(selectedCategories)
+    setLocalSelectedCategories(selectedCategories)
 
+    if (selectedCategories.length > 0) {
       // Find the category that matches the selected subcategory
       const categoryId = Object.keys(categoryMap).find((key) =>
         categoryMap[key].subcategories.some((sub) =>
@@ -525,6 +531,9 @@ export default function Home({
       if (categoryId) {
         setActiveCategory(categoryId)
       }
+    } else {
+      // Reset active category when no categories are selected
+      setActiveCategory(null)
     }
   }, [selectedCategories])
 
@@ -648,13 +657,32 @@ export default function Home({
     <div className="bg-[#F9FBFA] text-gray-800 ml-8">
       {/* Main heading */}
       <div className="flex justify-between items-center">
-        <div className="flex items-center gap-16">
+        <div className="flex items-center gap-4">
           <h2 className="text-2xl font-bold mb-6 text-[#0D261A]">
             Tool Categories
           </h2>
+          {localSelectedCategories.length > 0 && (
+            <Button
+              variant="outline"
+              className="border-[#17412C] text-[#0D261A] font-bold rounded-full w-auto text-md mb-6"
+              onClick={() => {
+                setLocalSelectedCategories([])
+                setActiveCategory(null)
+              }}
+            >
+              Reset Categories
+            </Button>
+          )}
         </div>
 
-        {localSelectedCategories.length > 0 && (
+        {(localSelectedCategories.length > 0 ||
+          filters.pricing.length > 0 ||
+          filters.businessTypes.length > 0 ||
+          filters.licensing.length > 0 ||
+          filters.DataExport ||
+          filters.unidirectionalAPI ||
+          filters.bidirectionalAPI ||
+          filters.automatedDataExchange) && (
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
@@ -746,35 +774,10 @@ export default function Home({
       </div>
 
       {/* Tools count */}
-
       {localSelectedCategories.length > 0 && filteredToolsMemo.length > 0 && (
-        <>
-          <div className="mt-2">
-            <Button
-              variant="outline"
-              className="border-[#17412C] text-[#0D261A] font-bold rounded-full w-auto text-md"
-              onClick={() => {
-                setLocalSelectedCategories([])
-                setActiveCategory(null)
-                // setFilters({
-                //   pricing: [],
-                //   businessTypes: [],
-                //   licensing: [],
-                //   data export available: false,
-                //   unidirectional data exchange via API: false,
-                //   bidirectionalAPI: false,
-                //   automaticDataExchange: false,
-                // })
-              }}
-            >
-              Reset Categories
-            </Button>
-          </div>
-
-          <div className=" flex flex-col ">
-            <p className="my-4 text-sm">{filteredToolsMemo.length} items</p>
-          </div>
-        </>
+        <div className=" flex flex-col ">
+          <p className="my-4 text-sm">{filteredToolsMemo.length} items</p>
+        </div>
       )}
 
       {/* Tools grid */}
@@ -802,14 +805,23 @@ export default function Home({
                               ? [`${tool.license}`]
                               : []),
                         ].map((category, index) => {
-                          const colors = [
-                            "bg-[#43BC80]",
-                            "bg-[#8BDC7F]",
-                            "bg-[#5AC9C5]",
-                            "bg-[#67C6AB]",
-                          ]
-                          const colorIndex = index % colors.length
-                          const colorClass = colors[colorIndex]
+                          // Map specific categories to their assigned colors
+                          const getCategoryColor = (cat: string) => {
+                            const colorMap: Record<string, string> = {
+                              SHS: "#3DA386",
+                              "Mini-Grids": "#8BDC7F",
+                              "Mini Grids": "#8BDC7F",
+                              "Clean Cooking": "#9FDBCA",
+                              "Free demo": "#FFD17A",
+                              "Free version": "#FFD17A",
+                              "Fully Open Source": "#EA7B5C",
+                              "Partially Open Source": "#FADED6",
+                            }
+                            return colorMap[cat] || "#43BC80" // fallback color
+                          }
+
+                          const categoryColor = getCategoryColor(category)
+                          const colorClass = `bg-[${categoryColor}]`
                           return (
                             <Badge
                               key={`${category}-${index}`}
@@ -819,9 +831,7 @@ export default function Home({
                                 display: "inline-flex",
                                 justifyContent: "center",
                                 alignItems: "center",
-                                backgroundColor: colorClass
-                                  .replace("bg-[", "")
-                                  .replace("]", ""),
+                                backgroundColor: categoryColor,
                               }}
                             >
                               {category}
@@ -830,13 +840,13 @@ export default function Home({
                         })}
                         {tool.is_free && (
                           <Badge
-                            className="bg-[#43BC80] rounded-full text-[#161D1A] font-bold text-sm"
+                            className="bg-[#FFD17A] rounded-full text-[#161D1A] font-bold text-sm"
                             style={{
                               minWidth: "auto",
                               display: "inline-flex",
                               justifyContent: "center",
                               alignItems: "center",
-                              backgroundColor: "#43BC80",
+                              backgroundColor: "#FFD17A",
                             }}
                           >
                             Free
@@ -844,13 +854,13 @@ export default function Home({
                         )}
                         {tool.free_demo_available && (
                           <Badge
-                            className="bg-[#8BDC7F] rounded-full text-[#161D1A] font-bold text-sm"
+                            className="bg-[#FFF8EB] rounded-full text-[#161D1A] font-bold text-sm"
                             style={{
                               minWidth: "auto",
                               display: "inline-flex",
                               justifyContent: "center",
                               alignItems: "center",
-                              backgroundColor: "#8BDC7F",
+                              backgroundColor: "#FFF8EB",
                             }}
                           >
                             Free Demo
@@ -918,19 +928,9 @@ export default function Home({
           <div className="flex flex-col items-center gap-8"></div>
           <Button
             className="bg-[#2D6A4F] text-white rounded-full px-6 py-2 font-medium"
-            onClick={() => {
-              // Relax filters until at least 2 tools match
-              const relaxed = relaxFiltersUntilMatch(
-                tools,
-                localSelectedCategories,
-                filters,
-                2
-              )
-              setFilters(relaxed)
-              if (onNoToolsFoundChange) onNoToolsFoundChange(false)
-            }}
+            onClick={resetAll}
           >
-            Explore other tools that might fit your needs
+            Explore all available tools
             <ChevronRight className="ml-2 h-4 w-4" />
           </Button>
         </div>

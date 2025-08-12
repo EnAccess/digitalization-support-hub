@@ -60,7 +60,7 @@ const categoryMap: CategoryMap = {
       "Service Calls",
       "Tech Response",
       "Upselling",
-      "customer finance Management",
+      "Customer Finance Management",
       "CRM",
       "HR Management",
     ],
@@ -351,8 +351,8 @@ export function ToolCategoriesDrawer({
 
       const matchesPricing =
         filters.pricing.length === 0 ||
-        (filters.pricing.includes("Free") && tool.is_free) ||
-        (filters.pricing.includes("Free Demo") && tool.free_demo_available)
+        (filters.pricing.includes("Free version") && tool.is_free) ||
+        (filters.pricing.includes("Free demo") && tool.free_demo_available)
 
       const matchesInteroperability =
         (!filters.DataExport ||
@@ -545,14 +545,23 @@ export function ToolCategoriesDrawer({
                                     ? [`${tool.license}`]
                                     : []),
                               ].map((category, index) => {
-                                const colors = [
-                                  "bg-[#43BC80]",
-                                  "bg-[#8BDC7F]",
-                                  "bg-[#5AC9C5]",
-                                  "bg-[#67C6AB]",
-                                ]
-                                const colorIndex = index % colors.length
-                                const colorClass = colors[colorIndex]
+                                // Map specific categories to their assigned colors
+                                const getCategoryColor = (cat: string) => {
+                                  const colorMap: Record<string, string> = {
+                                    SHS: "#3DA386",
+                                    "Mini-Grids": "#8BDC7F",
+                                    "Mini Grids": "#8BDC7F",
+                                    "Clean Cooking": "#9FDBCA",
+                                    "Free demo": "#FFD17A",
+                                    "Free version": "#FFD17A",
+                                    "Fully Open Source": "#EA7B5C",
+                                    "Partially Open Source": "#FADED6",
+                                  }
+                                  return colorMap[cat] || "#43BC80" // fallback color
+                                }
+
+                                const categoryColor = getCategoryColor(category)
+                                const colorClass = `bg-[${categoryColor}]`
                                 return (
                                   <Badge
                                     key={`${category}-${index}`}
@@ -562,9 +571,7 @@ export function ToolCategoriesDrawer({
                                       display: "inline-flex",
                                       justifyContent: "center",
                                       alignItems: "center",
-                                      backgroundColor: colorClass
-                                        .replace("bg-[", "")
-                                        .replace("]", ""),
+                                      backgroundColor: categoryColor,
                                     }}
                                   >
                                     {category}
@@ -573,13 +580,13 @@ export function ToolCategoriesDrawer({
                               })}
                               {tool.is_free && (
                                 <Badge
-                                  className="bg-[#43BC80] rounded-full text-[#161D1A] font-bold text-sm"
+                                  className="bg-[#FFD17A] rounded-full text-[#161D1A] font-bold text-sm"
                                   style={{
                                     minWidth: "auto",
                                     display: "inline-flex",
                                     justifyContent: "center",
                                     alignItems: "center",
-                                    backgroundColor: "#43BC80",
+                                    backgroundColor: "#FFD17A",
                                   }}
                                 >
                                   Free
@@ -587,16 +594,16 @@ export function ToolCategoriesDrawer({
                               )}
                               {tool.free_demo_available && (
                                 <Badge
-                                  className="bg-[#8BDC7F] rounded-full text-[#161D1A] font-bold text-sm"
+                                  className="bg-[#FFF8EB] rounded-full text-[#161D1A] font-bold text-sm"
                                   style={{
                                     minWidth: "auto",
                                     display: "inline-flex",
                                     justifyContent: "center",
                                     alignItems: "center",
-                                    backgroundColor: "#8BDC7F",
+                                    backgroundColor: "#FFF8EB",
                                   }}
                                 >
-                                  Free Demo
+                                  Free demo
                                 </Badge>
                               )}
                             </div>

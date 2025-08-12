@@ -45,6 +45,31 @@ export default function Landing() {
     automatedDataExchange: false,
   })
 
+  const [noToolsFound, setNoToolsFound] = useState(false)
+
+  // Reset function to clear everything
+  const resetAll = () => {
+    setSelectedCategories([])
+    setFilters({
+      pricing: [],
+      businessTypes: [],
+      licensing: [],
+      DataExport: false,
+      unidirectionalAPI: false,
+      bidirectionalAPI: false,
+      automatedDataExchange: false,
+    })
+    setNoToolsFound(false)
+    setQuestionnaireAnswers({})
+    setAnswers({})
+  }
+
+  // Logo click handler
+  const handleLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    resetAll()
+  }
+
   const handleCategorySelect = (categories: string[]) => {
     // Update the selected categories state
     setSelectedCategories(categories)
@@ -84,8 +109,6 @@ export default function Landing() {
     }
   }
 
-  const [noToolsFound, setNoToolsFound] = useState(false)
-
   return (
     <div className="flex flex-col min-h-screen ">
       <div className="">
@@ -97,7 +120,7 @@ export default function Landing() {
                 Digital Solutions for Distributed Renewable Energy Businesses
               </h1>
               <p className="text-[#1E1F1E] text-sm sm:text-md lg:text-lg font-normal mb-8">
-                Explore the tools that can support you.
+                Explore tools that can support your business.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 items-center sm:items-start">
                 <Button
@@ -122,7 +145,7 @@ export default function Landing() {
                 )}
               </div>
             </div>
-            <Link href="/" className="sm:ml-8">
+            <Link href="/" className="sm:ml-8" onClick={handleLogoClick}>
               <Image
                 src="/logo.png"
                 alt="Logo"
@@ -148,6 +171,7 @@ export default function Landing() {
               filters={filters}
               setFilters={setFilters}
               onNoToolsFoundChange={setNoToolsFound} // <-- pass this prop
+              resetAll={resetAll}
             />
           </div>
         </section>
@@ -231,7 +255,7 @@ export default function Landing() {
                 <BarrierCard icon="awareness" title="Lack of awareness" />
                 <BarrierCard icon="cost" title="Cost Issues" />
                 <BarrierCard icon="staff" title="Lack of staff adoption" />
-                <BarrierCard icon="tool" title="Unsure which is right tool" />
+                <BarrierCard icon="tool" title="Unsure which tool is right" />
               </div>
             </div>
           </section>

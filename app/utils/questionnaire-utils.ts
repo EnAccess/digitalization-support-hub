@@ -206,8 +206,8 @@ export function mapAnswersToCategories(
     if (answers.toolsCost[0].includes("free-to-use")) {
       categories.add("Market Analysis")
       categories.add("Personal Training")
-      filters.pricing.push("Free")
-      filters.pricing.push("Free Demo")
+      filters.pricing.push("Free version")
+      filters.pricing.push("Free demo")
     }
   }
 
