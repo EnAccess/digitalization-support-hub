@@ -1,0 +1,34 @@
+id: Federated Core
+name: Federated Core
+company: Federated Core
+summary: Open source, Email collaboration, File Storage, CRM, Video calls, Team chat, Time tracking, Password Managers, VPN
+logo: /path/to/federated-logo.png
+link: https://www.federated.computer/
+categories:
+  - Customer Vetting
+  - Company Set Up
+  - Sales and Contract Management
+  - Service Calls
+  - Stock Management
+  - Tech Response
+
+license:
+user_type:
+  - Basic digital literacy
+pricing:
+  title:
+  description: Flat rate for a specific number of tools
+
+free_demo_available: true
+is_free: true
+
+interoperatibility:
+  - Data export is possible via file download (CSV/XLSX/...)
+  - We provide uni-directional data export via API
+  - We provide bi-directional data exchange via API. It is possible to export data via API and import data via API
+  - The tool offers automatic data exchange with selected tools
+
+documentation:
+  - Technical documentation(like OpenAPI)
+
+offline_functionality: Yes, some functionalities are available offline

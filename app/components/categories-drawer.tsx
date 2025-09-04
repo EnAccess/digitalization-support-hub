@@ -180,6 +180,7 @@ export function ToolCategoriesDrawer({
         "/tools/energy-access-explorer.yaml",
         "/tools/wps.yaml",
         "/tools/zoho.yaml",
+        "/tools/Federated Core.yaml",
       ]
 
       const loadedTools = await Promise.all(
@@ -535,7 +536,9 @@ export function ToolCategoriesDrawer({
                           {/* First evaluate the condition, THEN render JSX */}
                           {((tool.business_type &&
                             tool.business_type.length > 0) ||
-                            tool.license) && (
+                            tool.license ||
+                            tool.is_free ||
+                            tool.free_demo_available) && (
                             <div className="flex flex-wrap gap-2 w-full">
                               {[
                                 ...(tool.business_type || []),

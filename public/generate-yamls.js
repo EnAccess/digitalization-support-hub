@@ -8,35 +8,133 @@ dotenv.config()
 // Configuration - Update these values or use environment variables
 const CONFIG = {
   // Google Sheets configuration
-  SPREADSHEET_ID: process.env.GOOGLE_SPREADSHEET_ID || "your-spreadsheet-id",
-  RANGE: process.env.GOOGLE_SHEETS_RANGE || "Sheet1!A:Z",
+  SPREADSHEET_ID:
+    process.env.GOOGLE_SPREADSHEET_ID ||
+    "1O4TnPEkM8v3wXiKjB0wmjmrPoFTrnZlTL3YdqkJ0HM0",
+  RANGE:
+    process.env.GOOGLE_SHEETS_RANGE || "'Master List- source of truth'!A:BP",
 
-  // Output directory for YAML files
-  OUTPUT_DIR: process.env.OUTPUT_DIRECTORY || "./public/tools",
+  // Output directory for YAML files - Smart path resolution
+  OUTPUT_DIR: (() => {
+    const outputDir = process.env.OUTPUT_DIRECTORY || "./public/tools"
+
+    // If we're already in the public directory, just use ./tools
+    if (process.cwd().endsWith("/public")) {
+      return path.resolve("./tools")
+    }
+
+    // Otherwise use the full path
+    return path.resolve(outputDir)
+  })(),
 
   // Google Service Account credentials file path
-  CREDENTIALS_PATH:
-    process.env.CREDENTIALS_FILE || "../service-account-key.json",
+  CREDENTIALS_PATH: process.env.CREDENTIALS_FILE || "service-account-key.json",
 
-  // Column mapping - adjust these based on your Google Sheets structure
+  // Column mapping for simple fields
   COLUMN_MAPPING: {
     id: "A",
     name: "A",
     company: "B",
     summary: "C",
     link: "D",
-    categories: "E", // Comma-separated values
     license: "AD",
-    user_type: "AG", // Comma-separated values
-    pricing_title: "AP", // Comma-separated values
     pricing_description: "AU",
     free_demo_available: "AW", // true/false
     is_free: "AV", // true/false
-    interoperatibility: "AY", // Comma-separated values
-    interoperatibility_pricing: "AV",
-    documentation: "AZ", // Comma-separated values
     offline_functionality: "BB",
-    business_type: "BN", // Comma-separated values
+  },
+
+  // Multi-column field mappings
+  MULTI_COLUMN_MAPPINGS: {
+    // Categories spread across columns E-Y
+    categories: {
+      startColumn: "E",
+      endColumn: "Y",
+      categoryNames: [
+        "Bookkeeping & Accounting",
+        "Customer Finance",
+        "Customer Vetting",
+        "Company Set Up",
+        "CRM",
+        "E-Waste Management",
+        "HR Management",
+        "Impact Measurements & Performance",
+        "Marketing",
+        "Payment Collections",
+        "Personal Training",
+        "Portfolio Analysis & Management",
+        "Product Logistics & Procurement",
+        "Repair, Refurbishment Facilitation",
+        "Repossession & Reverse logistics",
+        "Sales & Contract Management",
+        "Service Calls",
+        "Stock Management",
+        "Tech Response",
+        "Upselling",
+        "Other",
+      ],
+    },
+
+    // Business types in columns BN-BO
+    business_type: {
+      startColumn: "BN",
+      endColumn: "BO",
+      categoryNames: ["Mini-Grids", "SHS"],
+    },
+
+    // User types in columns AG-AN
+    user_type: {
+      startColumn: "AG",
+      endColumn: "AN",
+      categoryNames: ["Basic digital literacy", "Basic IoT know-how", "Other"],
+    },
+
+    // Licensing/Highlights in columns AD-AF
+    license: {
+      startColumn: "AD",
+      endColumn: "AF",
+      categoryNames: [
+        "Fully Open Source",
+        "Partially Open Source",
+        "Fully Proprietary",
+        "Other",
+      ],
+    },
+
+    // Pricing in columns AO-AR
+    pricing_title: {
+      startColumn: "AO",
+      endColumn: "AR",
+      categoryNames: [
+        "100% free",
+        "By user numbers",
+        "By time based license",
+        "By data volume",
+      ],
+    },
+
+    // Interoperability in columns AY-AZ
+    interoperatibility: {
+      startColumn: "AY",
+      endColumn: "AZ",
+      categoryNames: [
+        "Data export is possible via file download (CSV/XLSX/...)",
+        "We provide uni-directional data export via API",
+        "We provide bi-directional data exchange via API. It is possible to export data via API and import data via API",
+        "Our tool offers automatic data exchange with selected tools",
+      ],
+    },
+
+    // Documentation in columns AZ-BB
+    documentation: {
+      startColumn: "AZ",
+      endColumn: "BB",
+      categoryNames: [
+        "Documentation available",
+        "Training available",
+        "Support available",
+      ],
+    },
   },
 }
 
@@ -48,21 +146,40 @@ class GoogleSheetsToYAML {
 
   async initialize() {
     try {
+      // Validate credentials file exists
+      if (!fs.existsSync(CONFIG.CREDENTIALS_PATH)) {
+        throw new Error(
+          `Credentials file not found at: ${CONFIG.CREDENTIALS_PATH}`
+        )
+      }
+
       // Load service account credentials
       const credentials = JSON.parse(fs.readFileSync(CONFIG.CREDENTIALS_PATH))
 
-      // Create JWT client
-      this.auth = new google.auth.JWT(
-        credentials.client_email,
-        null,
-        credentials.private_key,
-        ["https://www.googleapis.com/auth/spreadsheets.readonly"]
-      )
+      // Validate required credential fields
+      if (!credentials.client_email || !credentials.private_key) {
+        throw new Error(
+          "Invalid credentials file: missing client_email or private_key"
+        )
+      }
+
+      console.log(`📧 Using service account: ${credentials.client_email}`)
+
+      // Use GoogleAuth (this is what worked in the inspector)
+      this.auth = new google.auth.GoogleAuth({
+        credentials: credentials,
+        scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
+      })
+
+      // Test authentication
+      await this.auth.getAccessToken()
+      console.log("🔐 GoogleAuth authentication successful")
 
       // Initialize Google Sheets API
       this.sheets = google.sheets({ version: "v4", auth: this.auth })
 
       console.log("✅ Google Sheets API initialized successfully")
+      console.log(`📁 Output directory: ${CONFIG.OUTPUT_DIR}`)
     } catch (error) {
       console.error("❌ Error initializing Google Sheets API:", error.message)
       throw error
@@ -71,6 +188,9 @@ class GoogleSheetsToYAML {
 
   async fetchSheetData() {
     try {
+      console.log(`📊 Fetching data from spreadsheet: ${CONFIG.SPREADSHEET_ID}`)
+      console.log(`📄 Range: ${CONFIG.RANGE}`)
+
       const response = await this.sheets.spreadsheets.values.get({
         spreadsheetId: CONFIG.SPREADSHEET_ID,
         range: CONFIG.RANGE,
@@ -110,33 +230,12 @@ class GoogleSheetsToYAML {
   convertRowToTool(row, headers) {
     const tool = {}
 
-    // Map each column to tool properties
+    // Map simple columns to tool properties
     Object.entries(CONFIG.COLUMN_MAPPING).forEach(([key, columnLetter]) => {
       const columnIndex = this.columnLetterToIndex(columnLetter)
       const value = row[columnIndex]
 
       switch (key) {
-        case "categories":
-        case "user_type":
-        case "documentation":
-        case "business_type":
-        case "interoperatibility":
-          tool[key] = this.parseValue(value, "array")
-          break
-
-        case "pricing_title":
-          const pricingTitles = this.parseValue(value, "array")
-          if (pricingTitles && pricingTitles.length > 0) {
-            tool.pricing = { title: pricingTitles }
-          }
-          break
-
-        case "pricing_description":
-          if (tool.pricing) {
-            tool.pricing.description = this.parseValue(value)
-          }
-          break
-
         case "free_demo_available":
         case "is_free":
           tool[key] = this.parseValue(value, "boolean")
@@ -147,7 +246,47 @@ class GoogleSheetsToYAML {
       }
     })
 
+    // Handle multi-column fields (categories, business types, etc.)
+    Object.entries(CONFIG.MULTI_COLUMN_MAPPINGS).forEach(
+      ([fieldName, config]) => {
+        const selectedValues = this.parseMultiColumnField(row, config)
+        if (selectedValues && selectedValues.length > 0) {
+          tool[fieldName] = selectedValues
+        }
+      }
+    )
+
+    // Handle pricing specially
+    if (tool.pricing_title && tool.pricing_title.length > 0) {
+      tool.pricing = { title: tool.pricing_title }
+      delete tool.pricing_title
+    }
+
     return tool
+  }
+
+  parseMultiColumnField(row, config) {
+    const selectedValues = []
+    const startIndex = this.columnLetterToIndex(config.startColumn)
+    const endIndex = this.columnLetterToIndex(config.endColumn)
+
+    for (let i = startIndex; i <= endIndex && i < row.length; i++) {
+      const value = row[i]
+      const categoryIndex = i - startIndex
+
+      // Check if there's an X mark in this column
+      if (
+        value &&
+        (value.trim().toUpperCase() === "X" ||
+          value.trim().toUpperCase() === "TRUE")
+      ) {
+        if (config.categoryNames[categoryIndex]) {
+          selectedValues.push(config.categoryNames[categoryIndex])
+        }
+      }
+    }
+
+    return selectedValues
   }
 
   columnLetterToIndex(letter) {
@@ -176,25 +315,63 @@ class GoogleSheetsToYAML {
     })
   }
 
+  // Fixed method to ensure proper directory handling
+  async ensureOutputDirectory() {
+    try {
+      if (!fs.existsSync(CONFIG.OUTPUT_DIR)) {
+        fs.mkdirSync(CONFIG.OUTPUT_DIR, { recursive: true })
+        console.log(`📁 Created output directory: ${CONFIG.OUTPUT_DIR}`)
+      } else {
+        console.log(`📁 Using existing directory: ${CONFIG.OUTPUT_DIR}`)
+      }
+    } catch (error) {
+      console.error(`❌ Error creating output directory: ${error.message}`)
+      throw error
+    }
+  }
+
   async saveYAMLFile(tool, yamlContent) {
-    const filename = `${tool.id}.yaml`
+    // Normalize filename to lowercase to avoid case conflicts
+    const normalizedId = tool.id.toLowerCase()
+    const filename = `${normalizedId}.yaml`
     const filepath = path.join(CONFIG.OUTPUT_DIR, filename)
 
     try {
-      // Ensure output directory exists
-      if (!fs.existsSync(CONFIG.OUTPUT_DIR)) {
-        fs.mkdirSync(CONFIG.OUTPUT_DIR, { recursive: true })
-      }
-
       fs.writeFileSync(filepath, yamlContent, "utf8")
       console.log(`✅ Created: ${filename}`)
     } catch (error) {
       console.error(`❌ Error saving ${filename}:`, error.message)
+      throw error
     }
+  }
+
+  // Get list of existing YAML files in the output directory
+  getExistingTools() {
+    if (!fs.existsSync(CONFIG.OUTPUT_DIR)) {
+      return { toolIds: new Set(), fileMapping: new Map() }
+    }
+
+    const existingFiles = fs.readdirSync(CONFIG.OUTPUT_DIR)
+    const yamlFiles = existingFiles.filter((file) => file.endsWith(".yaml"))
+
+    const toolIds = new Set()
+    const fileMapping = new Map() // Maps normalized tool ID to actual filename
+
+    yamlFiles.forEach((file) => {
+      const toolId = file.replace(".yaml", "")
+      const normalizedId = toolId.toLowerCase()
+      toolIds.add(normalizedId)
+      fileMapping.set(normalizedId, file)
+    })
+
+    return { toolIds, fileMapping }
   }
 
   async processTools() {
     try {
+      // Ensure output directory exists
+      await this.ensureOutputDirectory()
+
       const rows = await this.fetchSheetData()
 
       if (rows.length === 0) {
@@ -202,12 +379,22 @@ class GoogleSheetsToYAML {
         return
       }
 
+      // Get existing tools to avoid regenerating ANY existing ones
+      const { toolIds: existingTools } = this.getExistingTools()
+      console.log(
+        `📂 Found ${existingTools.size} existing tools in ${CONFIG.OUTPUT_DIR}`
+      )
+
       // Skip header row (index 0) and process data rows
       const dataRows = rows.slice(1)
-      let processedCount = 0
+      let newToolsCount = 0
+      let skippedExistingCount = 0
       let errorCount = 0
 
       console.log(`\n📝 Processing ${dataRows.length} tools...`)
+      console.log(
+        `🎯 Mode: Only creating NEW tools (no updates to existing ones)`
+      )
 
       for (const row of dataRows) {
         try {
@@ -226,9 +413,21 @@ class GoogleSheetsToYAML {
             continue
           }
 
+          // Check if this tool already exists (case-insensitive)
+          const normalizedId = tool.id.toLowerCase()
+          const toolExists = existingTools.has(normalizedId)
+
+          if (toolExists) {
+            console.log(`⏭️ Skipping existing tool: ${tool.name} (${tool.id})`)
+            skippedExistingCount++
+            continue
+          }
+
+          // This is a genuinely new tool - create it
+          console.log(`🆕 Creating new tool: ${tool.name} (${tool.id})`)
           const yamlContent = this.generateYAMLContent(tool)
           await this.saveYAMLFile(tool, yamlContent)
-          processedCount++
+          newToolsCount++
         } catch (error) {
           console.error(`❌ Error processing row:`, error.message)
           errorCount++
@@ -236,9 +435,16 @@ class GoogleSheetsToYAML {
       }
 
       console.log(`\n📊 Processing complete:`)
-      console.log(`   ✅ Successfully processed: ${processedCount} tools`)
+      console.log(`   🆕 New tools created: ${newToolsCount}`)
+      console.log(`   ⏭️ Existing tools skipped: ${skippedExistingCount}`)
       console.log(`   ❌ Errors: ${errorCount}`)
       console.log(`   📁 Output directory: ${CONFIG.OUTPUT_DIR}`)
+
+      if (newToolsCount === 0 && skippedExistingCount > 0) {
+        console.log(
+          `\n✨ No new tools found - all tools from spreadsheet already exist!`
+        )
+      }
     } catch (error) {
       console.error("❌ Error in processTools:", error.message)
       throw error
@@ -247,7 +453,8 @@ class GoogleSheetsToYAML {
 
   async run() {
     try {
-      console.log("🚀 Starting Google Sheets to YAML conversion...\n")
+      console.log("🚀 Starting Google Sheets to YAML conversion...")
+      console.log("🎯 Mode: NEW TOOLS ONLY (no updates to existing files)\n")
 
       await this.initialize()
       await this.processTools()
