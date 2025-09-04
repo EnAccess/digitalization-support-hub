@@ -2,6 +2,7 @@ id: Federated Core
 name: Federated Core
 company: Federated Core
 summary: Open source, Email collaboration, File Storage, CRM, Video calls, Team chat, Time tracking, Password Managers, VPN
+logo: /path/to/federated-logo.png
 link: https://www.federated.computer/
 categories:
   - Customer Vetting
