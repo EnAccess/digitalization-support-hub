@@ -15,13 +15,11 @@ import { ToolCategoriesDrawer } from "../components/categories-drawer"
 import { useMobile } from "../hooks/use-mobile"
 import { FilterState, Tool } from "../types"
 
-// Remove the local Tool interface since we're now importing it
-
 export default function Landing() {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
-  const [, setTools] = useState<Tool[]>([]) // Explicitly type the state
+  const [, setTools] = useState<Tool[]>([])
   const { isDesktop } = useMobile()
 
   const [, setAnswers] = useState<Record<string, string[]>>({})
@@ -213,6 +211,22 @@ export default function Landing() {
               </h2>
             </div>
           </section>
+
+          <div className="flex justify-center bg-[#F9FBFA] pb-4">
+            <div className="w-full max-w-[560px] aspect-video rounded-lg overflow-hidden shadow-lg">
+              <iframe
+                width="560"
+                height="315"
+                src="https://www.youtube.com/embed/SWFvqJPVJhQ"
+                title="YouTube video"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="w-full h-full"
+              ></iframe>
+            </div>
+          </div>
+
           {/* Why Digitalization Matters Section */}
           <section className="bg-[#1B4332] text-white py-12 px-4 text-center">
             <div className="max-w-3xl mx-auto">
@@ -267,15 +281,21 @@ export default function Landing() {
                   <p className="text-base text-[#0D261A] font-bold pb-8 ">
                     Made by
                   </p>
-                  <div className="h-12 relative">
-                    <Image
-                      src="/supporter1.png"
-                      alt="ENACCESS Logo"
-                      width={120}
-                      height={40}
-                      className="object-contain"
-                    />
-                  </div>
+                  <Link
+                    href="https://enaccess.org/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <div className="h-12 relative">
+                      <Image
+                        src="/supporter1.png"
+                        alt="ENACCESS Logo"
+                        width={120}
+                        height={40}
+                        className="object-contain"
+                      />
+                    </div>
+                  </Link>
                 </div>
                 <div className="">
                   <p className="text-base text-[#0D261A] font-bold pb-8">
