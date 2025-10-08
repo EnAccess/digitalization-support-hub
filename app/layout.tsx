@@ -12,8 +12,9 @@ const raleway = Raleway({
 })
 
 export const metadata: Metadata = {
-  title: "Digitalization Support Hub - Proof of Concept",
-  description: "Digitalization Support Hub - Proof of Concept",
+  title: "Digitalization Support Hub - A Tool Wizard for Digital Acceleration",
+  description:
+    "Digitalization Support Hub - A Tool Wizard for Digital Acceleration",
 }
 
 export default function RootLayout({
