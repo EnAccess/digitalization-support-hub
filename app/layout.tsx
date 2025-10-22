@@ -4,6 +4,7 @@ import "./globals.css"
 import "@ant-design/v5-patch-for-react-19"
 import { SupportBubbleProvider } from "./components/support-bubble-provider"
 import GoogleAnalytics from "./components/GoogleAnalytics"
+import CookieBanner from "./components/CookieBanner"
 
 const raleway = Raleway({
   subsets: ["latin"],
@@ -27,6 +28,7 @@ export default function RootLayout({
       <body className={raleway.className}>
         <GoogleAnalytics />
         <SupportBubbleProvider>{children}</SupportBubbleProvider>
+        <CookieBanner />
       </body>
     </html>
   )

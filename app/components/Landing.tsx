@@ -14,6 +14,7 @@ import QuestionaireFilter from "../components/Questionairefilter"
 import { ToolCategoriesDrawer } from "../components/categories-drawer"
 import { useMobile } from "../hooks/use-mobile"
 import { FilterState, Tool } from "../types"
+import YouTubeEmbed from "./YouTubeEmbed"
 
 export default function Landing() {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
@@ -212,19 +213,12 @@ export default function Landing() {
             </div>
           </section>
 
+          {/* Replace the iframe with YouTubeEmbed component */}
           <div className="flex justify-center bg-[#F9FBFA] pb-4">
-            <div className="w-full max-w-[560px] aspect-video rounded-lg overflow-hidden shadow-lg">
-              <iframe
-                width="560"
-                height="315"
-                src="https://www.youtube.com/embed/SWFvqJPVJhQ"
-                title="YouTube video"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="w-full h-full"
-              ></iframe>
-            </div>
+            <YouTubeEmbed
+              videoId="SWFvqJPVJhQ"
+              className="w-full max-w-[560px]"
+            />
           </div>
 
           {/* Why Digitalization Matters Section */}
@@ -354,9 +348,9 @@ export default function Landing() {
               </div>
 
               <div className="flex justify-center gap-4 text-sm text-[#091A12]  underline font-bold">
-                <Link href="#">Imprint</Link>
-                <Link href="#">Privacy Policy</Link>
-                <Link href="#">Cookies</Link>
+                <Link href="/legal-disclosure">Legal Disclosure</Link>
+                <Link href="/privacy-policy">Privacy Policy</Link>
+                <Link href="/cookies">Cookies</Link>
               </div>
             </div>
           </footer>
