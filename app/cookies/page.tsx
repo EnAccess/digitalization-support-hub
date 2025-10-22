@@ -231,7 +231,7 @@ export default function CookiesPolicy() {
                   <td className="py-2 px-3">yt-remote-cast-available</td>
                   <td className="py-2 px-3">youtube.com</td>
                   <td className="py-2 px-3">
-                    Used to store the user's preferences regarding whether
+                    Used to store the user&apos;s preferences regarding whether
                     casting is available on their YouTube video player.
                   </td>
                   <td className="py-2 px-3">session</td>
@@ -242,7 +242,7 @@ export default function CookiesPolicy() {
                   <td className="py-2 px-3">yt-remote-cast-installed</td>
                   <td className="py-2 px-3">youtube.com</td>
                   <td className="py-2 px-3">
-                    Used to store the user's video player preferences using
+                    Used to store the user&apos;s video player preferences using
                     embedded YouTube video.
                   </td>
                   <td className="py-2 px-3">session</td>
