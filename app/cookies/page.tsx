@@ -125,7 +125,7 @@ export default function CookiesPolicy() {
                   <td className="py-2 px-3">VISITOR_PRIVACY_METADATA</td>
                   <td className="py-2 px-3">youtube.com</td>
                   <td className="py-2 px-3">
-                    Stores YouTube user’s consent state.
+                    Stores YouTube user&apos;s consent state.
                   </td>
                   <td className="py-2 px-3">6 months</td>
                   <td className="py-2 px-3">Necessary</td>
@@ -177,7 +177,7 @@ export default function CookiesPolicy() {
                   <td className="py-2 px-3">yt-remote-connected-devices</td>
                   <td className="py-2 px-3">youtube.com</td>
                   <td className="py-2 px-3">
-                    Stores user’s video preferences.
+                    Stores user&apos;s video preferences.
                   </td>
                   <td className="py-2 px-3">Persistent</td>
                   <td className="py-2 px-3">Functional</td>
@@ -198,7 +198,7 @@ export default function CookiesPolicy() {
                   <td className="py-2 px-3">yt-remote-session-name</td>
                   <td className="py-2 px-3">youtube.com</td>
                   <td className="py-2 px-3">
-                    Used by YouTube to store the user's video player
+                    Used by YouTube to store the user&apos;s video player
                     preferences.
                   </td>
                   <td className="py-2 px-3">session</td>
@@ -209,7 +209,7 @@ export default function CookiesPolicy() {
                   <td className="py-2 px-3">yt-remote-fast-check-period</td>
                   <td className="py-2 px-3">youtube.com</td>
                   <td className="py-2 px-3">
-                    Used to store the user's video player preferences for
+                    Used to store the user&apos;s video player preferences for
                     embedded YouTube videos.
                   </td>
                   <td className="py-2 px-3">session</td>
