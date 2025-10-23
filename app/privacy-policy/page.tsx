@@ -8,7 +8,7 @@ export default function PrivacyPolicy() {
       <div className="max-w-5xl mx-auto bg-white rounded-lg shadow p-10">
         <h1 className="text-3xl font-extrabold mb-4">
           <span className="text-[#43BC80]">Privacy</span>{" "}
-          <span className="text-[#0D261A]">Policy</span>
+          <span className="text-[#43BC80]">Policy</span>
         </h1>
 
         <p className="mb-4 text-base text-gray-700">
