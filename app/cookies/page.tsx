@@ -12,8 +12,9 @@ export default function CookiesPolicy() {
         </h1>
 
         <p className="mb-4 text-base text-gray-700">
-          This Cookies Policy explains how Stichting EnAccess ("we", "our",
-          "us") uses cookies and similar technologies on the website{" "}
+          This Cookies Policy explains how Stichting EnAccess (&quot;we&quot;,
+          &quot;our&quot;, &quot;us&quot;) uses cookies and similar technologies
+          on the website{" "}
           <a
             href="https://digitalization-support-hub.org"
             className="text-[#0D6E4B] underline"
@@ -22,9 +23,9 @@ export default function CookiesPolicy() {
           >
             https://digitalization-support-hub.org/
           </a>{" "}
-          (the "Website"). We use cookies to ensure the proper functioning of
-          our Website, to analyze website traffic, and to improve your browsing
-          experience. This policy should be read together with our{" "}
+          (the &quot;Website&quot;). We use cookies to ensure the proper
+          functioning of our Website, to analyze website traffic, and to improve
+          your browsing experience. This policy should be read together with our{" "}
           <Link href="/privacy-policy" className="text-[#0D6E4B] underline">
             Privacy Policy
           </Link>{" "}
