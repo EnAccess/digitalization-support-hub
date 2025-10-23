@@ -8,7 +8,7 @@ export default function LegalDisclosure() {
       <div className="max-w-5xl mx-auto bg-white rounded-lg shadow p-10">
         <h1 className="text-3xl font-extrabold mb-4">
           <span className="text-[#43BC80]">Legal</span>{" "}
-          <span className="text-[#0D261A]">disclosure</span>
+          <span className="text-[#43BC80]">disclosure</span>
         </h1>
 
         <section className="space-y-3 mb-6">
