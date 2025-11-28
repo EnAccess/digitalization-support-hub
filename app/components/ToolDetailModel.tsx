@@ -158,7 +158,7 @@ export function ToolDetailModal({
               <h3 className="text-lg font-semibold mb-2">Description</h3>
               <p className="text-sm text-gray-700">
                 {tool.summary ||
-                  "A open source digital platform for managing off-grid energy projects. It allows to manage customers, revenues, energy assets, like meters, PayGo and other deferred payment-based appliance sales with this all-in one platform with payment provider and meter integrations."}
+                  "A Open Source digital platform for managing off-grid energy projects. It allows to manage customers, revenues, energy assets, like meters, PayGo and other deferred payment-based appliance sales with this all-in one platform with payment provider and meter integrations."}
               </p>
             </div>
 

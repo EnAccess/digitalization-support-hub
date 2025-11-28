@@ -90,7 +90,7 @@ const categoryMap: CategoryMap = {
       "Service Calls",
       "Tech Response",
       "Upselling",
-      "customer finance Management",
+      "Customer Finance Management",
       "CRM",
       "HR Management",
     ],
