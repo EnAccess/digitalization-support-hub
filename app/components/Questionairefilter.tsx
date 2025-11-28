@@ -92,7 +92,7 @@ const filterKeyToQuestion: Record<string, string> = {
   toolsCost: "Do you only want to explore free-to-use tools?",
   internalExpertise:
     "Does your team have in-house IT or software development skills?",
-  toolSource: "Would you prefer to explore only open source tools?",
+  toolSource: "Would you prefer to explore only Open Source tools?",
 }
 
 // Options for filtering that will be displayed in the UI
@@ -140,7 +140,7 @@ const FILTER_OPTIONS: Record<
   ],
   toolSource: [
     {
-      value: "Yes please, we love open source",
+      value: "Yes please, we love Open Source",
       description:
         "Choose this if you prefer tools that are free and customisable.",
     },
