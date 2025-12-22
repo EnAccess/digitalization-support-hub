@@ -9,11 +9,10 @@ const GA_TRACKING_ID = "G-90PN28ZXNP"
 // Extend Window interface for gtag
 declare global {
   interface Window {
-    dataLayer: any[]
-    gtag: (...args: any[]) => void
+    dataLayer: IArguments[]
+    gtag: (...args: unknown[]) => void
   }
 }
-
 export default function GoogleAnalytics() {
   const { consent } = useCookieConsent()
   const consentInitialized = useRef(false)
