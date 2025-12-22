@@ -9,7 +9,7 @@ const GA_TRACKING_ID = "G-90PN28ZXNP"
 // Extend Window interface for gtag
 declare global {
   interface Window {
-    dataLayer: IArguments[]
+    dataLayer: unknown[]
     gtag: (...args: unknown[]) => void
   }
 }
@@ -22,8 +22,8 @@ export default function GoogleAnalytics() {
     if (consentInitialized.current) return
 
     window.dataLayer = window.dataLayer || []
-    window.gtag = function () {
-      window.dataLayer.push(arguments)
+    window.gtag = (...args: unknown[]) => {
+      window.dataLayer.push(args)
     }
 
     // Set default consent to denied (privacy-first)
