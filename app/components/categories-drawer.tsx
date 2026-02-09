@@ -181,6 +181,7 @@ export function ToolCategoriesDrawer({
         "/tools/wps.yaml",
         "/tools/zoho.yaml",
         "/tools/Federated Core.yaml",
+        "/tools/bookstack.yaml",
       ]
 
       const loadedTools = await Promise.all(

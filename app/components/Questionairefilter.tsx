@@ -51,6 +51,7 @@ const getToolCountForFilters = async (
       "/tools/wps.yaml",
       "/tools/zoho.yaml",
       "/tools/Federated Core.yaml",
+      "/tools/boostack.yaml",
     ]
 
     // Load all tool data
