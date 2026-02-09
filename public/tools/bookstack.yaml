@@ -2,6 +2,7 @@ id: BookStack
 name: BookStack
 company: Nearly Free Software
 summary: BookStack is an open-source, self-hosted documentation and wiki platform designed to help teams organize knowledge in a clear, book-like structure (shelves, books, chapters, and pages). It’s commonly used for internal documentation, SOPs, project notes, and technical guides, offering a simple editor, search, and access controls without the complexity of heavier enterprise tools.
+logo: /path/to/bookstark.png
 link: https://www.bookstackapp.com/
 free_demo_available: false
 categories:
