@@ -275,7 +275,7 @@ export function ToolDetailModal({
         <div className="flex justify-end mt-6">
           <Button
             className="bg-[#17412C] hover:bg-[#143728] w-full rounded-full"
-            onClick={() => window.open(tool.link || "#", "_blank")}
+            onClick={() => window.open(`https://${tool.link}` || "#", "_blank")}
           >
             Visit website
           </Button>
