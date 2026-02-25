@@ -277,7 +277,7 @@ export function ToolDetailModal({
             className="bg-[#17412C] hover:bg-[#143728] w-full rounded-full"
             onClick={() => {
               let link = tool.link
-              if (!link.startsWith("https")) {
+              if (!link.startsWith("http")) {
                 link = `https://${link}`
               }
               window.open(link || "#", "_blank")
