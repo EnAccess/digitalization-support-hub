@@ -340,26 +340,28 @@ function FilterDrawer({
             <div>
               <h4 className="font-medium mb-3">Business Types</h4>
               <div className="space-y-2 space-x-2">
-                {["Mini Grids", "SHS", "Clean Cooking"].map((type) => (
-                  <Button
-                    key={type}
-                    variant={
-                      tempFilters.businessTypes.includes(type)
-                        ? "default"
-                        : "outline"
-                    }
-                    size="sm"
-                    className={cn(
-                      "rounded-md text-sm font-normal justify-start h-auto px-3 py-2",
-                      tempFilters.businessTypes.includes(type)
-                        ? "bg-[#17412C] text-white "
-                        : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
-                    )}
-                    onClick={() => toggleBusinessType(type)}
-                  >
-                    {type}
-                  </Button>
-                ))}
+                {["Mini Grids", "SHS", "Clean Cooking", "Agnostic"].map(
+                  (type) => (
+                    <Button
+                      key={type}
+                      variant={
+                        tempFilters.businessTypes.includes(type)
+                          ? "default"
+                          : "outline"
+                      }
+                      size="sm"
+                      className={cn(
+                        "rounded-md text-sm font-normal justify-start h-auto px-3 py-2",
+                        tempFilters.businessTypes.includes(type)
+                          ? "bg-[#17412C] text-white "
+                          : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+                      )}
+                      onClick={() => toggleBusinessType(type)}
+                    >
+                      {type}
+                    </Button>
+                  )
+                )}
               </div>
             </div>
 

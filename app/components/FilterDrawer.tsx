@@ -78,7 +78,7 @@ export function FilterDrawer({
         <div className="mb-6">
           <h4 className="font-medium mb-3">Business Type</h4>
           <div className="space-y-2 space-x-2">
-            {["Mini Grids", "SHS", "Clean Cooking"].map((type) => (
+            {["Mini Grids", "SHS", "Clean Cooking", "Agnostic"].map((type) => (
               <Button
                 key={type}
                 variant={
