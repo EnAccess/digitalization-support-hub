@@ -36,6 +36,4 @@ documentation:
 offline_functionality: Yes, some functionalities are available offline
 
 business_type:
-  - Mini Grids
-  - SHS
-  - Clean Cooking
+  - Agnostic
