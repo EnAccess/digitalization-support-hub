@@ -666,9 +666,14 @@ export default function Home({
       {/* Main heading */}
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-4">
-          <h2 className="text-2xl font-bold mb-6 text-[#0D261A]">
-            Tool Categories
-          </h2>
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold text-[#0D261A]">
+              Tool Categories
+            </h2>
+            <p className="text-[#1E1F1E] text-sm mt-1">
+              Browse the tools using the category filters below.
+            </p>
+          </div>
           {localSelectedCategories.length > 0 && (
             <Button
               variant="outline"

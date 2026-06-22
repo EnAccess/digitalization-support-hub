@@ -69,6 +69,11 @@ export default function Landing() {
     resetAll()
   }
 
+  // Smooth-scroll to a section by id
+  const scrollToId = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
+  }
+
   const handleCategorySelect = (categories: string[]) => {
     // Update the selected categories state
     setSelectedCategories(categories)
@@ -113,6 +118,30 @@ export default function Landing() {
       <div className="">
         {/* Hero Section */}
         <section className="bg-[#E2F6DF] mt-8 px-4 sm:px-8 max-w-6xl py-8 lg:rounded-lg mx-auto font-raleway">
+          {/* Top navigation */}
+          <nav className="flex flex-wrap justify-center sm:justify-end gap-8 mb-16 text-black font-bold text-lg sm:text-xl">
+            <button
+              type="button"
+              onClick={() => setIsModalOpen(true)}
+              className="hover:opacity-70 transition-opacity"
+            >
+              Tool finder
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollToId("why-digitalization")}
+              className="hover:opacity-70 transition-opacity"
+            >
+              About DSH
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollToId("site-footer")}
+              className="hover:opacity-70 transition-opacity"
+            >
+              Contact us
+            </button>
+          </nav>
           <div className="flex flex-col-reverse sm:flex-row justify-between items-center sm:items-start gap-8 sm:gap-0">
             <div className="flex-1 text-center sm:text-left">
               <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-[#161D1A] mb-4 max-w-4xl">
@@ -128,7 +157,7 @@ export default function Landing() {
             px-4 py-2 hover:opacity-90 text-md"
                   onClick={() => setIsModalOpen(true)}
                 >
-                  Tool Finder Wizard
+                  Find your tools
                 </Button>
                 {/* Only show this button on mobile or tablet */}
                 {!isDesktop && (
@@ -222,7 +251,10 @@ export default function Landing() {
           </div>
 
           {/* Why Digitalization Matters Section */}
-          <section className="bg-[#1B4332] text-white py-12 px-4 text-center">
+          <section
+            id="why-digitalization"
+            className="bg-[#1B4332] text-white py-12 px-4 text-center"
+          >
             <div className="max-w-3xl mx-auto">
               <h2 className="text-2xl md:text-3xl font-bold mb-6">
                 Why digitalization matters
@@ -264,11 +296,21 @@ export default function Landing() {
                 <BarrierCard icon="staff" title="Lack of staff adoption" />
                 <BarrierCard icon="tool" title="Unsure which tool is right" />
               </div>
+              <div className="flex justify-center mt-10">
+                <Button
+                  className="bg-[#17412C] font-bold text-white rounded-full
+            w-full max-w-[328px] min-w-[200px] h-[44px]
+            px-4 py-2 hover:opacity-90 text-md"
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  Find your tools
+                </Button>
+              </div>
             </div>
           </section>
 
           {/* Footer */}
-          <footer className="bg-[#E2F6DF] py-8 px-4 mt-auto">
+          <footer id="site-footer" className="bg-[#E2F6DF] py-8 px-4 mt-auto">
             <div className="max-w-6xl mx-auto">
               <div className="flex flex-col md:flex-row justify-between gap-8 mb-8">
                 <div>
