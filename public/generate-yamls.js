@@ -30,26 +30,27 @@ const CONFIG = {
   // Google Service Account credentials file path
   CREDENTIALS_PATH: process.env.CREDENTIALS_FILE || "service-account-key.json",
 
-  // Column mapping for simple fields
+  // Column mapping for simple fields.
+  // Layout follows the sheet's second header row (the sub-labels under each group in row 1).
   COLUMN_MAPPING: {
     id: "A",
     name: "A",
     company: "B",
     summary: "C",
     link: "D",
-    license: "AD",
-    pricing_description: "AU",
-    free_demo_available: "AW", // true/false
-    is_free: "AV", // true/false
-    offline_functionality: "BB",
+    pricing_description: "AS", // Pricing details
+    free_demo_available: "AT", // "Do you have a free demo/trial version?" (X)
+    offline_functionality: "BL", // "Does your tool or any parts of it have an offline feature?"
   },
 
-  // Multi-column field mappings
+  // Multi-column field mappings: an "X" in a column selects the name at the same position.
+  // A null name skips that column (free-text "Other" columns).
+  // Names match the values the app filters on (app/components/categories-drawer.tsx, FilterDrawer.tsx).
   MULTI_COLUMN_MAPPINGS: {
-    // Categories spread across columns E-Y
+    // Category tags
     categories: {
       startColumn: "E",
-      endColumn: "Y",
+      endColumn: "AA",
       categoryNames: [
         "Bookkeeping & Accounting",
         "Customer Finance",
@@ -57,8 +58,10 @@ const CONFIG = {
         "Company Set Up",
         "CRM",
         "E-Waste Management",
+        "Fundraising",
         "HR Management",
         "Impact Measurements & Performance",
+        "Market Analysis",
         "Marketing",
         "Payment Collections",
         "Personal Training",
@@ -71,51 +74,54 @@ const CONFIG = {
         "Stock Management",
         "Tech Response",
         "Upselling",
-        "Other",
+        null, // Other
       ],
     },
 
-    // Business types in columns BN-BO
-    business_type: {
-      startColumn: "BN",
-      endColumn: "BO",
-      categoryNames: ["Mini-Grids", "SHS"],
-    },
-
-    // User types in columns AG-AN
-    user_type: {
-      startColumn: "AG",
-      endColumn: "AN",
-      categoryNames: ["Basic digital literacy", "Basic IoT know-how", "Other"],
-    },
-
-    // Licensing/Highlights in columns AD-AF
+    // Licensing (Highlights)
     license: {
-      startColumn: "AD",
+      startColumn: "AC",
       endColumn: "AF",
+      singleValue: true,
       categoryNames: [
         "Fully Open Source",
         "Partially Open Source",
         "Fully Proprietary",
-        "Other",
+        null, // Other
       ],
     },
 
-    // Pricing in columns AO-AR
+    // User types
+    user_type: {
+      startColumn: "AG",
+      endColumn: "AN",
+      categoryNames: [
+        "Basic digital literacy",
+        "Basic IoT know-how",
+        "Basic programming know-how is required",
+        "Basic data management know-how is required",
+        "Advanced programming know-how is required",
+        "Advanced data management know-how is required",
+        "Advanced Internet of Things know-how is required",
+        null, // Other
+      ],
+    },
+
+    // Pricing model
     pricing_title: {
       startColumn: "AO",
       endColumn: "AR",
       categoryNames: [
         "100% free",
-        "By user numbers",
+        "By user number",
         "By time based license",
         "By data volume",
       ],
     },
 
-    // Interoperability in columns AY-AZ
+    // Interoperability
     interoperatibility: {
-      startColumn: "AY",
+      startColumn: "AW",
       endColumn: "AZ",
       categoryNames: [
         "Data export is possible via file download (CSV/XLSX/...)",
@@ -125,15 +131,33 @@ const CONFIG = {
       ],
     },
 
-    // Documentation in columns AZ-BB
+    // Documentation
     documentation: {
-      startColumn: "AZ",
-      endColumn: "BB",
+      startColumn: "BD",
+      endColumn: "BE",
       categoryNames: [
-        "Documentation available",
-        "Training available",
-        "Support available",
+        "High-level documentation",
+        "Technical documentation (like OpenAPI)",
       ],
+    },
+
+    // Data exchange costs
+    interoperatibility_pricing: {
+      startColumn: "BG",
+      endColumn: "BI",
+      singleValue: true,
+      categoryNames: [
+        "Yes, is it a usage-based fee",
+        "Yes, additional subscription/feature fee",
+        "No, there are no (extra) costs associated with data exchange for cross-platform integrations.",
+      ],
+    },
+
+    // Business types
+    business_type: {
+      startColumn: "BN",
+      endColumn: "BP",
+      categoryNames: ["Mini Grids", "SHS", "Clean Cooking"],
     },
   },
 }
@@ -237,8 +261,7 @@ class GoogleSheetsToYAML {
 
       switch (key) {
         case "free_demo_available":
-        case "is_free":
-          tool[key] = this.parseValue(value, "boolean")
+          tool[key] = this.isChecked(value) ? true : null
           break
 
         default:
@@ -246,21 +269,35 @@ class GoogleSheetsToYAML {
       }
     })
 
+    // The schema requires a logo; use the same placeholder pattern as the existing files
+    if (tool.id) {
+      tool.logo = `/path/to/${tool.id.toLowerCase().replace(/\s+/g, "-")}-logo.png`
+    }
+
     // Handle multi-column fields (categories, business types, etc.)
     Object.entries(CONFIG.MULTI_COLUMN_MAPPINGS).forEach(
       ([fieldName, config]) => {
         const selectedValues = this.parseMultiColumnField(row, config)
-        if (selectedValues && selectedValues.length > 0) {
-          tool[fieldName] = selectedValues
+        if (selectedValues.length > 0) {
+          tool[fieldName] = config.singleValue
+            ? selectedValues[0]
+            : selectedValues
         }
       }
     )
 
     // Handle pricing specially
-    if (tool.pricing_title && tool.pricing_title.length > 0) {
-      tool.pricing = { title: tool.pricing_title }
-      delete tool.pricing_title
+    if (tool.pricing_title || tool.pricing_description) {
+      tool.pricing = {
+        title: tool.pricing_title ?? null,
+        description: tool.pricing_description ?? null,
+      }
     }
+    if (tool.pricing_title?.includes("100% free")) {
+      tool.is_free = true
+    }
+    delete tool.pricing_title
+    delete tool.pricing_description
 
     return tool
   }
@@ -274,12 +311,7 @@ class GoogleSheetsToYAML {
       const value = row[i]
       const categoryIndex = i - startIndex
 
-      // Check if there's an X mark in this column
-      if (
-        value &&
-        (value.trim().toUpperCase() === "X" ||
-          value.trim().toUpperCase() === "TRUE")
-      ) {
+      if (this.isChecked(value)) {
         if (config.categoryNames[categoryIndex]) {
           selectedValues.push(config.categoryNames[categoryIndex])
         }
@@ -287,6 +319,11 @@ class GoogleSheetsToYAML {
     }
 
     return selectedValues
+  }
+
+  isChecked(value) {
+    const v = value?.trim().toUpperCase()
+    return v === "X" || v === "TRUE"
   }
 
   columnLetterToIndex(letter) {

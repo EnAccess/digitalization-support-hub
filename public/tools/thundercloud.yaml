@@ -1,0 +1,42 @@
+id: thundercloud
+name: ThunderCloud 2.0
+company: EarthSpark
+summary: "Open-source smart-metering head-end for mini-grids, used to manage the legacy SparkMeter meter fleet: remote meter management, tariffs, prepaid credit and meter data, with on-site base stations that keep sites running offline and sync with the cloud. Released by EarthSpark under Apache 2.0 in 2026, so operators can host it themselves or have it hosted independently of the original vendor."
+logo: /path/to/thundercloud-logo.png
+link: https://github.com/EarthSpark
+
+categories:
+  - Impact Measurements & Performance
+  - Market Analysis
+  - Payment Collections
+  - Sales & Contract Management
+  - Tech Response
+
+license: Fully Open Source
+user_type:
+  - Basic digital literacy
+  - Basic IoT know-how
+
+pricing:
+  title:
+    - 100% free
+
+  description: Software is free (Apache 2.0). Only hosting costs apply when self-hosted; a consortium-hosted option is planned under the Open Metering Infrastructure (OMI).
+
+is_free: true
+
+interoperatibility:
+  - Data export is possible via file download (CSV/XLSX/...)
+  - We provide bi-directional data exchange via API. It is possible to export data via API and import data via API
+  - Our tool offers automatic data exchange with selected tools
+
+interoperatibility_pricing: No, there are no (extra) costs associated with data exchange for cross-platform integrations.
+
+documentation:
+  - High-level documentation
+  - Technical documentation (like OpenAPI)
+
+offline_functionality: Yes, some functionalities are available offline
+
+business_type:
+  - Mini Grids
