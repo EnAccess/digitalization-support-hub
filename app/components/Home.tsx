@@ -582,6 +582,7 @@ export default function Home({
           "/tools/zoho.yaml",
           "/tools/Federated Core.yaml",
           "/tools/bookstack.yaml",
+          "/tools/thundercloud.yaml",
         ]
 
         const loadedTools = await Promise.all(
